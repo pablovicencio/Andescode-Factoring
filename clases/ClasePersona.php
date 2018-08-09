@@ -7,7 +7,9 @@ Clase abstracta Persona
 
  class PersonaDAO
 {
+    protected $id;
     protected $rut;
+    protected $mail;
     protected $contraseña;
     protected $vigencia;
 
@@ -68,6 +70,11 @@ Clase abstracta Persona
 
 
 }
+
+
+
+?>
+
 
 
 

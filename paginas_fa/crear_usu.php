@@ -19,12 +19,26 @@ if( isset($_SESSION['id_fac']) and ($_SESSION['perfil_fac'] <> 0) ){
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<title>Viracocha - Datos Personales</title>
+<title>Viracocha - Crear Usuario</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+
+function validar(formCrearUsu){
+formCrearUsu.btnAc.value="Creando Usuario";
+formCrearUsu.btnAc.disabled=true;
+return true}
+
+
+</script>
+
+
+
 
   <style type="text/css">
     #main{
@@ -63,7 +77,7 @@ if( isset($_SESSION['id_fac']) and ($_SESSION['perfil_fac'] <> 0) ){
         <button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-target="#navb" aria-expanded="false">
               <span class="navbar-toggler-icon"></span>
               </button>
-              <div class="navbar-collapse collapse" id="navb" >
+              <div class="navbar-collapse collapse" id="navb" style="">
               <ul class="navbar-nav" >
                 <li class="nav-item"><a class="nav-link" href="datos_pers.php">Mis Datos</a></li>
                 <!-- Dropdown -->
@@ -78,7 +92,8 @@ if( isset($_SESSION['id_fac']) and ($_SESSION['perfil_fac'] <> 0) ){
                     <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Deudores</a>
                       <div class="dropdown-menu">
-                        <a class="dropdown-item" href="crear_co.php">Informes</a>
+                        <a class="dropdown-item" href="crear_co.php">Crear Deudor</a>
+                        <a class="dropdown-item" href="mod_co.php">Modificar Deudor</a>
                       </div>
                     </li>
                     <!-- Dropdown -->
@@ -90,14 +105,6 @@ if( isset($_SESSION['id_fac']) and ($_SESSION['perfil_fac'] <> 0) ){
                       </div>
                     </li>
                 <li class="nav-item"><a class="nav-link" href="#">Informes</a></li>
-                <!-- Dropdown -->
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Usuarios</a>
-                      <div class="dropdown-menu">
-                        <a class="dropdown-item" href="crear_usu.php">Crear Usuario</a>
-                        <a class="dropdown-item" href="mod_cli.php">Modificar Usuario</a>
-                      </div>
-                    </li>
               </ul>
             </div>
       </nav>
@@ -105,58 +112,90 @@ if( isset($_SESSION['id_fac']) and ($_SESSION['perfil_fac'] <> 0) ){
 <div class="container" id="main">
   <div class="row">
   <div class="col-12">
-    <h3>Mis Datos</h3>
+    <h3>Crear Usuario</h3>
     <hr>
   </div>
   </div>
-                  <?php
-                  $re = $fun->cargar_datos_usu($id);   
-                  foreach($re as $row)      
-                      {
-                         
-                      }    
-                  ?>  
+  <form id="formCrearUsu" method="POST" action="../controles/controlCrearUsu.php">
+
   <div class="row" >
   <div class="col-6">
 
           <div class="form-group">
             <label for="nom">Nombres:</label>
-            <input type="text" class="form-control" id="nom_usu" name="nom_usu"  value="<?php echo $row['nom'] ?>" readonly>
+              <div class="row">
+                <div class="col-6">
+                  <input type="text" class="form-control" id="nom1_usu" name="nom1_usu"  maxlength="25" placeholder="Primer Nombre" required>
+                </div>
+                 <div class="col-6">
+                   <input type="text" class="form-control" id="nom2_usu" name="nom2_usu"  maxlength="25" placeholder="Segundo Nombre" required>
+                </div>
+             </div>
           </div>
           <div class="form-group">
-              <label for="ape">Apellidos</label>
-              <input type="text" class="form-control" name="ape_usu" id="ape_usu" value="<?php echo $row['ape'] ?>" readonly>
+              <label for="ape">Apellidos:</label>
+              <div class="row">
+                <div class="col-6">
+                  <input type="text" class="form-control" id="apepat_usu" name="apepat_usu"  maxlength="25" placeholder="Apellido Paterno" required>
+                </div>
+                <div class="col-6">
+                  <input type="text" class="form-control" id="apemat_usu" name="apemat_usu"  maxlength="25" placeholder="Apellido Materno" required>
+                </div>
+             </div>
             </div>
           <div class="form-group">
              <label for="rut">Rut:</label>
-             <input type="text"  class="form-control" id="rut_usu" name="rut_usu" value="<?php echo $row['rut'] ?>"  readonly>
+             <input type="text"  class="form-control" id="rut_usu" name="rut_usu" maxlength="10" placeholder="xxxxxxxx-x"  required>
           </div>
           <div class="form-group">
              <label for="mail">Mail:</label>
-             <input type="text" class="form-control" id="mail_usu" name="mail_usu" value="<?php echo $row['mail'] ?>"  readonly>
+             <input type="text" class="form-control" id="mail_usu" name="mail_usu" maxlength="50"  required>
           </div>
-           <div class="form-group">
-             <label for="perfil">Perfil de Sistema:</label>
-             <input type="text" class="form-control" id="perfil_usu" name="perfil_usu" value="<?php echo $row['perfil'] ?>"  readonly>
-          </div>
+           
   </div>
   <div class="col-6">
         <div class="form-group">
-            <label for="fec">Fecha de Creación:</label>
-            <input type="text" class="form-control" id="fec_usu" name="fec_usu"  value="<?php echo date('d-m-Y', strtotime($row['fec'])) ?>" readonly>
+          <label for="ape">Perfil de Sistema:</label>
+             <select class="form-control" name="perfil" id="perfil" required>
+                          <option value="" selected disabled>Seleccione el perfil</option>
+                                       <?php 
+                                        $re = $fun->cargar_perfiles(1);   
+                                        foreach($re as $row)      
+                                            {
+                                              ?>
+                                               <option value="<?php echo $row['id_perfil'] ?> ">
+                                               <?php echo $row['perfil'] ?>
+                                               </option>
+                                                  
+                                              <?php
+                                            }    
+                                        ?>       
+                        </select>
           </div>
           <div class="form-group">
-              <label for="cargo">Cargo</label>
-              <input type="text" class="form-control" name="cargo_usu" id="cargo_usu" value="<?php echo $row['cargo'] ?>" readonly>
+            <label for="ape">Cargo:</label>
+               <select class="form-control" name="cargo" id="cargo" required>
+                            <option value="" selected disabled>Seleccione el cargo</option>
+                                         <?php 
+                                          $re = $fun->cargar_cargos(1);   
+                                          foreach($re as $row)      
+                                              {
+                                                ?>
+                                                 <option value="<?php echo $row['id_cargo'] ?> ">
+                                                 <?php echo $row['cargo'] ?>
+                                                 </option>
+                                                    
+                                                <?php
+                                              }    
+                                          ?>       
+                          </select>
             </div>
-          <div class="form-group">
-             <label for="vig">Vigencia:</label>
-             <input type="text"  class="form-control" id="vig_usu" name="vig_usu" value="<?php echo $row['vig'] ?>"  readonly>
+            <div class="form-group">
+             <label for="mail">Nickname:</label>
+             <input type="text" class="form-control" id="nick_usu" name="nick_usu" maxlength="20"  required>
           </div>
-          <div class="form-group">
-             <label for="nick">Nickname:</label>
-             <input type="text" class="form-control" id="nick_usu" name="nick_usu" value="<?php echo $row['nick'] ?>"  readonly>
-          </div>
+          <input type="submit" class="btn btn-info" id="btnAc" name="btnAc" value="Crear Usuario" onclick="validar(this)">
+          </form>
   </div>
   </div>
 
