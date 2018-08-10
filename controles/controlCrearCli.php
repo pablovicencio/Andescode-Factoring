@@ -11,21 +11,24 @@
 	}      
 	     
 	require_once '../clases/Funciones.php';
-	require_once '../clases/ClaseUsuario.php';
+	require_once '../clases/ClaseCliente.php';
 
 	try{
 
-		$nom1 = $_POST['nom1_usu'];
-		$nom2 = $_POST['nom2_usu'];
-		$apepat = $_POST['apepat_usu'];
-		$apemat = $_POST['apemat_usu'];
-		$rut = $_POST['rut_usu'];
-		$mail = $_POST['mail_usu'];
-		$perfil = $_POST['perfil'];
-		$fec_cre = date("Y-m-d h:m:s", time());
-		$cargo = $_POST['cargo'];
+		$nom = $_POST['nom_cli'];
+        $gg = $_POST['gg_cli'];
+        $gf = $_POST['gf_cli'];
+        $rut = $_POST['rut_cli'];
+        $mail = $_POST['mail_cli'];
+		$tasa = $_POST['tasa_cli'];
+		$com_cob = $_POST['comc_cli'];
+		$com_cur = $_POST['comcu_cli'];
+        $apertura = date("Y-m-d h:m:s", time());
+        $fecha =  date("Y-m-d h:m:s", time());
+        $dia = 1;
+        $usu_creador = $_SESSION['id_fac'];
 		$vig = 1;
-		$nick = $_POST['nick_usu'];
+        $otros = 0;
 		
 		
 		$fun = new Funciones(); 
@@ -40,16 +43,16 @@
 			}else{
 			$contraseña = $fun->generaPass();
 
-			$dao = new UsuarioDAO('',$nom1,$nom2, $apepat, $apemat, $rut,$mail,$perfil, $fec_cre, $cargo, md5($contraseña), $vig, $nick);
+			$dao = new ClienteDAO('',$rut,$nom, $tasa, $com_cob, $com_cur,$apertura,$dia, $fecha, $usu_creador,$vig, md5($contraseña), $mail, $otros,$gg,$gf);
 		
-			$crear_usu = $dao->crear_usuario();
+			$crear_cli = $dao->crear_cliente();
 			
-				if (count($crear_usu)>0){
+				if (count($crear_cli)>0){
 				echo"<script type=\"text/javascript\">alert('Error de base de datos, comuniquese con el administrador'); window.location='../paginas_fa/crear_usu.php';</script>";    
 				}else{
 					//$enviar_pass = $fun->enviar_correo_pass($nom,$correo,$nueva_pass);
-				echo"<script type=\"text/javascript\">alert('Usuario ".$nick." Creado ".$contraseña.", favor verifique en su correo (Buzon de entrada, correos no deseados o spam) la contraseña para ingresar.'); window.location='../paginas_fa/crear_usu.php';</script>";  
-					}
+				echo"<script type=\"text/javascript\">alert('Cliente Creado!, Su Contraseña Temporal es: ".$contraseña.", favor verifique la contraseña para ingresar en su correo  (Buzon de entrada, correos no deseados o spam).'); window.location='../paginas_fa/crear_cli.php';</script>";  
+				}
 			}
 		}else{
 		echo "Error";

@@ -19,7 +19,7 @@ if( isset($_SESSION['id_fac']) and ($_SESSION['perfil_fac'] <> 0) ){
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<title>Viracocha - Crear Usuario</title>
+<title>Viracocha - Crear Cliente</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
@@ -105,14 +105,6 @@ return true}
                       </div>
                     </li>
                 <li class="nav-item"><a class="nav-link" href="#">Informes</a></li>
-                <!-- Dropdown -->
-                <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Usuarios</a>
-                      <div class="dropdown-menu">
-                        <a class="dropdown-item" href="crear_usu.php">Crear Usuario</a>
-                        <a class="dropdown-item" href="mod_cli.php">Modificar Usuario</a>
-                      </div>
-                    </li>
               </ul>
             </div>
       </nav>
@@ -120,89 +112,71 @@ return true}
 <div class="container" id="main">
   <div class="row">
   <div class="col-12">
-    <h3>Crear Usuario</h3>
+    <h3>Nuevo Cliente</h3>
     <hr>
   </div>
   </div>
-  <form id="formCrearUsu" method="POST" action="../controles/controlCrearUsu.php">
+  <div class="form-group">
+      <div class="row">   
+             <div class="col-6">
+                 <h5>Datos Personales</h5>
+             </div>
+            <div class="col-6">
+                <h5>Datos Financieros</h5>
+            </div>
+      </div>
+
+  </div>
+  <form id="formCrearCli" method="POST" action="../controles/controlCrearCli.php">
 
   <div class="row" >
   <div class="col-6">
-
           <div class="form-group">
-            <label for="nom">Nombres:</label>
-              <div class="row">
-                <div class="col-6">
-                  <input type="text" class="form-control" id="nom1_usu" name="nom1_usu"  maxlength="25" placeholder="Primer Nombre" required>
-                </div>
-                 <div class="col-6">
-                   <input type="text" class="form-control" id="nom2_usu" name="nom2_usu"  maxlength="25" placeholder="Segundo Nombre" required>
-                </div>
-             </div>
+            <label for="nom">Nombre o Razón Social:</label>
+            <input type="text" class="form-control" id="nom_cli" name="nom_cli"  maxlength="100" placeholder="Nombre o Razón Social" required>
           </div>
           <div class="form-group">
-              <label for="ape">Apellidos:</label>
               <div class="row">
                 <div class="col-6">
-                  <input type="text" class="form-control" id="apepat_usu" name="apepat_usu"  maxlength="25" placeholder="Apellido Paterno" required>
+                  <label for="gg_cli">Gerente General:</label>
+                  <input type="text" class="form-control" id="gg_cli" name="gg_cli"  maxlength="50" placeholder="Gerente General" required>
                 </div>
                 <div class="col-6">
-                  <input type="text" class="form-control" id="apemat_usu" name="apemat_usu"  maxlength="25" placeholder="Apellido Materno" required>
+                  <label for="gf_cli">Gerente de Finanzas:</label>
+                  <input type="text" class="form-control" id="gf_cli" name="gf_cli"  maxlength="50" placeholder="Gerente de Finanzas" required>
                 </div>
              </div>
           </div>
           <div class="form-group">
              <label for="rut">Rut:</label>
-             <input type="text"  class="form-control" id="rut_usu" name="rut_usu" maxlength="10" placeholder="xxxxxxxx-x"  required>
+             <input type="text"  class="form-control" id="rut_cli" name="rut_cli" maxlength="10" placeholder="xxxxxxxx-x"  required>
           </div>
           <div class="form-group">
              <label for="mail">Mail:</label>
-             <input type="text" class="form-control" id="mail_usu" name="mail_usu" maxlength="50"  required>
-          </div>
-           
+             <input type="email" class="form-control" id="mail_cli" name="mail_cli" maxlength="50"  placeholder="Mail" required>
+          </div>    
   </div>
-  <div class="col-6">
-        <div class="form-group">
-          <label for="ape">Perfil de Sistema:</label>
-             <select class="form-control" name="perfil" id="perfil" required>
-                          <option value="" selected disabled>Seleccione el perfil</option>
-                                       <?php 
-                                        $re = $fun->cargar_perfiles(1);   
-                                        foreach($re as $row)      
-                                            {
-                                              ?>
-                                               <option value="<?php echo $row['id_perfil'] ?> ">
-                                               <?php echo $row['perfil'] ?>
-                                               </option>
-                                                  
-                                              <?php
-                                            }    
-                                        ?>       
-                        </select>
-          </div>
-          <div class="form-group">
-            <label for="ape">Cargo:</label>
-               <select class="form-control" name="cargo" id="cargo" required>
-                            <option value="" selected disabled>Seleccione el cargo</option>
-                                         <?php 
-                                          $re = $fun->cargar_cargos(1);   
-                                          foreach($re as $row)      
-                                              {
-                                                ?>
-                                                 <option value="<?php echo $row['id_cargo'] ?> ">
-                                                 <?php echo $row['cargo'] ?>
-                                                 </option>
-                                                    
-                                                <?php
-                                              }    
-                                          ?>       
-                          </select>
-            </div>
-            <div class="form-group">
-             <label for="mail">Nickname:</label>
-             <input type="text" class="form-control" id="nick_usu" name="nick_usu" maxlength="20"  required>
-          </div>
-          <input type="submit" class="btn btn-info" id="btnAc" name="btnAc" value="Crear Usuario" onclick="validar(this)">
+  <div class="col-6">   
+  <div class="form-group">
+              <div class="row">
+                  <div class="col-6">
+                    <label for="tasa">Tasa de Interés:</label>
+                    <input type="text" class="form-control" id="tasa_cli" name="tasa_cli" maxlength="50"  placeholder="Tasa de interés" required>    
+                  </div>
+                  <div class="col-6">
+                    <label for="cobranza">Comisión Cobranza:</label>
+                    <input type="text" class="form-control" id="comc_cli" name="comc_cli" maxlength="50"  placeholder="Comisión Cobranza" required>    
+                  </div>
+              </div>
+              <div class="form-group">
+              <div class="row">
+                  <div class="col-6">
+                    <label for="curse">Comisión Curse:</label>
+                    <input type="text" class="form-control" id="comcu_cli" name="comcu_cli" maxlength="50" placeholder="Comisión Curse" required>    
+                  </div>
+              </div>
+              </div>
+          <input type="submit" class="btn btn-info" id="btnAc" name="btnAc" value="Crear Cliente" onclick="validar(this)">
           </form>
   </div>
   </div>

@@ -1,4 +1,3 @@
-
 <?php
 require_once '../recursos/db/db.php';
 require_once 'ClasePersona.php';
@@ -19,8 +18,19 @@ class UsuarioDAO extends PersonaDAO
     private $cargo_usu;
     private $nick_usu;
 
-    public function __construct($id=null,$nom1_usu=null,$nom2_usu=null, $apepat_usu=null, $apemat_usu=null, $rut=null,$mail=null,$perfil_usu=null, $fec_cre_usu=null, $cargo_usu=null, $contraseña=null, $vigencia=null, $nick_usu=null) {
-
+    public function __construct($id=null,
+                                $nom1_usu=null,
+                                $nom2_usu=null,
+                                $apepat_usu=null,
+                                $apemat_usu=null,
+                                $rut=null,
+                                $mail=null,
+                                $perfil_usu=null,
+                                $fec_cre_usu=null,
+                                $cargo_usu=null,
+                                $contraseña=null,
+                                $vigencia=null,
+                                $nick_usu=null) {
 
 
     $this->id = $id;
