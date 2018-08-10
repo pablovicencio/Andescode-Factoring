@@ -32,8 +32,8 @@
 		if ($mail != ''){
 		$val = $fun->validar_rut($rut,1); //1-usuario sistema/0-cliente sistema
 		if ($val <> ""){
-			echo"<script type=\"text/javascript\">alert('El RUT ya se encuentra en el sistema, puede encontrarse sin vigencia'); window.location='../paginas_fa/crear_usu.php';</script>";  
-			
+			//echo"El RUT ya se encuentra en el sistema, puede encontrarse sin vigencia";  
+			echo "1";
 			
 		}else{
 			$contraseña = $fun->generaPass();
@@ -43,17 +43,19 @@
 			$crear_usu = $dao->crear_usuario();
 			
 			if (count($crear_usu)>0){
-			echo"<script type=\"text/javascript\">alert('Error de base de datos, comuniquese con el administrador'); window.location='../paginas_fa/crear_usu.php';</script>";    
+			//echo"Error de base de datos, comuniquese con el administrador";
+			echo "2";    
 			} else {
 				//$enviar_pass = $fun->enviar_correo_pass($nom,$correo,$nueva_pass);
-			echo"<script type=\"text/javascript\">alert('Usuario ".$nick." Creado ".$contraseña.", favor verifique en su correo (Buzon de entrada, correos no deseados o spam) la contraseña para ingresar.'); window.location='../paginas_fa/crear_usu.php';</script>";  
+			echo"Usuario ".$nick." Creado ".$contraseña.", favor verifique en su correo (Buzon de entrada, correos no deseados o spam) la contraseña para ingresar";  
+				
 					}
 		}}else{
-		echo"Error";
+		echo"3";
 	}
 
 	} catch (Exception $e) {
-		echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_co/crear_co.php';</script>"; 
+		echo"2"; 
 
 
 

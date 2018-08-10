@@ -75,7 +75,7 @@ class UsuarioDAO extends PersonaDAO
         
 
             } catch (Exception $e) {
-                echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()."'); window.location='../paginas_co/crear_co.php';</script>";; 
+                echo"Error, comuniquese con el administrador".  $e->getMessage()."";
             }
     }
 

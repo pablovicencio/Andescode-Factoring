@@ -29,11 +29,46 @@ if( isset($_SESSION['id_fac']) and ($_SESSION['perfil_fac'] <> 0) ){
 
 <script type="text/javascript">
 
-function validar(formCrearUsu){
-formCrearUsu.btnAc.value="Creando Usuario";
-formCrearUsu.btnAc.disabled=true;
-return true}
+$(document).ajaxStart(function() {
+  $("#formCrearUsu").hide();
+  $("#loading").show();
+     }).ajaxStop(function() {
+  $("#loading").hide();
+  $("#formCrearUsu").show();
+  });  
 
+
+$(document).ready(function() {
+  $("#formCrearUsu").submit(function() {    
+    $.ajax({
+      type: "POST",
+      url: '../controles/controlCrearUsu.php',
+      data:$("#formCrearUsu").serialize(),
+      success: function (result) { 
+        var msg = result.trim();
+
+        switch(msg) {
+                case '1':
+                    swal("Rut Duplicado", "El RUT ya se encuentra en el sistema, puede encontrarse sin vigencia", "warning");
+                    break;
+                case '2':
+                    swal("Error Base de Datos", "Error de base de datos, comuniquese con el administrador", "warning");
+                    break;
+                case '3':
+                    swal("Error Mail", "Favor ingrese un correo electronico para enviar las credenciales", "warning");
+                    break;
+                default:
+                    swal("Usuario Creado", msg, "success");
+                    location.reload(true);
+            }
+      },
+      error: function(){
+              alert('Verifique los datos')      
+        }
+    });
+    return false;
+  });
+});
 
 </script>
 
@@ -116,7 +151,13 @@ return true}
     <hr>
   </div>
   </div>
-  <form id="formCrearUsu" method="POST" action="../controles/controlCrearUsu.php">
+
+  <div id="loading" style="display: none;">
+    <center><img src="../img/load.gif"></center>
+  </div>
+
+
+  <form id="formCrearUsu" onsubmit="return false;"  >
 
   <div class="row" >
   <div class="col-6">
@@ -194,7 +235,7 @@ return true}
              <label for="mail">Nickname:</label>
              <input type="text" class="form-control" id="nick_usu" name="nick_usu" maxlength="20"  required>
           </div>
-          <input type="submit" class="btn btn-info" id="btnAc" name="btnAc" value="Crear Usuario" onclick="validar(this)">
+          <input type="submit" class="btn btn-info" id="btnAc" name="btnAc" value="Crear Usuario" >
           </form>
   </div>
   </div>
