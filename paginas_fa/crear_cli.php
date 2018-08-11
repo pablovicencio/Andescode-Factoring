@@ -29,12 +29,45 @@ if( isset($_SESSION['id_fac']) and ($_SESSION['perfil_fac'] <> 0) ){
 
 <script type="text/javascript">
 
-function validar(formCrearUsu){
-formCrearUsu.btnAc.value="Creando Usuario";
-formCrearUsu.btnAc.disabled=true;
-return true}
+$(document).ajaxStart(function() {
+  $("#formCrearCli").hide();
+  $("#loading").show();
+     }).ajaxStop(function() {
+  $("#loading").hide();
+  $("#formCrearCli").show();
+  });  
 
 
+$(document).ready(function() {
+  $("#formCrearCli").submit(function() {    
+    $.ajax({
+      type: "POST",
+      url: '../controles/controlCrearCli.php',
+      data:$("#formCrearCli").serialize(),
+      success: function (result) { 
+        var msg = result.trim();
+
+        switch(msg) {
+                case '1':
+                    swal("Rut Duplicado", "El RUT ya se encuentra en el sistema, puede encontrarse sin vigencia", "warning");
+                    break;
+                case '2':
+                    swal("Error Base de Datos", "Error de base de datos, comuniquese con el administrador", "warning");
+                    break;
+                case '3':
+                    swal("Error Mail", "Favor ingrese un correo electronico para enviar las credenciales", "warning");
+                    break;
+                default:
+                    swal("Usuario Creado", msg, "success");
+            }
+      },
+      error: function(){
+              alert('Verifique los datos')      
+        }
+    });
+    return false;
+  });
+});
 </script>
 
 
@@ -77,7 +110,7 @@ return true}
         <button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-target="#navb" aria-expanded="false">
               <span class="navbar-toggler-icon"></span>
               </button>
-              <div class="navbar-collapse collapse" id="navb" style="">
+              <div class="navbar-collapse collapse" id="navb" >
               <ul class="navbar-nav" >
                 <li class="nav-item"><a class="nav-link" href="datos_pers.php">Mis Datos</a></li>
                 <!-- Dropdown -->
@@ -92,8 +125,7 @@ return true}
                     <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Deudores</a>
                       <div class="dropdown-menu">
-                        <a class="dropdown-item" href="crear_co.php">Crear Deudor</a>
-                        <a class="dropdown-item" href="mod_co.php">Modificar Deudor</a>
+                        <a class="dropdown-item" href="crear_co.php">Informes</a>
                       </div>
                     </li>
                     <!-- Dropdown -->
@@ -105,6 +137,14 @@ return true}
                       </div>
                     </li>
                 <li class="nav-item"><a class="nav-link" href="#">Informes</a></li>
+                <!-- Dropdown -->
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Usuarios</a>
+                      <div class="dropdown-menu">
+                        <a class="dropdown-item" href="crear_usu.php">Crear Usuario</a>
+                        <a class="dropdown-item" href="mod_usu.php">Modificar Usuario</a>
+                      </div>
+                    </li>
               </ul>
             </div>
       </nav>
@@ -115,6 +155,9 @@ return true}
     <h3>Nuevo Cliente</h3>
     <hr>
   </div>
+  </div>
+  <div id="loading" style="display: none;">
+    <center><img src="../recursos/img/load.gif"></center>
   </div>
   <div class="form-group">
       <div class="row">   
@@ -127,7 +170,7 @@ return true}
       </div>
 
   </div>
-  <form id="formCrearCli" method="POST" action="../controles/controlCrearCli.php">
+  <form id="formCrearCli" onsubmit="return false;">
 
   <div class="row" >
   <div class="col-6">
@@ -176,7 +219,7 @@ return true}
                   </div>
               </div>
               </div>
-          <input type="submit" class="btn btn-info" id="btnAc" name="btnAc" value="Crear Cliente" onclick="validar(this)">
+          <input type="submit" class="btn btn-info" id="btnAc" name="btnAc" value="Crear Cliente">
           </form>
   </div>
   </div>

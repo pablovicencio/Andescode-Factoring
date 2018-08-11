@@ -1,4 +1,3 @@
-
 <?php
 require_once '../recursos/db/db.php';
 require_once 'ClasePersona.php';
@@ -19,8 +18,19 @@ class UsuarioDAO extends PersonaDAO
     private $cargo_usu;
     private $nick_usu;
 
-    public function __construct($id=null,$nom1_usu=null,$nom2_usu=null, $apepat_usu=null, $apemat_usu=null, $rut=null,$mail=null,$perfil_usu=null, $fec_cre_usu=null, $cargo_usu=null, $contraseña=null, $vigencia=null, $nick_usu=null) {
-
+    public function __construct($id=null,
+                                $nom1_usu=null,
+                                $nom2_usu=null,
+                                $apepat_usu=null,
+                                $apemat_usu=null,
+                                $rut=null,
+                                $mail=null,
+                                $perfil_usu=null,
+                                $fec_cre_usu=null,
+                                $cargo_usu=null,
+                                $contraseña=null,
+                                $vigencia=null,
+                                $nick_usu=null) {
 
 
     $this->id = $id;
@@ -71,6 +81,48 @@ class UsuarioDAO extends PersonaDAO
                 $stmt->bindParam(":pass", $this->contraseña, PDO::PARAM_STR);
                 $stmt->bindParam(":vig", $this->vigencia, PDO::PARAM_BOOL);
                 $stmt->bindParam(":nick", $this->nick_usu, PDO::PARAM_STR);
+                $stmt->execute();
+        
+
+            } catch (Exception $e) {
+                echo"Error, comuniquese con el administrador".  $e->getMessage()."";
+            }
+    }
+
+
+    /*///////////////////////////////////////
+    Modificar Usuario
+    //////////////////////////////////////*/
+    public function modificar_usuario() {
+
+
+        try{
+             
+                $pdo = AccesoDB::getCon();
+
+                $sql_mod_usu = "UPDATE `bd_factoring`.`usuarios`
+                                    SET
+                                    `NOM1_USU` = :nom1,
+                                    `NOM2_USU` = :nom2,
+                                    `APEPAT_USU` = :apepat,
+                                    `APEMAT_USU` = :apemat,
+                                    `MAIL_USU` = :mail,
+                                    `ID_PERFIL` = :perfil,
+                                    `CARGO_USU` = :cargo,
+                                    `VIG_USU` = :vig
+                                    WHERE `ID_USU` = :id ";
+
+
+                $stmt = $pdo->prepare($sql_mod_usu);
+                $stmt->bindParam(":nom1", $this->nom1_usu, PDO::PARAM_STR);
+                $stmt->bindParam(":nom2", $this->nom2_usu, PDO::PARAM_STR);
+                $stmt->bindParam(":apepat", $this->apepat_usu, PDO::PARAM_STR);
+                $stmt->bindParam(":apemat", $this->apemat_usu, PDO::PARAM_STR);
+                $stmt->bindParam(":mail", $this->mail_usu, PDO::PARAM_STR);
+                $stmt->bindParam(":perfil", $this->perfil_usu, PDO::PARAM_INT);
+                $stmt->bindParam(":cargo", $this->cargo_usu, PDO::PARAM_INT);
+                $stmt->bindParam(":vig", $this->vigencia, PDO::PARAM_BOOL);
+                $stmt->bindParam(":id", $this->id, PDO::PARAM_INT);
                 $stmt->execute();
         
 

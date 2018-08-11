@@ -55,7 +55,7 @@ Clase abstracta Persona
                         }
                         
                         }else { 
-                           echo"<script type=\"text/javascript\">alert('Error, favor verifique sus datos e intente nuevamente o comuniquese con Viracocha Factoring para revisar su vigencia.');window.location='../../index.html';        </script>"; 
+                           echo"<script type=\"text/javascript\">alert('Error, favor verifique sus datos e intente nuevamente o comuniquese con Viracocha Factoring para revisar su vigencia.');window.location='../index.html';        </script>"; 
                          }
 
         

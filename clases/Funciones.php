@@ -8,6 +8,39 @@ class Funciones
 
     
     /*///////////////////////////////////////
+    Cargar lista despegable de usuarios
+    //////////////////////////////////////*/
+        public function cargar_usuarios($vig){
+
+            try{
+                
+                
+                $pdo = AccesoDB::getCon();
+
+
+        
+                        if ($vig == 0) {
+                                $sql = "select id_usu, concat(nom1_usu,' ',apepat_usu,' ',apemat_usu,'-',nick_usu) usuario
+                                        from usuarios order by 2";
+                            }else if ($vig == 1){
+                                $sql = "select id_usu, concat(nom1_usu,' ',apepat_usu,' ',apemat_usu,'-',nick_usu) usuario
+                                        from usuarios where vig_usu = 1 order by 2";
+                            }
+                            
+
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute();
+
+                $response = $stmt->fetchAll();
+                return $response;
+
+            } catch (Exception $e) {
+                echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+            }
+        }
+
+
+    /*///////////////////////////////////////
     Generar password
     //////////////////////////////////////*/
     public function generaPass(){
@@ -130,7 +163,7 @@ class Funciones
     /*///////////////////////////////////////
     Cargar datos de usuario
     //////////////////////////////////////*/
-        public function cargar_datos_usu($id_usu){
+        public function cargar_datos_usu($id_usu,$sel){
 
             try{
                 
@@ -138,13 +171,25 @@ class Funciones
                 $pdo = AccesoDB::getCon();
 
 
-        
-                        $sql = "select concat(a.NOM1_USU,' ',a.NOM2_USU) nom, concat(a.APEPAT_USU,' ',a.APEPAT_USU) ape, a.RUT_USU rut,
+                        
+                if ($sel == 1) {
+                     $sql = "select concat(a.NOM1_USU,' ',a.NOM2_USU) nom, concat(a.APEPAT_USU,' ',a.APEMAT_USU) ape, a.RUT_USU rut,
                                 a.MAIL_USU mail,c.desc_item perfil, a.FEC_CRE_USU fec, b.DESC_ITEM cargo, if(a.VIG_USU=1,'Vigente','No Vigente') vig, a.NICK_USU nick
                                 from usuarios a, tab_param b, tab_param c
                                 where a.CARGO_USU = b.COD_ITEM and b.COD_GRUPO = 2 and b.VIG_ITEM = 1 
                                 and a.ID_PERFIL = c.COD_ITEM and c.COD_GRUPO = 1 and c.VIG_ITEM = 1
                                 and a.ID_USU = :id_usu";
+                }else if ($sel == 2) {
+                    $sql = "select a.NOM1_USU,a.NOM2_USU , a.APEPAT_USU,a.APEMAT_USU, a.RUT_USU ,
+                                a.MAIL_USU ,a.id_perfil, DATE_FORMAT(a.fec_cre_usu, '%d-%m-%Y') fec_cre_usu, a.cargo_usu, a.VIG_USU, a.NICK_USU
+                                from usuarios a
+                                where 
+                                a.ID_USU = :id_usu";
+                }  
+
+
+
+                       
                 
 
                 $stmt = $pdo->prepare($sql);

@@ -1,13 +1,13 @@
 <?php
  session_start();
 
- 	if( isset($_SESSION['id_fac']) and ($_SESSION['perfil_fac'] <> 0) ){
+ 	if( isset($_SESSION['id_fac']) and ($_SESSION['perfil_fac'] <> 0)and isset($_POST['rut_cli']) ){
  		//Si la sesión esta seteada no hace nada
  		$id = $_SESSION['id_fac'];
  	}
  	else{
-		//Si no lo redirige a la pagina index para que inicie la sesion	
-		header("location: ../index.html");
+		echo("0");
+ 		goto salir;
 	}      
 	     
 	require_once '../clases/Funciones.php';
@@ -23,7 +23,7 @@
 		$tasa = $_POST['tasa_cli'];
 		$com_cob = $_POST['comc_cli'];
 		$com_cur = $_POST['comcu_cli'];
-        $apertura = date("Y-m-d h:m:s", time());
+        $apertura = 2000;
         $fecha =  date("Y-m-d h:m:s", time());
         $dia = 1;
         $usu_creador = $_SESSION['id_fac'];
@@ -35,9 +35,9 @@
 
 		if ($mail != '')
 		{
-			$val = $fun->validar_rut($rut,1); //1-usuario sistema/0-cliente sistema
+			$val = $fun->validar_rut($rut,0); //1-usuario sistema/0-cliente sistema
 			if ($val <> ""){
-			echo"<script type=\"text/javascript\">alert('El RUT ya se encuentra en el sistema, puede encontrarse sin vigencia'); window.location='../paginas_fa/crear_usu.php';</script>";  
+			echo"1";  
 			
 			
 			}else{
@@ -48,20 +48,18 @@
 			$crear_cli = $dao->crear_cliente();
 			
 				if (count($crear_cli)>0){
-				echo"<script type=\"text/javascript\">alert('Error de base de datos, comuniquese con el administrador'); window.location='../paginas_fa/crear_usu.php';</script>";    
+				echo"2";    
 				}else{
 					//$enviar_pass = $fun->enviar_correo_pass($nom,$correo,$nueva_pass);
-				echo"<script type=\"text/javascript\">alert('Cliente Creado!, Su Contraseña Temporal es: ".$contraseña.", favor verifique la contraseña para ingresar en su correo  (Buzon de entrada, correos no deseados o spam).'); window.location='../paginas_fa/crear_cli.php';</script>";  
+				echo"Cliente ".$nom." Creado!, Su Contraseña Temporal es: ".$contraseña.", favor verifique la contraseña para ingresar en su correo  (Buzon de entrada, correos no deseados o spam) ";  
 				}
 			}
 		}else{
-		echo "Error";
+		echo "3";
 	}
-
+	salir:
 	} catch (Exception $e) {
-		echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_co/crear_co.php';</script>"; 
-
-
+		echo"2"; 
 
 	}
 ?>

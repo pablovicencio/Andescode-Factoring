@@ -73,9 +73,8 @@ class ClienteDAO extends PersonaDAO
              
                 $pdo = AccesoDB::getCon();
 
-                $sql_crear_cli = "INSERT INTO `bd_factoring`.`clientes`(`RUT_CLI`,`NOM_CLI`,`TASA_CLI`,`COM_COB_CLI`,`COM_CUR_CLI`,`APERTURA_CLI`,`DIA_CLI`,`FEC_CRE_USU`,`USU_CRE_CLI`,`VIG_CLI`,`PASS_CLI`,`MAIL_CLI`.`OTROS_DESC_CLI`,`GG_CLI`,`GF_CLI`)
-                            VALUES(:rut,:nom,:tasa,:comicob,:comicur,:apertura,:dia,:fecha,:usuario,:vig,:pass,:mail,:otros,:gg,:gf);
-                            ";
+                $sql_crear_cli = "INSERT INTO `bd_factoring`.`clientes`(`RUT_CLI`,`NOM_CLI`,`TASA_CLI`,`COM_COB_CLI`,`COM_CUR_CLI`,`APERTURA_CLI`,`DIA_CLI`,`FEC_CRE_cli`,`USU_CRE_CLI`,`VIG_CLI`,`PASS_CLI`,`MAIL_CLI`,`OTROS_DESC_CLI`,`GG_CLI`,`GF_CLI`)
+                            VALUES(:rut,:nom,:tasa,:comicob,:comicur,:apertura,:dia,:fecha,:usuario,:vig,:pass,:mail,:otros,:gg,:gf)";
 
 
                 $stmt = $pdo->prepare($sql_crear_cli);
@@ -88,8 +87,8 @@ class ClienteDAO extends PersonaDAO
                 $stmt->bindParam(":dia", $this->dia_cli, PDO::PARAM_INT);
                 $stmt->bindParam(":fecha", $this->fec_cre_cli, PDO::PARAM_STR);
                 $stmt->bindParam(":usuario", $this->usu_cre_cli, PDO::PARAM_INT);
-                $stmt->bindParam(":vig", $this->contraseña, PDO::PARAM_STR);
-                $stmt->bindParam(":pass", $this->vigencia, PDO::PARAM_BOOL);
+                $stmt->bindParam(":vig", $this->vigencia, PDO::PARAM_BOOL);
+                $stmt->bindParam(":pass", $this->contraseña, PDO::PARAM_STR);
                 $stmt->bindParam(":mail", $this->mail, PDO::PARAM_STR);
                 $stmt->bindParam(":otros", $this->ot_desc_cli, PDO::PARAM_STR);
                 $stmt->bindParam(":gg", $this->gg_cli, PDO::PARAM_STR);
@@ -98,7 +97,7 @@ class ClienteDAO extends PersonaDAO
         
 
             } catch (Exception $e) {
-                echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()."'); window.location='../paginas_co/crear_co.php';</script>";; 
+                echo"Error, comuniquese con el administrador".  $e->getMessage().""; 
             }
     }
 

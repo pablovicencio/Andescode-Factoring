@@ -95,7 +95,7 @@ if( isset($_SESSION['id_fac']) and ($_SESSION['perfil_fac'] <> 0) ){
                       <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Usuarios</a>
                       <div class="dropdown-menu">
                         <a class="dropdown-item" href="crear_usu.php">Crear Usuario</a>
-                        <a class="dropdown-item" href="mod_cli.php">Modificar Usuario</a>
+                        <a class="dropdown-item" href="mod_usu.php">Modificar Usuario</a>
                       </div>
                     </li>
               </ul>
@@ -110,7 +110,7 @@ if( isset($_SESSION['id_fac']) and ($_SESSION['perfil_fac'] <> 0) ){
   </div>
   </div>
                   <?php
-                  $re = $fun->cargar_datos_usu($id);   
+                  $re = $fun->cargar_datos_usu($id,1);   
                   foreach($re as $row)      
                       {
                          
