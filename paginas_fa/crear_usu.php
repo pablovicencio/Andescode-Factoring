@@ -193,7 +193,7 @@ $(document).ready(function() {
           </div>
           <div class="form-group">
              <label for="rut">Rut:</label>
-             <input type="text"  class="form-control" id="rut_usu" name="rut_usu" maxlength="10" placeholder="xxxxxxxx-x"  required>
+             <input type="text"  class="form-control" id="rut_usu" name="rut_usu" maxlength="10" placeholder="xxxxxxxx-x" pattern="\d{3,8}-[\d|kK]{1}"  required>
           </div>
           <div class="form-group">
              <label for="mail">Mail:</label>

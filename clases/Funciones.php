@@ -6,6 +6,39 @@ require_once '../recursos/db/db.php';
 class Funciones 
 {
 
+    /*///////////////////////////////////////
+    Cargar id de cliente
+    //////////////////////////////////////*/
+        public function cargar_id_cli($rut_cli){
+
+            try{
+                
+                
+                $pdo = AccesoDB::getCon();
+
+
+                        
+                     $sql = "select id_cli from clientes where rut_cli = :rut_cli";
+                
+
+
+                       
+                
+
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(":rut_cli", $rut_cli, PDO::PARAM_STR);
+                $stmt->execute();
+
+                $response = $stmt->fetchAll();
+                return $response;
+
+            } catch (Exception $e) {
+                echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+            }
+        }
+
+
+
     
     /*///////////////////////////////////////
     Cargar lista despegable de usuarios

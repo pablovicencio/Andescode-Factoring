@@ -1,7 +1,7 @@
  <?php
   session_start();
  
-  	if( isset($_SESSION['id_fac']) and ($_SESSION['perfil_fac'] <> 0)and isset($_POST['rut']) ){
+  	if( isset($_SESSION['id_fac']) and ($_SESSION['perfil_fac'] <> 0)and isset($_POST['rut_usu']) ){
   		//Si la sesión esta seteada no hace nada
   		$id = $_SESSION['id_fac'];
   	}

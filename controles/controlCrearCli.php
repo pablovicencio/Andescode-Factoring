@@ -12,6 +12,7 @@
 	     
 	require_once '../clases/Funciones.php';
 	require_once '../clases/ClaseCliente.php';
+	require_once '../clases/ClaseGastosOpe.php';
 
 	try{
 
@@ -23,12 +24,18 @@
 		$tasa = $_POST['tasa_cli'];
 		$com_cob = $_POST['comc_cli'];
 		$com_cur = $_POST['comcu_cli'];
-        $apertura = 2000;
+        $apertura = $_POST['aper_cli'];
         $fecha =  date("Y-m-d h:m:s", time());
-        $dia = 1;
+        $dia = $_POST['dias_cli'];
         $usu_creador = $_SESSION['id_fac'];
 		$vig = 1;
-        $otros = 0;
+        $otros = $_POST['otros_desc_cli'];
+
+        $not_deu = $_POST['not_deu'];
+        $envio_correo = $_POST['envio_correo'];
+        $proc_gas = $_POST['proc_gas'];
+        $copia_fac = $_POST['copia_fac'];
+        $sii_cert = $_POST['sii_cert'];
 		
 		
 		$fun = new Funciones(); 
@@ -46,8 +53,16 @@
 			$dao = new ClienteDAO('',$rut,$nom, $tasa, $com_cob, $com_cur,$apertura,$dia, $fecha, $usu_creador,$vig, md5($contraseña), $mail, $otros,$gg,$gf);
 		
 			$crear_cli = $dao->crear_cliente();
+
+			$id_cli = $fun->cargar_id_cli($rut);
+			$cli =  new ClienteDAO($id_cli[0]['id_cli']);
+
+			$dao = new GastosOpeDAO ('',$not_deu, $envio_correo, $proc_gas, $copia_fac, $sii_cert, $vig);
+
+			$crear_gastos_ope = $dao->crear_GastosOpe($cli->getCli());
+
 			
-				if (count($crear_cli)>0){
+				if ((count($crear_cli)>0) and (count($crear_gastos_ope)>0)){
 				echo"2";    
 				}else{
 					//$enviar_pass = $fun->enviar_correo_pass($nom,$correo,$nueva_pass);
