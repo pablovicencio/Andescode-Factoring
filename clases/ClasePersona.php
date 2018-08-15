@@ -32,13 +32,17 @@ Clase abstracta Persona
 
                 $stmt = $pdo->prepare($sql_login);
                 $stmt->bindParam(":rut", $rut, PDO::PARAM_STR);
+           
                 $stmt->execute();
 
+               
 
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
-             
-                 if ($row["pass"] == $pwd) { 
-                        session_start();
+
+                echo "Pwd: " . $pwd . "    Row Pass: " . $row["pass"];
+                
+                if ($pwd == $row["pass"]){
+                    session_start();
                         $_SESSION['id_fac'] = $row['id'];
                         $_SESSION['mail_fac'] = $row['mail'];
                         $_SESSION['nom_fac'] = $row['nom'];
@@ -50,13 +54,12 @@ Clase abstracta Persona
                             echo"<script type=\"text/javascript\">      window.location='../paginas_cli/entrenamiento.php';</script>"; 
                         }else  {
                             echo"<script type=\"text/javascript\">       window.location='../paginas_fa/datos_pers.php';</script>"; 
-                             
-
                         }
-                        
-                        }else { 
-                           echo"<script type=\"text/javascript\">alert('Error, favor verifique sus datos e intente nuevamente o comuniquese con Viracocha Factoring para revisar su vigencia.');window.location='../index.html';        </script>"; 
-                         }
+                }else{
+                    echo"<script type=\"text/javascript\">alert('Error, favor verifique sus datos e intente nuevamente o comuniquese con Viracocha Factoring para revisar su vigencia.');window.location='../index.html';        </script>"; 
+                }
+             
+ 
 
         
 

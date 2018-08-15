@@ -71,7 +71,37 @@ class Funciones
                 echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
             }
         }
+        /*///////////////////////////////////////
+        Cargar lista despegable de usuarios
+        //////////////////////////////////////*/
+        public function cargar_clientes($vig){
 
+            try{
+                
+                
+                $pdo = AccesoDB::getCon();
+
+
+        
+                        if ($vig == 0) {
+                                $sql = "select `ID_CLI`, `NOM_CLI`,`RUT_CLI` from clientes order by 2";
+                            }else if ($vig == 1){
+                                $sql = "select `ID_CLI`, `NOM_CLI`,`RUT_CLI` from clientes where `VIG_CLI` = 1 order by 2";
+                            }
+                            
+
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute();
+
+                $response = $stmt->fetchAll();
+                return $response;
+
+            } catch (Exception $e) {
+                echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+            }
+        }
+
+      
 
     /*///////////////////////////////////////
     Generar password
@@ -236,7 +266,65 @@ class Funciones
                 echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
             }
         }
+
+
+        /*///////////////////////////////////////
+    Cargar datos de Cliente
+    //////////////////////////////////////*/
+    public function cargar_datos_cli($id_cli,$sel){
+
+        try{
+            
+            
+            $pdo = AccesoDB::getCon();
+
+
+                    
+            if ($sel == 1) {
+                 $sql = "";
+            }else if ($sel == 2) {
+                $sql = "select a.RUT_CLI,
+                a.NOM_CLI,
+                a.TASA_CLI,
+                a.COM_COB_CLI,
+                a.COM_CUR_CLI,
+                a.APERTURA_CLI,
+                a.DIA_CLI,
+                DATE_FORMAT(a.FEC_CRE_CLI, '%d-%m-%Y') FEC_CRE_CLI,
+                a.`USU_CRE_CLI`, 
+                a.VIG_CLI, 
+                a.`MAIL_CLI`, 
+                a.OTROS_DESC_CLI, 
+                a.GG_CLI,
+                a.GF_CLI,
+                b.NOT_DEUDOR_GASTO,
+                b.ENVIO_CORREO_GASTO,   
+                b.PROC_GASTO,
+                b.COPIA_FAC_GASTO,
+                b.SII_CERT_GASTO                    
+
+                from clientes a, gastos_ope b where a.ID_CLI = :id_cli AND b.ID_CLI_GASTO = :id_cli";
+            }  
+
+
+
+                   
+            
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(":id_cli", $id_cli, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $response = $stmt->fetchAll();
+            return $response;
+
+        } catch (Exception $e) {
+            echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+        }
+    }
   
+
+
 
 
 
