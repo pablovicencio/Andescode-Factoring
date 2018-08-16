@@ -6,6 +6,108 @@ require_once '../recursos/db/db.php';
 class Funciones 
 {
 
+
+    /*///////////////////////////////////////
+    Cargar dia +/- Cliente para calculo de plazo
+    //////////////////////////////////////*/
+        public function cargar_dia_cli($cli){
+
+            try{
+                
+                
+                $pdo = AccesoDB::getCon();
+
+
+        
+                       
+                                $sql = "select dia_cli
+                                        from clientes where id_cli = :cli";
+                            
+                            
+
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(":cli", $cli, PDO::PARAM_INT);
+                $stmt->execute();
+
+                $response = $stmt->fetchAll();
+                return $response;
+
+            } catch (Exception $e) {
+                echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+            }
+        }
+
+
+
+    /*///////////////////////////////////////
+    Cargar lista despegable de tipos de documentos
+    //////////////////////////////////////*/
+        public function cargar_tipo_doc($vig){
+
+            try{
+                
+                
+                $pdo = AccesoDB::getCon();
+
+
+        
+                        if ($vig == 0) {
+                                $sql = "select cod_item, desc_item
+                                        from tab_param where cod_grupo = 3 and cod_item <> 0 order by 2";
+                            }else if ($vig == 1){
+                                $sql = "select cod_item, desc_item
+                                        from tab_param where cod_grupo = 3 and vig_item = 1 and cod_item <> 0 order by 2";
+                            }
+                            
+
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute();
+
+                $response = $stmt->fetchAll();
+                return $response;
+
+            } catch (Exception $e) {
+                echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+            }
+        }
+
+
+
+    /*///////////////////////////////////////
+    Cargar lista despegable de clientes
+    //////////////////////////////////////*/
+        public function cargar_clientes($vig){
+
+            try{
+                
+                
+                $pdo = AccesoDB::getCon();
+
+
+        
+                        if ($vig == 0) {
+                                $sql = "select id_cli, nom_cli
+                                        from clientes order by 2";
+                            }else if ($vig == 1){
+                                $sql = "select id_cli, nom_cli
+                                        from clientes where vig_cli = 1 order by 2";
+                            }
+                            
+
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute();
+
+                $response = $stmt->fetchAll();
+                return $response;
+
+            } catch (Exception $e) {
+                echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+            }
+        }
+
+
+
+
     /*///////////////////////////////////////
     Cargar id de cliente
     //////////////////////////////////////*/

@@ -8,6 +8,7 @@ Clase Gastos Operacionales
 
 class GastosOpeDAO 
 {
+    private $id;
 	private $not_deudor_gasto;
     private $envio_correo_gasto;
     private $proc_gasto;
@@ -47,7 +48,7 @@ class GastosOpeDAO
              
                 $pdo = AccesoDB::getCon();
 
-                $sql_crear_gastos = "INSERT INTO `bd_factoring`.`gastos_ope`(`NOT_DEUDOR_GASTO`,`ENVIO_CORREO_GASTO`,`PROC_GASTO`,`COPIA_FAC_GASTO`,`SII_CERT_GASTO`,`VIG_GASTO`,`ID_CLI_GASTO`)
+                $sql_crear_gastos = "INSERT INTO `gastos_ope`(`NOT_DEUDOR_GASTO`,`ENVIO_CORREO_GASTO`,`PROC_GASTO`,`COPIA_FAC_GASTO`,`SII_CERT_GASTO`,`VIG_GASTO`,`ID_CLI_GASTO`)
 									VALUES(:not_deudor,:envio_correo,:proc_gasto,:copia_fac,:sii_cert,:vig,:cli)";
 
 

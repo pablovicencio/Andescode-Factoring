@@ -8,7 +8,6 @@ Clase Usuario
 
 class UsuarioDAO extends PersonaDAO
 {
-    
     private $nom1_usu;
     private $nom2_usu;
     private $apepat_usu;
@@ -63,7 +62,7 @@ class UsuarioDAO extends PersonaDAO
              
                 $pdo = AccesoDB::getCon();
 
-                $sql_crear_usu = "INSERT INTO `bd_factoring`.`usuarios`(`NOM1_USU`,`NOM2_USU`,`APEPAT_USU`,`APEMAT_USU`,`RUT_USU`,`MAIL_USU`,`ID_PERFIL`,`FEC_CRE_USU`,`CARGO_USU`,`PASS_USU`,`VIG_USU`,`NICK_USU`)
+                $sql_crear_usu = "INSERT INTO `usuarios`(`NOM1_USU`,`NOM2_USU`,`APEPAT_USU`,`APEMAT_USU`,`RUT_USU`,`MAIL_USU`,`ID_PERFIL`,`FEC_CRE_USU`,`CARGO_USU`,`PASS_USU`,`VIG_USU`,`NICK_USU`)
                             VALUES(:nom1,:nom2,:apepat,:apemat,:rut,:mail,:perfil,:fec_cre,:cargo,:pass,:vig,:nick);
                             ";
 
@@ -100,7 +99,7 @@ class UsuarioDAO extends PersonaDAO
              
                 $pdo = AccesoDB::getCon();
 
-                $sql_mod_usu = "UPDATE `bd_factoring`.`usuarios`
+                $sql_mod_usu = "UPDATE `usuarios`
                                     SET
                                     `NOM1_USU` = :nom1,
                                     `NOM2_USU` = :nom2,

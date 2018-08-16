@@ -107,11 +107,11 @@ $(document).ready(function() {
 
   
       
-<nav class="navbar navbar-expand-lg bg-info navbar-dark">
+      <nav class="navbar navbar-expand-lg bg-info navbar-dark">
         <button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-target="#navb" aria-expanded="false">
               <span class="navbar-toggler-icon"></span>
               </button>
-              <div class="navbar-collapse collapse" id="navb" style="">
+              <div class="navbar-collapse collapse" id="navb" >
               <ul class="navbar-nav" >
                 <li class="nav-item"><a class="nav-link" href="datos_pers.php">Mis Datos</a></li>
                 <!-- Dropdown -->
@@ -122,25 +122,18 @@ $(document).ready(function() {
                         <a class="dropdown-item" href="mod_cli.php">Modificar Cliente</a>
                       </div>
                     </li>
-                <!-- Dropdown -->
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Deudores</a>
-                      <div class="dropdown-menu">
-                        <a class="dropdown-item" href="crear_co.php">Crear Deudor</a>
-                        <a class="dropdown-item" href="mod_co.php">Modificar Deudor</a>
-                      </div>
-                    </li>
+                <li class="nav-item"><a class="nav-link" href="#.php">Deudores</a></li>
                     <!-- Dropdown -->
                     <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Documentos</a>
                       <div class="dropdown-menu">
-                        <a class="dropdown-item" href="crear_co.php">Ingresar</a>
+                        <a class="dropdown-item" href="ing_doc.php">Ingresar</a>
                         <a class="dropdown-item" href="mod_co.php">Operaciones</a>
                       </div>
                     </li>
                 <li class="nav-item"><a class="nav-link" href="#">Informes</a></li>
                 <!-- Dropdown -->
-                <li class="nav-item dropdown">
+                    <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Usuarios</a>
                       <div class="dropdown-menu">
                         <a class="dropdown-item" href="crear_usu.php">Crear Usuario</a>
@@ -211,9 +204,7 @@ $(document).ready(function() {
                                         foreach($re as $row)      
                                             {
                                               ?>
-                                               <option value="<?php echo $row['id_perfil'] ?> ">
-                                               <?php echo $row['perfil'] ?>
-                                               </option>
+                                               <option value="<?php echo $row['id_perfil'] ?>"><?php echo $row['perfil'] ?></option>
                                                   
                                               <?php
                                             }    
@@ -229,9 +220,7 @@ $(document).ready(function() {
                                           foreach($re as $row)      
                                               {
                                                 ?>
-                                                 <option value="<?php echo $row['id_cargo'] ?> ">
-                                                 <?php echo $row['cargo'] ?>
-                                                 </option>
+                                                 <option value="<?php echo $row['id_cargo'] ?>"><?php echo $row['cargo'] ?></option>
                                                     
                                                 <?php
                                               }    

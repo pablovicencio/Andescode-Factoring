@@ -131,18 +131,12 @@ $(document).ready(function(){
                         <a class="dropdown-item" href="mod_cli.php">Modificar Cliente</a>
                       </div>
                     </li>
-                <!-- Dropdown -->
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Deudores</a>
-                      <div class="dropdown-menu">
-                        <a class="dropdown-item" href="crear_co.php">Informes</a>
-                      </div>
-                    </li>
+                <li class="nav-item"><a class="nav-link" href="#.php">Deudores</a></li>
                     <!-- Dropdown -->
                     <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Documentos</a>
                       <div class="dropdown-menu">
-                        <a class="dropdown-item" href="crear_co.php">Ingresar</a>
+                        <a class="dropdown-item" href="ing_doc.php">Ingresar</a>
                         <a class="dropdown-item" href="mod_co.php">Operaciones</a>
                       </div>
                     </li>

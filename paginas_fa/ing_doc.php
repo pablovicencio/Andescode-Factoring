@@ -19,7 +19,7 @@ if( isset($_SESSION['id_fac']) and ($_SESSION['perfil_fac'] <> 0) ){
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<title>Viracocha - Modificar Usuario</title>
+<title>Viracocha - Crear Cliente</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
@@ -29,67 +29,90 @@ if( isset($_SESSION['id_fac']) and ($_SESSION['perfil_fac'] <> 0) ){
 
 <script type="text/javascript">
 
-function mod(usu) {
+
+function mod(cli) {
     
      $.ajax({
-      url: '../controles/controlCargarDatosUsu.php',
+      url: '../controles/controlCargarDiaCli.php',
       type: 'POST',
-      data: {"usu":usu},
-      dataType:'json',
+      data: {"cli":cli},
+      dataType:'html',
       success:function(result){
-        console.log(result);
-        $('#nom1_usu').val(result[0].nom1_usu);
-        $('#nom2_usu').val(result[0].nom2_usu);
-        $('#apepat_usu').val(result[0].apepat_usu);
-        $('#apemat_usu').val(result[0].apemat_usu);
-        $('#rut_usu').val(result[0].rut_usu);
-        $('#mail_usu').val(result[0].mail_usu);
-        $('#fec_cre_usu').val(result[0].fec_cre_usu);
-        $('#nick_usu').val(result[0].nick_usu);
-        $("#perfil").val(result[0].id_perfil);
-        $("#cargo").val(result[0].cargo_usu);
-
-        if ((result[0].vig_usu)==1) {  
-          $('#vig_usu').prop('checked', true);
-              }else  {
-                $('#vig_usu').prop('checked', false);
-              }
+        $('#dia_cli').val(result);
+        plazo();
 
   }
   })
     
+}
 
+function calculo() {
+    var monto = document.getElementById("monto_doc").value;
+    var porc = document.getElementById("ant_doc").value;
+    document.getElementById("finan_doc").value=Math.floor(monto*porc)/100;
+}
+
+function plazo(){
+
+      var fechaope = new Date(document.getElementById("fec_ope_doc").value).getTime();
+      var fechaven    = new Date(document.getElementById("fec_ven_doc").value).getTime();
+      var dia_cli    = (document.getElementById("dia_cli").value);
+
+      if (isNaN(fechaope) == false && isNaN(fechaven) == false && dia_cli != '') {
+        var diff = fechaven - fechaope;  
+        diff = (diff/(1000*60*60*24));
+          var dia = new Date(document.getElementById("fec_ven_doc").value).getUTCDay();
+          switch (dia) {
+            case 0:
+                dia = 4;
+                break;
+            case 1:
+                dia = 2;
+                break;
+            case 2:
+                dia = 2;
+                break;
+            case 3:
+                dia = 2;
+                break;
+            case 4:
+                dia = 4;
+                break;
+            case 5:
+                dia = 4;
+                break;
+            case  6:
+                dia = 5;
+          }
+        document.getElementById("plazo_doc").value = (Number(diff)+Number(dia_cli)+Number(dia));
+      }
 }
 
 
 $(document).ajaxStart(function() {
-  $("#formCrearUsu").hide();
+  $("#formIngDoc").hide();
   $("#loading").show();
      }).ajaxStop(function() {
   $("#loading").hide();
-  $("#formCrearUsu").show();
+  $("#formIngDoc").show();
   });  
 
 
 $(document).ready(function() {
-  $("#formModUsu").submit(function() {    
+  $("#formIngDoc").submit(function() {    
     $.ajax({
       type: "POST",
-      url: '../controles/controlModUsu.php',
-      data:$("#formModUsu").serialize(),
+      url: '../controles/controlIngDoc.php',
+      data:$("#formIngDoc").serialize(),
       success: function (result) { 
         var msg = result.trim();
-        console.log(result);
+
         switch(msg) {
-                case '0':
-                    window.location.assign("../index.html")
-                    break;
-                case '1':
+                case '2':
                     swal("Error Base de Datos", "Error de base de datos, comuniquese con el administrador", "warning");
                     break;
                 default:
-                    swal("Usuario Modificado", msg, "success");
-                    //location.reload(true);
+                    swal("Documento Ingresado", msg, "success");
             }
       },
       error: function(){
@@ -114,6 +137,10 @@ $(document).ready(function() {
       border-radius: 25px;
       padding-top: 5px;
     }
+    #btn-modal{
+      display: none;
+    }
+
     @media (max-width: 1000px) {
     
         body{font-size: 3.7vw;}
@@ -178,25 +205,25 @@ $(document).ready(function() {
 <div class="container" id="main">
   <div class="row">
   <div class="col-12">
-    <h3>Modificar Usuario</h3>
+    <h3>Ingreso de Documento</h3>
     <hr>
   </div>
   </div>
-
   <div id="loading" style="display: none;">
     <center><img src="../recursos/img/load.gif"></center>
   </div>
-    <form id="formModUsu" onsubmit="return false;"  >
+  
+  <form id="formIngDoc" onsubmit="return false;">
     <div class="col-12">
-      <select class="form-control" id="usu" name="usu" style="width: 500px" onchange="mod(this.value)">
-          <option value="" selected disabled>Seleccione Usuario</option>
+      <select class="form-control" id="cli" name="cli" style="width: 500px" onchange="mod(this.value)">
+          <option value="" selected disabled>Seleccione Cliente</option>
                      <?php 
-                      $re = $fun->cargar_usuarios(0);   
+                      $re = $fun->cargar_clientes(1);   
                       foreach($re as $row)      
                           {
                             ?>
                             
-                             <option value="<?php echo $row['id_usu'] ?>"><?php echo $row['usuario'] ?></option>
+                             <option value="<?php echo $row['id_cli'] ?>"><?php echo $row['nom_cli'] ?></option>
                                 
                             <?php
                           }    
@@ -204,86 +231,91 @@ $(document).ready(function() {
       </select><hr>
     </div>
 
-
-
   <div class="row" >
   <div class="col-6">
+          <div class="form-group">
+             <label for="rut">Rut Deudor:</label>
+             <input type="text"  class="form-control" id="rut_deu" name="rut_deu" maxlength="10" placeholder="xxxxxxxx-x" pattern="\d{3,8}-[\d|kK]{1}"  required>
+          </div>
+          <div class="form-group">
+            <label for="nom">Nombre Deudor:</label>
+            <input type="text" class="form-control" id="nom_deu" name="nom_deu"  maxlength="100" required>
+          </div>
+          <div class="form-group">
+              <div class="row">
+                <div class="col-6">
+                  <label for="tip_doc">Tipo de Documento:</label>
+                   <select class="form-control" id="tip_doc" name="tip_doc" >
+                        <option value="" selected disabled>Seleccione Tipo Doc</option>
+                                   <?php 
+                                    $re = $fun->cargar_tipo_doc(1);   
+                                    foreach($re as $row)      
+                                        {
+                                          ?>
+                                          
+                                           <option value="<?php echo $row['cod_item'] ?>"><?php echo $row['desc_item'] ?></option>
+                                              
+                                          <?php
+                                        }    
+                                    ?>  
+                    </select>
+                </div>
+                <div class="col-6">
+                  <label for="num_doc">Número de Documento:</label>
+                  <input type="number" class="form-control" id="num_doc" name="num_doc"  required>
+                </div>
+             </div>
+          </div>
 
-          <div class="form-group">
-            <label for="nom">Nombres:</label>
-              <div class="row">
-                <div class="col-6">
-                  <input type="text" class="form-control" id="nom1_usu" name="nom1_usu"  maxlength="25" placeholder="Primer Nombre" required>
-                </div>
-                 <div class="col-6">
-                   <input type="text" class="form-control" id="nom2_usu" name="nom2_usu"  maxlength="25" placeholder="Segundo Nombre" required>
-                </div>
-             </div>
-          </div>
-          <div class="form-group">
-              <label for="ape">Apellidos:</label>
-              <div class="row">
-                <div class="col-6">
-                  <input type="text" class="form-control" id="apepat_usu" name="apepat_usu"  maxlength="25" placeholder="Apellido Paterno" required>
-                </div>
-                <div class="col-6">
-                  <input type="text" class="form-control" id="apemat_usu" name="apemat_usu"  maxlength="25" placeholder="Apellido Materno" required>
-                </div>
-             </div>
-          </div>
-          <div class="form-group">
-             <label for="rut">Rut:</label>
-             <input type="text"  class="form-control" id="rut_usu" name="rut_usu" maxlength="10" placeholder="xxxxxxxx-x"  readonly>
-          </div>
-          <div class="form-group">
-             <label for="mail">Mail:</label>
-             <input type="text" class="form-control" id="mail_usu" name="mail_usu" maxlength="50"  required>
-          </div>
-          <div class="form-group">
-            <label for="fec">Fecha de Creación:</label>
-            <input type="text" class="form-control" id="fec_cre_usu" name="fec_cre_usu" readonly>
-          </div>
-           
+          <div class="row">
+                  <div class="col-6">
+                    <label for="fec_ope">Fecha de Operación:</label>
+                    <input type="date" class="form-control" id="fec_ope_doc" name="fec_ope_doc" onchange="plazo()" required>
+                  </div>
+                  <div class="col-6">
+                    <label for="fec_ven">Fecha de Vencimiento:</label>
+                    <input type="date" class="form-control" id="fec_ven_doc" name="fec_ven_doc" onchange="plazo()" required>   
+                  </div>
+              </div><br>
+          
+             
   </div>
-  <div class="col-6">
-        <div class="form-group">
-          <label for="ape">Perfil de Sistema:</label>
-             <select class="form-control" name="perfil" id="perfil" required>
-                          <option value="" selected disabled>Seleccione el perfil</option>
-                                       <?php 
-                                        $re = $fun->cargar_perfiles(1);   
-                                        foreach($re as $row)      
-                                            {
-                                              ?>
-                                               <option value="<?php echo $row['id_perfil']; ?>"><?php echo $row['perfil']; ?></option>
-                                              <?php
-                                            }
-                                        ?></select>
-          </div>
-          <div class="form-group">
-            <label for="ape">Cargo:</label>
-               <select class="form-control" name="cargo" id="cargo" required>
-                            <option value="" selected disabled>Seleccione el cargo</option>
-                                         <?php 
-                                          $re = $fun->cargar_cargos(1);   
-                                          foreach($re as $row)      
-                                              {
-                                                ?>
-                                                 <option value="<?php echo $row['id_cargo'] ?>"><?php echo $row['cargo'] ?></option>
-                                                    <?php
-                                              }
-                                          ?></select>
-            </div>
-            <div class="form-group">
-             <label for="mail">Nickname:</label>
-             <input type="text" class="form-control" id="nick_usu" name="nick_usu" maxlength="20"  readonly>
-          </div>
+  <div class="col-6">   
+  <div class="form-group">
+              
+                    <label for="monto">Monto ($):</label>
+                    <input type="number" class="form-control" id="monto_doc" name="monto_doc" min="1" onkeyup="calculo()"  required>
+              
+              <div class="form-group">
+              <div class="row">
+                  <div class="col-6">
+                    <label for="anticipo">Anticipo (%):</label>
+                    <input type="number" class="form-control" id="ant_doc" name="ant_doc" min="1" max="100" onkeyup="calculo()" required>   
+                  </div>
+                  <div class="col-6">
+                    <label for="financiado">Financiado ($):</label>
+                    <input type="number" class="form-control" id="finan_doc" name="finan_doc" readonly>    
+                  </div>
+              </div>
+              </div>
+              <div class="form-group">
+              <div class="row">
+                  <div class="col-6">
+                    <label for="dia">Dia +/-:</label>
+                    <input type="number" class="form-control" id="dia_cli" name="dia_cli" readonly>    
+                  </div>
+                  <div class="col-6">
+                    <label for="plazo">Plazo:</label>
+                    <input type="text" class="form-control" id="plazo_doc" name="plazo_doc" required>    
+                  </div>
+              </div>
+              </div>
+          
+          <input type="submit" class="btn btn-info" id="btnAc" name="btnAc" value="Ingresar Documento">
+          
 
-          <div class="form-check">
-            <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" name="vig_usu" id="vig_usu"> Vigencia</label>
-          </div>
-          <input type="submit" class="btn btn-info" id="btnAc" name="btnAc" value="Modificar Usuario" >
+                
+
           </form>
   </div>
   </div>
@@ -291,5 +323,6 @@ $(document).ready(function() {
 
 
 </div>
+
 </body>
 </html>
