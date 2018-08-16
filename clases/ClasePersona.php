@@ -38,8 +38,6 @@ Clase abstracta Persona
                
 
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                echo "Pwd: " . $pwd . "    Row Pass: " . $row["pass"];
                 
                 if ($pwd == $row["pass"]){
                     session_start();
