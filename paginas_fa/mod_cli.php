@@ -51,11 +51,11 @@ function mod(cli) {
         $("#otros_desc_cli").val(result[0].otros_desc_cli);
         $("#gg_cli").val(result[0].gg_cli);
         $("#gf_cli").val(result[0].gf_cli);
-        $("#ndeudor").val(result[0].ndeudor);
-        $("#ENVIO_CORREO_GASTO").val(result[0].ENVIO_CORREO_GASTO);
-        $("#PROC_GASTO").val(result[0].PROC_GASTO);
-        $("#COPIA_FAC_GASTO").val(result[0].COPIA_FAC_GASTO);
-        $("#SII_CERT_GASTO").val(result[0].sii_cert);
+        $("#ndeudor").val(result[0].not_deudor_gasto);
+        $("#envio_correo_gasto").val(result[0].envio_correo_gasto);
+        $("#proc_gasto").val(result[0].proc_gasto);
+        $("#copia_fac_gasto").val(result[0].copia_fac_gasto);
+        $("#sii_cert_gasto").val(result[0].sii_cert_gasto);
 
 
         if ((result[0].vig_cli)==1) {  
@@ -72,11 +72,11 @@ function mod(cli) {
 
 
 $(document).ajaxStart(function() {
-  $("#formCrearCli").hide();
+  $("#formModCli").hide();
   $("#loading").show();
      }).ajaxStop(function() {
   $("#loading").hide();
-  $("#formCrearCli").show();
+  $("#formModCli").show();
   });  
 
 
@@ -162,14 +162,7 @@ $(document).ready(function() {
                         <a class="dropdown-item" href="mod_cli.php">Modificar Cliente</a>
                       </div>
                     </li>
-                <!-- Dropdown -->
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Deudores</a>
-                      <div class="dropdown-menu">
-                        <a class="dropdown-item" href="crear_co.php">Crear Deudor</a>
-                        <a class="dropdown-item" href="mod_co.php">Modificar Deudor</a>
-                      </div>
-                    </li>
+                <li class="nav-item"><a class="nav-link" href="#.php">Deudores</a></li>
                     <!-- Dropdown -->
                     <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Documentos</a>
@@ -249,7 +242,7 @@ $(document).ready(function() {
         </div>
         <div class="form-group">
             <label for="rut">Rut:</label>
-            <input type="text"  class="form-control" id="rut_clis" name="rut_cli" maxlength="10" placeholder="xxxxxxxx-x" pattern="\d{3,8}-[\d|kK]{1}"  required>
+            <input type="text"  class="form-control" id="rut_cli" name="rut_cli" maxlength="10" placeholder="xxxxxxxx-x" pattern="\d{3,8}-[\d|kK]{1}" readonly required>
         </div>
         <div class="form-group">
             <label for="mail">Mail:</label>
@@ -258,7 +251,11 @@ $(document).ready(function() {
         <div class="form-group">
             <label for="fec">Fecha de Creación:</label>
             <input type="text" class="form-control" id="fec_cre_cli" name="fec_cre_cli" readonly>
-        </div>       
+        </div> 
+        <div class="form-group">
+                    <label for="dia">Días:</label>
+                    <input type="number" class="form-control" id="dia_cli" name="dia_cli" required> 
+        </div>      
     </div>
     <div class="col-6">
         <div class="row">
@@ -298,46 +295,40 @@ $(document).ready(function() {
             </div>
             <div class="col-6">
                 <div class="form-group">
-                    <label for="dia">Días:</label>
-                    <input type="number" class="form-control" id="dia_cli" name="dia_cli" required> 
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6">
-                <div class="form-group">
                     <label for="notificacion">Notificación Deudor:</label>
                     <input type="number" class="form-control" id="ndeudor" name="ndeudor" required>    
                 </div>  
             </div>
+        </div>
+        <div class="row">
             <div class="col-6">
                 <div class="form-group">
                     <label for="envio">Envió por Correo:</label>
-                    <input type="number" class="form-control" id="ENVIO_CORREO_GASTO" name="ENVIO_CORREO_GASTO" required> 
+                    <input type="number" class="form-control" id="envio_correo_gasto" name="envio_correo_gasto" required> 
                 </div>
+            </div>
+           <div class="col-6">
+                <div class="form-group">
+                    <label for="PROC_GASTO">Gastos Procesamiento:</label>
+                    <input type="number" class="form-control" id="proc_gasto" name="proc_gasto" required>    
+                </div>  
             </div>
         </div>
         <div class="row">
-            <div class="col-6">
-                <div class="form-group">
-                    <label for="PROC_GASTO">Gastos Procesamiento:</label>
-                    <input type="number" class="form-control" id="PROC_GASTO" name="PROC_GASTO" required>    
-                </div>  
-            </div>
             <div class="col-6">
                 <div class="form-group">
                     <label for="facfot">Fotocopia Factura:</label>
-                    <input type="number" class="form-control" id="COPIA_FAC_GASTO" name="COPIA_FAC_GASTO" required> 
+                    <input type="number" class="form-control" id="copia_fac_gasto" name="copia_fac_gasto" required> 
                 </div>
             </div>
-        </div>
-        <div class="row">
             <div class="col-6">
                 <div class="form-group">
                     <label for="PROC_GASTO">Certificado SII:</label>
-                    <input type="number" class="SII_CERT_GASTO" id="cer" name="SII_CERT_GASTO" required>    
+                    <input type="number" class="form-control" id="sii_cert_gasto" name="sii_cert_gasto" required>    
                 </div>  
             </div>
+        </div>
+        <div class="row">
             <div class="col-6">
                 <div class="form-check">
                     <label class="form-check-label">
@@ -346,6 +337,7 @@ $(document).ready(function() {
             </div>   
         </div>
         
+        <input type="submit" class="btn btn-info" id="btnAc" name="btnAc" value="Modificar Cliente" >
 
         <!--
         <div class="row">

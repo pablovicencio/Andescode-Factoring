@@ -173,35 +173,35 @@ class Funciones
                 echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
             }
         }
-        /*///////////////////////////////////////
-        Cargar lista despegable de usuarios
-        //////////////////////////////////////*/
-        public function cargar_clientes($vig){
+        // /*///////////////////////////////////////
+        // Cargar lista despegable de clientes
+        // //////////////////////////////////////*/
+        // public function cargar_clientes($vig){
 
-            try{
+        //     try{
                 
                 
-                $pdo = AccesoDB::getCon();
+        //         $pdo = AccesoDB::getCon();
 
 
         
-                        if ($vig == 0) {
-                                $sql = "select `ID_CLI`, `NOM_CLI`,`RUT_CLI` from clientes order by 2";
-                            }else if ($vig == 1){
-                                $sql = "select `ID_CLI`, `NOM_CLI`,`RUT_CLI` from clientes where `VIG_CLI` = 1 order by 2";
-                            }
+        //                 if ($vig == 0) {
+        //                         $sql = "select `ID_CLI`, `NOM_CLI`,`RUT_CLI` from clientes order by 2";
+        //                     }else if ($vig == 1){
+        //                         $sql = "select `ID_CLI`, `NOM_CLI`,`RUT_CLI` from clientes where `VIG_CLI` = 1 order by 2";
+        //                     }
                             
 
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute();
+        //         $stmt = $pdo->prepare($sql);
+        //         $stmt->execute();
 
-                $response = $stmt->fetchAll();
-                return $response;
+        //         $response = $stmt->fetchAll();
+        //         return $response;
 
-            } catch (Exception $e) {
-                echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
-            }
-        }
+        //     } catch (Exception $e) {
+        //         echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+        //     }
+        // }
 
       
 
@@ -370,7 +370,7 @@ class Funciones
         }
 
 
-        /*///////////////////////////////////////
+    /*///////////////////////////////////////
     Cargar datos de Cliente
     //////////////////////////////////////*/
     public function cargar_datos_cli($id_cli,$sel){
@@ -405,7 +405,7 @@ class Funciones
                 b.COPIA_FAC_GASTO,
                 b.SII_CERT_GASTO                    
 
-                from clientes a, gastos_ope b where a.ID_CLI = :id_cli AND b.ID_CLI_GASTO = :id_cli";
+                from clientes a, gastos_ope b where a.ID_CLI = b.ID_CLI_GASTO AND a.ID_CLI = :id_cli";
             }  
 
 
