@@ -1,0 +1,16 @@
+#main{
+      padding: 1em;
+      margin-top: 2em;
+      border-radius:0.5em;
+      background-color: #f8f9fa;
+    }
+body{
+      background-color:#ddd;
+      }
+      
+.btn-info {
+
+      color: #fff;
+      background-color: #0c2e8a;
+      border-color: #0c2e8a;
+}
