@@ -67,6 +67,41 @@ Clase abstracta Persona
     }
 
 
+    /*///////////////////////////////////////
+    Actualizar Contraseña 
+    //////////////////////////////////////*/
+    public static function actualizar_contraseña($id,$pwd,$iden){
+
+        try{
+
+                
+                $pdo = AccesoDB::getCon();
+
+                if ($iden == 0) {
+                     $sql_pwd = "update clientes
+                                  set pass_cli = :pwd
+                                  where id_cli = :id";
+                }elseif ($iden == 1) {
+                    $sql_pwd = "update usuarios
+                                  set pass_usu = :pwd
+                                  where id_usu = :id";
+
+                }
+
+                
+                $stmt = $pdo->prepare($sql_pwd);
+                $stmt->bindParam(":pwd", $pwd, PDO::PARAM_STR);
+                $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+           
+                $stmt->execute();
+        
+
+        } catch (Exception $e) {
+                echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../../index.html';</script>"; 
+        }
+    }
+
+
  
 
 

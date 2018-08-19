@@ -18,11 +18,11 @@ class Funciones
                 $pdo = AccesoDB::getCon();
 
                             if ($ident == 0) {
-                                $sql = "select pass_cli
+                                $sql = "select pass_cli pass
                                         from clientes where id_cli = :id";
                             
                             }else if ($ident == 1) {
-                                $sql = "select pass_usu
+                                $sql = "select pass_usu pass
                                         from usuarios where id_usu = :id";
                             }
         

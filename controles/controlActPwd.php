@@ -11,8 +11,8 @@
 	}      
 	     
 	require_once '../clases/Funciones.php';
-	require_once '../clases/ClaseCliente.php';
-	require_once '../clases/ClaseGastosOpe.php';
+	require_once '../clases/ClasePersona.php';
+	
 
 	try{
 
@@ -21,6 +21,7 @@
         $newpwd2 = $_POST['newpwd2'];
         
         $usu = $_SESSION['id_fac'];
+        $mail = $_SESSION['mail_fac'];
 		
 
 		
@@ -29,36 +30,27 @@
 
 		
 			$val = $fun->validar_pwd($usu,1); //1-usuario sistema/0-cliente sistema
-			if ($val <> ""){
+
+			if ($val[0]['pass'] <> md5($pwd)){
 			echo"1";  
-			
-			
 			}else{
-			$contraseña = $fun->generaPass();
 
-			$dao = new ClienteDAO('',$rut,$nom, $tasa, $com_cob, $com_cur,$apertura,$dia, $fecha, $usu_creador,$vig, md5($contraseña), $mail, $otros,$gg,$gf);
-		
-			$crear_cli = $dao->crear_cliente();
-
-			$id_cli = $fun->cargar_id_cli($rut);
-			$cli =  new ClienteDAO($id_cli[0]['id_cli']);
-
-			$dao = new GastosOpeDAO ('',$not_deu, $envio_correo, $proc_gas, $copia_fac, $sii_cert, $vig);
-
-			$crear_gastos_ope = $dao->crear_GastosOpe($cli->getCli());
-
-			
-				if ((count($crear_cli)>0) and (count($crear_gastos_ope)>0)){
-				echo"2";    
+				if ($newpwd1 <> $newpwd2) {
+					echo"2";  
 				}else{
-					//$enviar_pass = $fun->enviar_correo_pass($nom,$correo,$nueva_pass);
-				echo"Cliente ".$nom." Creado!, Su Contraseña Temporal es: ".$contraseña.", favor verifique la contraseña para ingresar en su correo  (Buzon de entrada, correos no deseados o spam) ";  
-				}
+
+							$upd_pass = PersonaDAO::actualizar_contraseña($usu,md5($newpwd1),1);
+							//$enviar_pass = $fun->correo_upd_pass($mail,$newpwd1);
+							session_destroy();
+							echo"Su Contraseña fue actualizada correctamente y enviada a su correo ".$newpwd1.". En 10 segundos se cerrara su sesión para que ingrese nuevamente"; 
+							
+								
 			}
+		}
 		
 	salir:
 	} catch (Exception $e) {
-		echo"2"; 
+		echo"3"; 
 
 	}
 ?>

@@ -21,6 +21,7 @@ $(document).ajaxStart(function() {
      }).ajaxStop(function() {
   $("#loading").hide();
   $("#main").show();
+  $("#formActPwd").show();
   });  
 
 
@@ -35,16 +36,17 @@ $(document).ready(function() {
 
         switch(msg) {
                 case '1':
-                    swal("Rut Duplicado", "El RUT ya se encuentra en el sistema, puede encontrarse sin vigencia", "warning");
+                    swal("Error de Contraseña", "La contraseña actual no corresponde, intente nuevamente", "warning");
                     break;
                 case '2':
-                    swal("Error Base de Datos", "Error de base de datos, comuniquese con el administrador", "warning");
+                    swal("Error de Nueva Contraseña", "Las nuevas contraseñas no son iguales, intente nuevamente", "warning");
                     break;
                 case '3':
-                    swal("Error Mail", "Favor ingrese un correo electronico para enviar las credenciales", "warning");
+                    swal("Error Base de Datos", "Error de base de datos, comuniquese con el administrador", "warning");
                     break;
                 default:
-                    swal("Usuario Creado", msg, "success");
+                    swal("Contraseña Actualizada", msg, "success");
+                    setInterval('location.reload()',10000);
             }
       },
       error: function(){
