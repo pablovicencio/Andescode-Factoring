@@ -47,7 +47,7 @@ $(document).ready(function() {
       },
       error: function(){
               alert('Verifique los datos')      
-        }
+      }
     });
     return false;
   });
@@ -56,8 +56,6 @@ $(document).ready(function() {
 </script>
 
 
-
-  </style>
 
  
 </head>

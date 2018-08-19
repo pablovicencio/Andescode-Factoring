@@ -108,31 +108,6 @@ $(document).ready(function() {
 });
 
 </script>
-
-
-
-<!--
-  <style type="text/css">
-    #main{
-      background: url('../recursos/img/logo/bg.jpg');
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      background-position: center; 
-      border-radius: 25px;
-      padding-top: 5px;
-    }
-    #btn-modal{
-      display: none;
-    }
-
-    @media (max-width: 1000px) {
-    
-        body{font-size: 3.7vw;}
-
-}
-
-  </style>-->
-
  
 </head>
 

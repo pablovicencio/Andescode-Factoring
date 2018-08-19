@@ -121,6 +121,7 @@ $(document).ready(function() {
   <div id="loading" style="display: none;">
     <center><img src="../recursos/img/load.gif"></center>
   </div>
+  
     <form id="formModCli" onsubmit="return false;"  >
     <div class="col-12">
       <select class="form-control" id="cli" name="cli" style="width: 500px" onchange="mod(this.value)">
@@ -263,75 +264,7 @@ $(document).ready(function() {
         
         <input type="submit" class="btn btn-info" id="btnAc" name="btnAc" value="Modificar Cliente" >
 
-        <!--
-        <div class="row">
-            <div class="col-6">
-                <div class="form-check">
-                    <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" name="vig_cli" id="vig_cli"> Vigencia</label>
-                </div>
-            </div>   
-        </div> 
-
-
-
-
-
-
-
-
-
-
-<!--
-        <div class="col-6">
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalGastos" id="btn-modal" name="btn-modal">Agregar Gastos Operacionales</button><br><br>
-            <div class="modal fade " id="ModalGastos" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-                <div class="modal-dialog " role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="ModalLabel">Gastos Operacionales</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-group row">
-                            <label class="col-sm-6 col-form-label" >Notificación Deudor:</label>
-                            <div class="col-sm-6">
-                                <input type="number" class="form-control" id="not_deu" style="width: 60%;" name="not_deu" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-6 col-form-label" >Envio por correo:</label>
-                            <div class="col-sm-6">
-                                <input type="number" class="form-control" id="envio_correo"  style="width: 60%;" name="envio_correo" required>
-                            </div>
-                            <br>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-6 col-form-label" >Gastos Procesamiento:</label>
-                            <div class="col-sm-6">
-                                <input type="number" class="form-control" id="proc_gas" style="width: 60%;" name="proc_gas" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-6 col-form-label" >Fotocopia Factura:</label>
-                            <div class="col-sm-6">
-                                <input type="number" class="form-control" id="copia_fac"  style="width: 60%;" name="copia_fac" required>
-                            </div>
-                        <br>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-6 col-form-label" >Certificado SII:</label>
-                            <div class="col-sm-6">
-                                <input type="number" class="form-control" id="sii_cert" style="width: 60%;" name="sii_cert" required>
-                            </div>
-                        </div>
-                        <br>
-                    </div>
-                </div>
-            </div>-->
-        </div>   
+      </div>   
     </div>
 </div>
 </form>
@@ -341,10 +274,6 @@ $(document).ready(function() {
 
 
 </div>
-
-<!-- DIV DE PRUEBA! -->
-
-
 
 
 </body>

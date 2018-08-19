@@ -6,7 +6,7 @@
               </button>
               <div class="navbar-collapse collapse" id="navb" >
               <ul class="navbar-nav" >
-                <li class="nav-item"><a class="nav-link" href="datos_pers.php">Mis Datos</a></li>
+                <li class="nav-item "><a class="nav-link" href="datos_pers.php">Mis Datos</a></li> 
                 <!-- Dropdown -->
                     <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Clientes</a>
@@ -18,10 +18,10 @@
                 <li class="nav-item"><a class="nav-link" href="#.php">Deudores</a></li>
                     <!-- Dropdown -->
                     <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Documentos</a>
+                      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Gestión</a>
                       <div class="dropdown-menu">
-                        <a class="dropdown-item" href="ing_doc.php">Ingresar</a>
-                        <a class="dropdown-item" href="mod_co.php">Operaciones</a>
+                        <a class="dropdown-item" href="ing_doc.php">Ingresar Factura</a>
+                        <a class="dropdown-item" href="crear_ope.php">Simulación Cliente</a>
                       </div>
                     </li>
                 <li class="nav-item"><a class="nav-link" href="#">Informes</a></li>
