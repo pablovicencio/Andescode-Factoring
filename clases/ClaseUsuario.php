@@ -84,7 +84,7 @@ class UsuarioDAO extends PersonaDAO
         
 
             } catch (Exception $e) {
-                echo"Error, comuniquese con el administrador".  $e->getMessage()."";
+                echo"2";
             }
     }
 

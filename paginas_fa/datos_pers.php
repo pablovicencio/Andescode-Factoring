@@ -12,6 +12,49 @@
   include("../includes/recursosExternos.php");
 ?>
 
+<script type="text/javascript">
+
+$(document).ajaxStart(function() {
+  $("#formActPwd").hide();
+  $("#main").hide();
+  $("#loading").show();
+     }).ajaxStop(function() {
+  $("#loading").hide();
+  $("#main").show();
+  });  
+
+
+$(document).ready(function() {
+  $("#formActPwd").submit(function() {    
+    $.ajax({
+      type: "POST",
+      url: '../controles/controlActPwd.php',
+      data:$("#formActPwd").serialize(),
+      success: function (result) { 
+        var msg = result.trim();
+
+        switch(msg) {
+                case '1':
+                    swal("Rut Duplicado", "El RUT ya se encuentra en el sistema, puede encontrarse sin vigencia", "warning");
+                    break;
+                case '2':
+                    swal("Error Base de Datos", "Error de base de datos, comuniquese con el administrador", "warning");
+                    break;
+                case '3':
+                    swal("Error Mail", "Favor ingrese un correo electronico para enviar las credenciales", "warning");
+                    break;
+                default:
+                    swal("Usuario Creado", msg, "success");
+            }
+      },
+      error: function(){
+              alert('Verifique los datos')      
+        }
+    });
+    return false;
+  });
+});
+</script>
 </head>
 <body>
 
@@ -30,6 +73,9 @@
 
     <hr>
   </div>
+  <div id="loading" style="display: none;">
+    <center><img src="../recursos/img/load.gif"></center>
+  </div>
   </div>
                   <?php
                   $re = $fun->cargar_datos_usu($id,1);   
@@ -38,7 +84,7 @@
                          
                       }    
                   ?>  
-    <div class="row" >
+    <div class="row" id="main" name="main">
       <div class="col-6">
         <div class="form-group">
           <label for="nom">Nombres:</label>
@@ -78,8 +124,51 @@
              <label for="nick">Nickname:</label>
              <input type="text" class="form-control" id="nick_usu" name="nick_usu" value="<?php echo $row['nick'] ?>"  readonly>
         </div>
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalActPwd" id="btn-pwd" name="btn-pwd">Actualizar Contraseña</button>
       </div>
     </div>
   </div>
+
+                  <div class="modal fade " id="ModalActPwd" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+                <div class="modal-dialog " role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="ModalLabel">Actualizar Contraseña</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <br>
+                    <div class="col-12">
+                          <form  id="formActPwd" onsubmit="return false;">
+                          <div class="form-group row">
+                            <label class="col-sm-6 col-form-label" >Contraseña Actual:</label>
+                            <div class="col-sm-6">
+                            <input type="password" class="form-control" id="actpwd" placeholder="Ingresa tu contraseña" maxlength="6" name="actpwd">
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label class="col-sm-6 col-form-label" >Nueva Contraseña:</label>
+                            <div class="col-sm-6">
+                            <input type="password" class="form-control" id="newpwd1" placeholder="Nueva contraseña" maxlength="6" name="newpwd1">
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label class="col-sm-6 col-form-label" >Repita la Nueva Contraseña:</label>
+                            <div class="col-sm-6">
+                            <input type="password" class="form-control" id="newpwd2" placeholder="Nueva contraseña" maxlength="6" name="newpwd2">
+                            </div>
+                          </div>
+                            <center><input type="submit" class="btn btn-info" id="btnAc" name="btnAc" value="Actualizar"></center> 
+                            <br>
+                          </form>
+                      </div>
+                    
+                  </div>
+
+                </div>
+              </div>
 </body>
 </html>

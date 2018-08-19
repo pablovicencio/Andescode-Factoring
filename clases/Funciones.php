@@ -8,6 +8,43 @@ class Funciones
 
 
     /*///////////////////////////////////////
+    Validar contraseña 
+    //////////////////////////////////////*/
+        public function validar_pwd($id,$ident){
+
+            try{
+                
+                
+                $pdo = AccesoDB::getCon();
+
+                            if ($ident == 0) {
+                                $sql = "select pass_cli
+                                        from clientes where id_cli = :id";
+                            
+                            }else if ($ident == 1) {
+                                $sql = "select pass_usu
+                                        from usuarios where id_usu = :id";
+                            }
+        
+                       
+                                
+                            
+
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+                $stmt->execute();
+
+                $response = $stmt->fetchAll();
+                return $response;
+
+            } catch (Exception $e) {
+                echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+            }
+        }
+
+
+
+    /*///////////////////////////////////////
     Cargar dia +/- Cliente para calculo de plazo
     //////////////////////////////////////*/
         public function cargar_dia_cli($cli){
