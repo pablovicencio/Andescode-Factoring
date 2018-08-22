@@ -7,6 +7,44 @@ class Funciones
 {
 
 
+
+
+    /*///////////////////////////////////////
+    Validar usuario reset contraseña
+    //////////////////////////////////////*/
+        public function validar_usu($rut,$mail,$ident){
+
+            try{
+                
+                
+                $pdo = AccesoDB::getCon();
+
+                            if ($ident == 0) {
+                                $sql = "select id_cli id from clientes where rut_cli = :rut and mail_cli = :mail";
+                            
+                            }else if ($ident == 1) {
+                                $sql = "select id_usu id from usuarios where rut_usu = :rut and mail_usu = :mail";
+                            }
+        
+                       
+                                
+                            
+
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(":rut", $rut, PDO::PARAM_STR);
+                $stmt->bindParam(":mail", $mail, PDO::PARAM_STR);
+                $stmt->execute();
+
+                $response = $stmt->fetchColumn();
+                return $response;
+
+            } catch (Exception $e) {
+                echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+            }
+        }
+
+
+
     /*///////////////////////////////////////
     Validar contraseña 
     //////////////////////////////////////*/
