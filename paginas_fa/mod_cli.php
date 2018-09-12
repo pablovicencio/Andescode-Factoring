@@ -32,14 +32,14 @@ function mod(cli) {
         $('#fec_cre_cli').val(result[0].fec_cre_cli);
         $("#usu_cre_cli").val(result[0].usu_cre_cli);
         $("#mail_cli").val(result[0].mail_cli);
-        $("#otros_desc_cli").val(result[0].otros_desc_cli);
+        //$("#otros_desc_cli").val(result[0].otros_desc_cli);
         $("#gg_cli").val(result[0].gg_cli);
         $("#gf_cli").val(result[0].gf_cli);
-        $("#ndeudor").val(result[0].not_deudor_gasto);
-        $("#envio_correo_gasto").val(result[0].envio_correo_gasto);
-        $("#proc_gasto").val(result[0].proc_gasto);
-        $("#copia_fac_gasto").val(result[0].copia_fac_gasto);
-        $("#sii_cert_gasto").val(result[0].sii_cert_gasto);
+        //$("#ndeudor").val(result[0].not_deudor_gasto);
+        //$("#envio_correo_gasto").val(result[0].envio_correo_gasto);
+        //$("#proc_gasto").val(result[0].proc_gasto);
+        //$("#copia_fac_gasto").val(result[0].copia_fac_gasto);
+        //$("#sii_cert_gasto").val(result[0].sii_cert_gasto);
 
 
         if ((result[0].vig_cli)==1) {  
@@ -107,7 +107,149 @@ $(document).ready(function() {
   include("../includes/menuUsuario.php");
 ?>
 
+<!-- TABLA NUEVA PARA CREACION CLIENTE-->
 
+<div class="container" id="main" bg="light">  
+    <form id="formModCli" onsubmit="return false;">
+        <!-- DIV PARA TITULO PRINCIPAL--> 
+        <div class="row">
+            <div class="col-12 text-center">
+                <h3>Modificar Cliente&nbsp;&nbsp;<i class="fa fa-pencil-square" aria-hidden="true"></i>
+            </div>
+        </div>
+        <hr>
+        <!-- CARGA DE GIF LOADING-->
+        <div id="loading" style="display: none;">
+            <center>
+                <img src="../recursos/img/load.gif">
+            </center>
+        </div>
+        <div class="col-12">
+                <select class="form-control" id="cli" name="cli" style="width: 500px" onchange="mod(this.value)">
+                        <option value="" selected disabled>Seleccione Cliente</option>
+                        <?php 
+                                $re = $fun->cargar_clientes(1);   
+                                    foreach($re as $row)      
+                                    {
+                                    ?>      
+                                    <option value="<?php echo $row['id_cli'] ?> ">
+                                    <?php echo $row['nom_cli'] ?>
+                                    </option>
+                                        
+                                    <?php
+                          }    
+                        ?>
+                </select>
+        </div>
+        <hr>
+        <!-- DIV TITULO 1-->
+        <div class="row">
+            <div class="col-12">
+                <h5>Datos Corporativos</h5>
+            </div>
+        </div>  
+        <!-- DIV RAZON SOCIAL Y GERENTE GENERAL-->  
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                  <label for="nom">Nombre o Razón Social:</label>
+                  <input type="text" class="form-control" id="nom_cli" name="nom_cli"  maxlength="100" placeholder="Nombre o Razón Social" required>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                        <label for="gg_cli">Gerente General:</label>
+                        <input type="text" class="form-control" id="gg_cli" name="gg_cli"  maxlength="50"  required>
+                </div>
+            </div>
+        </div>
+        <!-- DIV RUT GERENTE FINANZAS-->
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                        <label for="rut">Rut:</label>
+                        <input type="text"  class="form-control" id="rut_cli" name="rut_cli" maxlength="10" placeholder="xxxxxxxx-x" pattern="\d{3,8}-[\d|kK]{1}" readonly required>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                        <label for="gf_cli">Gerente de Finanzas:</label>
+                        <input type="text" class="form-control" id="gf_cli" name="gf_cli"  maxlength="50" required>
+                </div>
+            </div>
+        </div>
+        <!-- DIV MAIL SOLO-->
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                        <label for="mail">Mail:</label>
+                        <input type="email" class="form-control" id="mail_cli" name="mail_cli" maxlength="50" required>
+                </div>
+            </div>
+        </div>
+        <!-- DIV TITULO 2-->
+        <hr>
+        <div class="row">
+            <div class="col-12">
+                <h5>Datos Financieros</h5>
+            </div>
+        </div>  
+        <!-- DIV COL4 TASA - CUENTA - LINEACREDITO-->
+        <div class="row">
+            <div class="col-4">
+              <div class="form-group">
+                    <label for="tasa">Tasa de Interés:</label>
+                    <input type="number" class="form-control" id="tasa_cli" name="tasa_cli" step="any" required>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                  <label for="numero_cuenta">Número de Cuenta:</label>
+                  <input type="number" class="form-control" id="num_cta_cli" name="num_cta_cli" required>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                  <label for="linea_credito">Línea de Crédito:</label>
+                  <input type="number" class="form-control" id="lin_cre_cli" name="lin_cre_cli" required>
+              </div>
+            </div>
+        </div>
+        <!-- DIV COL4 COBRANZA-CURSE - APERTURA-->
+        <div class="row">
+          <div class="col-4">
+            <div class="form-group">
+                    <label for="comisionc">Comisión Cobranza:</label>
+                    <input type="number" class="form-control" id="com_cob_cli" name="com_cob_cli" step="any" required>     
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-group">
+                    <label for="com_cur_cli">Comisión Curse:</label>
+                    <input type="number" class="form-control" id="com_cur_cli" name="com_cur_cli" step="any" required>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-group">
+                    <label for="Apertura">Apertura:</label>
+                    <input type="number" class="form-control" id="apertura_cli" name="apertura_cli" step="any" required>  
+            </div>
+          </div>
+        </div>
+        <!-- DIV BOTON ENVIAR CONSULTA-->
+        <hr>
+        <div class="row">
+            <div class="col-12 text-center">
+            <input type="submit" class="btn btn-info" id="btnAc" name="btnAc" value="Modificar Cliente">
+            </div>
+        </div>
+
+<!-- FIN TABLA NUEVA PARA CREACION CLIENTE-->   
+  </form>
+</div>
+
+
+<!--
 
 <div class="container" id="main">
   <div class="row">
@@ -126,7 +268,7 @@ $(document).ready(function() {
     <div class="col-12">
       <select class="form-control" id="cli" name="cli" style="width: 500px" onchange="mod(this.value)">
           <option value="" selected disabled>Seleccione Cliente</option>
-                     <?php 
+                     <?php /*
                       $re = $fun->cargar_clientes(1);   
                       foreach($re as $row)      
                           {
@@ -137,7 +279,7 @@ $(document).ready(function() {
                                 
                             <?php
                           }    
-                      ?>  
+                      */?>
       </select><hr>
     </div>
 
@@ -274,6 +416,18 @@ $(document).ready(function() {
 
 
 </div>
+-->
+
+
+
+
+
+
+
+
+
+
+
 
 
 </body>

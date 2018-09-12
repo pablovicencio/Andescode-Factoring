@@ -72,7 +72,6 @@ $(document).ready(function() {
   <div class="row">
   <div class="col-12">
     <h3>Mis Datos&nbsp&nbsp<i class="fa fa-address-card" aria-hidden="true"></i></h3>
-
     <hr>
   </div>
   <div id="loading" style="display: none;">
