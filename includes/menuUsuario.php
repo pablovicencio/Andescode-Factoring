@@ -18,10 +18,14 @@
                 <li class="nav-item"><a class="nav-link" href="#.php">Deudores</a></li>
                     <!-- Dropdown -->
                     <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Gestión</a>
+                      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Operaciones</a>
                       <div class="dropdown-menu">
-                        <a class="dropdown-item" href="ing_doc.php">Ingresar Factura</a>
-                        <a class="dropdown-item" href="crear_ope.php">Simulación Cliente</a>
+                        <a class="dropdown-item" href="ing_doc.php">Ingresar Operación</a>
+                        <a class="dropdown-item" href="crear_ope.php">Modificar Operación</a>
+                        <a class="dropdown-item" href="crear_ope.php">Revisar</a>
+                        <a class="dropdown-item" href="crear_ope.php">Aprobar</a>
+                        <a class="dropdown-item" href="crear_ope.php">Anular</a>
+
                       </div>
                     </li>
                 <li class="nav-item"><a class="nav-link" href="#">Informes</a></li>

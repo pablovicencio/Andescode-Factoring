@@ -78,7 +78,7 @@ $(document).ready(function(){
     <form id="formCrearCli" onsubmit="return false;">
         <!-- DIV PARA TITULO PRINCIPAL--> 
         <div class="row">
-            <div class="col-12 text-center">
+            <div class="col-12">
                 <h3 "text-align">Nuevo Cliente&nbsp;&nbsp;<i class="fa fa-plus-square" aria-hidden="true"></i></h3>
             </div>
         </div>
@@ -133,6 +133,24 @@ $(document).ready(function(){
                     <input type="email" class="form-control" id="mail_cli" name="mail_cli" maxlength="50" required>
                 </div>
             </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="bco_cli">Banco Cliente:</label>
+                    <select class="form-control" name="bco_cli" id="bco_cli" required>
+                          <option value="" selected disabled>Seleccione el Banco</option>
+                                       <?php 
+                                        $re = $fun->cargar_bcos(1);   
+                                        foreach($re as $row)      
+                                            {
+                                              ?>
+                                               <option value="<?php echo $row['cod_item'] ?>"><?php echo $row['desc_item'] ?></option>
+                                                  
+                                              <?php
+                                            }    
+                                        ?>       
+                        </select>
+                </div>
+            </div>
         </div>
         <!-- DIV TITULO 2-->
         <hr>
@@ -183,6 +201,14 @@ $(document).ready(function(){
             </div>
           </div>
         </div>
+        <div class="row">
+        <div class="col-4">
+            <div class="form-group">
+                <label for="fec_ven">Fecha de Vencimiento:</label>
+                    <input type="date" class="form-control" id="fec_ven" name="fec_ven"required>    
+            </div>
+          </div>  
+       </div>
         <!-- DIV BOTON ENVIAR CONSULTA-->
         <hr>
         <div class="row">

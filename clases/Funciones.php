@@ -9,6 +9,68 @@ class Funciones
 
 
 
+
+
+   /*///////////////////////////////////////
+    Cargar tipos de operaciones
+    //////////////////////////////////////*/
+        public function cargar_tipo_ope($vig_ope) {
+
+            try{
+                
+                
+                $pdo = AccesoDB::getCon();
+
+                if ($vig_ope == 0) {
+                    $sql = "select cod_item , desc_item  from tab_param where cod_grupo = 6 and cod_item <> 0";
+                }else if ($vig_ope == 1) {
+                    $sql = "select cod_item , desc_item  from tab_param where cod_grupo = 6 and cod_item <> 0 and vig_item = 1";
+                }  
+                
+
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute();
+
+                $response = $stmt->fetchAll();
+                return $response;
+
+            } catch (Exception $e) {
+                echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+            }
+        }
+
+
+   /*///////////////////////////////////////
+    Cargar Bancos
+    //////////////////////////////////////*/
+        public function cargar_bcos($vig_bcos) {
+
+            try{
+                
+                
+                $pdo = AccesoDB::getCon();
+
+                if ($vig_bcos == 0) {
+                    $sql = "select cod_item , desc_item  from tab_param where cod_grupo = 5 and cod_item <> 0";
+                }else if ($vig_bcos == 1) {
+                    $sql = "select cod_item , desc_item  from tab_param where cod_grupo = 5 and cod_item <> 0 and vig_item = 1";
+                }  
+                
+
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute();
+
+                $response = $stmt->fetchAll();
+                return $response;
+
+            } catch (Exception $e) {
+                echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+            }
+        }
+
+
+
+
     /*///////////////////////////////////////
     Validar usuario reset contraseña
     //////////////////////////////////////*/
@@ -460,27 +522,9 @@ class Funciones
             if ($sel == 1) {
                  $sql = "";
             }else if ($sel == 2) {
-                $sql = "select a.RUT_CLI,
-                a.NOM_CLI,
-                a.TASA_CLI,
-                a.COM_COB_CLI,
-                a.COM_CUR_CLI,
-                a.APERTURA_CLI,
-                a.DIA_CLI,
-                DATE_FORMAT(a.FEC_CRE_CLI, '%d-%m-%Y') FEC_CRE_CLI,
-                a.`USU_CRE_CLI`, 
-                a.VIG_CLI, 
-                a.`MAIL_CLI`, 
-                a.OTROS_DESC_CLI, 
-                a.GG_CLI,
-                a.GF_CLI,
-                b.NOT_DEUDOR_GASTO,
-                b.ENVIO_CORREO_GASTO,   
-                b.PROC_GASTO,
-                b.COPIA_FAC_GASTO,
-                b.SII_CERT_GASTO                    
+                $sql = "select *                
 
-                from clientes a, gastos_ope b where a.ID_CLI = b.ID_CLI_GASTO AND a.ID_CLI = :id_cli";
+                from clientes where ID_CLI = :id_cli";
             }  
 
 

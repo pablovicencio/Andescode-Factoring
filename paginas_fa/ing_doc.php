@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<title>Viracocha - Crear Cliente</title>
+<title>Viracocha - Ingreso de Operación</title>
 <?php
   include("../includes/recursosExternos.php");
 ?>
@@ -14,17 +14,120 @@
 <script type="text/javascript">
 
 
+function agregar() {
+
+  console.log(document.forms['formIngDoc'].tasa_ope.value);
+
+  var dif_precio = document.forms['formIngDoc'].finan_doc.value * 
+                  (((document.forms['formIngDoc'].tasa_ope.value / 100) / 30)
+                    * document.forms['formIngDoc'].plazo_doc.value);
+
+  console.log(dif_precio);
+
+  var com_cob_doc = document.forms['formIngDoc'].monto_doc.value *
+                    (((document.forms['formIngDoc'].com_cob.value / 100) / 30) 
+                      * document.forms['formIngDoc'].plazo_doc.value);
+
+  console.log(com_cob_doc);
+
+  var monto_ant = document.forms['formIngDoc'].finan_doc.value -
+                  dif_precio - com_cob_doc;
+
+  console.log(monto_ant);
+
+  var exc_doc = document.forms['formIngDoc'].monto_doc.value - document.forms['formIngDoc'].finan_doc.value;
+
+  console.log('exc_doc '+exc_doc);
+
+  tabla = document.getElementById('docs');
+  tr = tabla.insertRow(tabla.rows.length);
+  td = tr.insertCell(tr.cells.length);
+  td.innerHTML = document.forms['formIngDoc'].nom_deu.value;
+  td.style.display= "none";
+  td = tr.insertCell(tr.cells.length);
+  td.innerHTML = document.forms['formIngDoc'].tip_doc.value;
+  td.style.display= "none";
+  
+
+
+
+  td = tr.insertCell(tr.cells.length);
+  td.innerHTML = document.forms['formIngDoc'].rut_deu.value;
+  td = tr.insertCell(tr.cells.length);
+  td.innerHTML = document.forms['formIngDoc'].nro_doc.value;
+  td = tr.insertCell(tr.cells.length);
+  td.innerHTML = document.forms['formIngDoc'].monto_doc.value;
+  td = tr.insertCell(tr.cells.length);
+  td.innerHTML = document.forms['formIngDoc'].ant_doc.value;
+  td = tr.insertCell(tr.cells.length);
+  td.innerHTML = document.forms['formIngDoc'].finan_doc.value;
+  td = tr.insertCell(tr.cells.length);
+  td.innerHTML = document.forms['formIngDoc'].fec_ope.value;
+  td = tr.insertCell(tr.cells.length);
+  td.innerHTML = document.forms['formIngDoc'].fec_ven_doc.value;
+  td = tr.insertCell(tr.cells.length);
+  td.innerHTML = document.forms['formIngDoc'].plazo_doc.value;
+  td = tr.insertCell(tr.cells.length);
+  td.innerHTML = dif_precio.toFixed(0);
+  td = tr.insertCell(tr.cells.length);
+  td.innerHTML = com_cob_doc.toFixed(0);
+  td = tr.insertCell(tr.cells.length);
+  td.innerHTML = monto_ant.toFixed(0);
+  td = tr.insertCell(tr.cells.length);
+  td.innerHTML = exc_doc.toFixed(0);
+
+  td = tr.insertCell(tr.cells.length);
+  td.innerHTML ='<input type="button" value="X" onclick="deleteRow(this)" class="btn btn-outline-danger">';
+
+ CalcularTotales();
+
+
+  //document.getElementById("ModalDoc").reset();
+
+$("#ModalDoc input").each(function() {
+      this.value = "";
+  })
+}
+
+
+function CalcularTotales()
+{
+var totals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+ var $filas= $("#docs tr:not('.total, .encabezado')");
+
+  $filas.each(function() {
+    $(this).find('td').each(function(i) {
+      if (i != 0 && i != 2 && i != 3 && i != 5 && i != 7 && i != 8 && i != 9)
+        totals[i - 1] += parseInt($(this).html());
+    });
+  });
+  $(".total td").each(function(i) {
+    if (i != 0 && i != 2 && i != 3 && i != 5 && i != 7 && i != 8 && i != 9)
+      $(this).html(totals[i - 1]);
+  });
+}
+
+
+function deleteRow(r) {
+    var i = r.parentNode.parentNode.rowIndex;
+    document.getElementById("docs").deleteRow(i);
+}
+
+
 function mod(cli) {
     
      $.ajax({
-      url: '../controles/controlCargarDiaCli.php',
+      url: '../controles/controlCargarDatosCli.php',
       type: 'POST',
       data: {"cli":cli},
-      dataType:'html',
+      dataType:'json',
       success:function(result){
-        $('#dia_cli').val(result);
-        plazo();
-
+        $('#lin_fac').val(result[0].linea_cred_cli);
+        $('#fec_ven').val(result[0].venc_lin_cred_cli);
+        $('#tasa_ope').val(result[0].tasa_inicial);
+        $('#com_cob').val(result[0].com_cob_inicial);
+        $('#com_cur').val(result[0].com_cur_inicial);
+        $('#ape_ope').val(result[0].apertura_inicial);
   }
   })
     
@@ -33,14 +136,15 @@ function mod(cli) {
 function calculo() {
     var monto = document.getElementById("monto_doc").value;
     var porc = document.getElementById("ant_doc").value;
-    document.getElementById("finan_doc").value=Math.floor(monto*porc)/100;
+    var finan = Math.floor(monto*porc)/100;
+    document.getElementById("finan_doc").value=finan.toFixed(0);
 }
 
 function plazo(){
-
-      var fechaope = new Date(document.getElementById("fec_ope_doc").value).getTime();
+      console.log('entra_plazo');
+      var fechaope = new Date(document.getElementById("fec_ope").value).getTime();
       var fechaven    = new Date(document.getElementById("fec_ven_doc").value).getTime();
-      var dia_cli    = (document.getElementById("dia_cli").value);
+      var dia_cli    = (document.getElementById("dia_ope").value);
 
       if (isNaN(fechaope) == false && isNaN(fechaven) == false && dia_cli != '') {
         var diff = fechaven - fechaope;  
@@ -123,7 +227,7 @@ $(document).ready(function() {
 <div class="container" id="main">
   <div class="row">
   <div class="col-12">
-    <h3>Ingreso de Documento&nbsp;&nbsp;<i class="fa fa-file-text" aria-hidden="true"></i>
+    <h3>Ingreso de Operación  <i class="fa fa-file-text" aria-hidden="true"></i>
 </h3>
     <hr>
   </div>
@@ -151,97 +255,276 @@ $(document).ready(function() {
     </div>
 
   <div class="row" >
-  <div class="col-6">
+    <div class="col-6">
           <div class="form-group">
-             <label for="rut">Rut Deudor:</label>
-             <input type="text"  class="form-control" id="rut_deu" name="rut_deu" maxlength="10" placeholder="xxxxxxxx-x" pattern="\d{3,8}-[\d|kK]{1}"  required>
+            <label for="lin_fac">Linea Factoring:</label>
+            <input type="text" class="form-control" id="lin_fac" name="lin_fac" readonly>
           </div>
-          <div class="form-group">
-            <label for="nom">Nombre Deudor:</label>
-            <input type="text" class="form-control" id="nom_deu" name="nom_deu"  maxlength="100" required>
-          </div>
-          <div class="form-group">
-              <div class="row">
-                <div class="col-6">
-                  <label for="tip_doc">Tipo de Documento:</label>
-                   <select class="form-control" id="tip_doc" name="tip_doc" >
-                        <option value="" selected disabled>Seleccione Tipo Doc</option>
-                                   <?php 
-                                    $re = $fun->cargar_tipo_doc(1);   
-                                    foreach($re as $row)      
-                                        {
-                                          ?>
-                                          
-                                           <option value="<?php echo $row['cod_item'] ?>"><?php echo $row['desc_item'] ?></option>
-                                              
-                                          <?php
-                                        }    
-                                    ?>  
-                    </select>
-                </div>
-                <div class="col-6">
-                  <label for="num_doc">Número de Documento:</label>
-                  <input type="number" class="form-control" id="num_doc" name="num_doc"  required>
-                </div>
-             </div>
-          </div>
-
-          <div class="row">
-                  <div class="col-6">
-                    <label for="fec_ope">Fecha de Operación:</label>
-                    <input type="date" class="form-control" id="fec_ope_doc" name="fec_ope_doc" onchange="plazo()" required>
-                  </div>
-                  <div class="col-6">
-                    <label for="fec_ven">Fecha de Vencimiento:</label>
-                    <input type="date" class="form-control" id="fec_ven_doc" name="fec_ven_doc" onchange="plazo()" required>   
-                  </div>
-              </div><br>
+          
           
              
-  </div>
-  <div class="col-6">   
-  <div class="form-group">
-              
-                    <label for="monto">Monto ($):</label>
-                    <input type="number" class="form-control" id="monto_doc" name="monto_doc" min="1" onkeyup="calculo()"  required>
-              
-              <div class="form-group">
-              <div class="row">
-                  <div class="col-6">
-                    <label for="anticipo">Anticipo (%):</label>
-                    <input type="number" class="form-control" id="ant_doc" name="ant_doc" min="1" max="100" onkeyup="calculo()" required>   
-                  </div>
-                  <div class="col-6">
-                    <label for="financiado">Financiado ($):</label>
-                    <input type="number" class="form-control" id="finan_doc" name="finan_doc" readonly>    
-                  </div>
-              </div>
-              </div>
-              <div class="form-group">
-              <div class="row">
-                  <div class="col-6">
-                    <label for="dia">Dia +/-:</label>
-                    <input type="number" class="form-control" id="dia_cli" name="dia_cli" readonly>    
-                  </div>
-                  <div class="col-6">
-                    <label for="plazo">Plazo:</label>
-                    <input type="text" class="form-control" id="plazo_doc" name="plazo_doc" required>    
-                  </div>
-              </div>
-              </div>
+    </div>
+    <div class="col-6">   
+    <div class="form-group">
+                    <label for="monto">Linea Ocupada:</label>
+                    <input type="number" class="form-control" id="ocu_cli" name="ocu_cli" readonly>
+    </div>
+    <div class="col-6">   
+    <div class="form-group">
+                    <label for="monto">Fecha Operación:</label>
+                    <input type="date" class="form-control" id="fec_ope" name="fec_ope" onchange="plazo()" required>
+    </div>
+    </div>
+    </div>
+    
+  
+    </div>
+    <hr> 
+    <div class="col-12">
+      
+      <select class="form-control" id="ope" name="ope" style="width: 500px">
+          <option value="" selected disabled>Seleccione Tipo de Operación</option>
+                     <?php 
+                      $re = $fun->cargar_tipo_ope(1);   
+                      foreach($re as $row)      
+                          {
+                            ?>
+                            
+                             <option value="<?php echo $row['cod_item'] ?>"><?php echo $row['desc_item'] ?></option>
+                                
+                            <?php
+                          }    
+                      ?>  
+      </select>
+    </div>
+    <hr>
+    <div class="row" >
+    <div class="col-12">
+                <h5>Datos Financieros</h5>
+    </div>
+    <div class="col-4">
+          <div class="form-group">
+            <label for="tasa_ope">Tasa Operación:</label>
+            <input type="number" class="form-control" id="tasa_ope" name="tasa_ope" min="0" step="any" required>
+          </div>
+          <div class="form-group">
+            <label for="ape_ope">Apertura:</label>
+            <input type="number" class="form-control" id="ape_ope" name="ape_ope" min="0" required>
+          </div>
           
-          <input type="submit" class="btn btn-info" id="btnAc" name="btnAc" value="Ingresar Documento">
           
+          
+             
+    </div>
+    <div class="col-4">   
+          <div class="form-group">
+            <label for="com_cob">Comisión Cobranza:</label>
+            <input type="number" class="form-control" id="com_cob" name="com_cob" min="0" step="any" required>
+          </div>
+          <div class="form-group">
+            <label for="com_cur">Otros Descuentos:</label>
+            <input type="number" class="form-control" id="otros_desc_ope" name="otros_desc_ope" min="0">
+          </div>
+          
+    </div>
+    <div class="col-4">   
+          
+    <div class="form-group">
+            <label for="com_cur">Comisión Curse:</label>
+            <input type="number" class="form-control" id="com_cur" name="com_cur" min="0" required>
+          </div>
+    <div class="form-group">
+            <label for="dia_ope">Día Operación:</label>
+            <input type="number" class="form-control" id="dia_ope" name="dia_ope" min="1" onchange="plazo()" required>
+          </div>
+    
+  
+    </div>
 
-                
+    </div>  
+     <hr>
+    <div class="row">
+
+      <div class="col-12">
+                <h5>Gastos Operacionales</h5>
+    </div>
+    <div class="col-4">   
+          
+    <div class="form-group">
+            <label for="not_gas">Notificación:</label>
+            <input type="number" class="form-control" id="not_gas" name="not_gas" min="0" required>
+          </div>
+    <div class="form-group">
+            <label for="env_gas">Envío por correo:</label>
+            <input type="number" class="form-control" id="env_gas" name="env_gas" min="0" required>
+          </div>
+    
+  
+    </div>
+     <div class="col-4">   
+          
+    <div class="form-group">
+            <label for="proc_gas">Gastos de Proceso:</label>
+            <input type="number" class="form-control" id="proc_gas" name="proc_gas" min="0" required>
+          </div>
+    <div class="form-group">
+            <label for="copia_fac_gas">Copia Factura:</label>
+            <input type="number" class="form-control" id="copia_fac_gas" name="copia_fac_gas" min="0" required>
+          </div>
+    
+  
+    </div>
+     <div class="col-4">   
+          
+    <div class="form-group">
+            <label for="cert_gas">Certificado SII:</label>
+            <input type="number" class="form-control" id="cert_gas" name="cert_gas" min="0" required>
+          </div>
+    </div>
+    </div>
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalDoc" id="btn-modal_doc" name="btn-modal_doc">Agregar Documento</button><br><br>   
+
+
+            <table class="table table-sm table-dark" id="docs" name="docs">
+  <thead>
+    <tr class="encabezado">
+      <th scope="col"  style="display: none">Nom Deudor</th>
+      <th scope="col" style="display: none">Tipo Doc</th>
+      <th scope="col" >Rut Deudor</th>
+      <th scope="col" >Nro Documento</th>
+      <th scope="col">Monto ($)</th>
+      <th scope="col">Anticipo (%)</th>
+      <th scope="col">Financiado</th>
+      <th scope="col">Fecha Operación</th>
+      <th scope="col">Fecha Vencimiento</th>
+      <th scope="col">Plazo</th>
+      <th scope="col">Dif Precio</th>
+      <th scope="col">Com. Cobranza</th>
+      <th scope="col">Anticipado</th>
+      <th scope="col">Excedente</th>
+
+    </tr>
+  </thead>
+
+  <tbody>
+  
+  </tbody>
+    <tr class="total">
+      <td style="display: none"></td>
+      <td style="display: none"></td>
+      <td>Total</td>
+      <td></td>
+      <td>0</td>
+      <td></td>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+</table>
+
+
+
+          
+    <div class="col-12">
+    <div class="form-group">
+            <label for="monto_giro">Monto Giro:</label>
+            <input type="number" class="form-control" id="monto_giro" name="monto_giro" style="width: 500px" required readonly>
+          </div>
+    </div>
+    
+    
+                <div class="modal fade " id="ModalDoc" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="ModalLabel">Ingreso de Documento</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="col-12">
+                           <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" >Rut Deudor:</label>
+                            <div class="col-sm-2">
+                            <input type="text" class="form-control" id="rut_deu" name="rut_deu" placeholder="xxxxxxxx-x" pattern="\d{3,8}-[\d|kK]{1}"  >
+                            </div>
+                            <label class="col-sm-3 col-form-label" >Nombre Deudor:</label>
+                            <div class="col-sm-5">
+                            <input type="text" class="form-control" id="nom_deu" name="nom_deu" >
+                            </div>
+                          </div>
+                          <hr>
+                           <div class="form-group row">
+                            <div class="col-sm-6">
+                            <select class="form-control" id="tip_doc" name="tip_doc" >
+                                  <option value="" selected disabled>Seleccione Tipo de Documento</option>
+                                             <?php 
+                                              $re = $fun->cargar_tipo_doc(1);   
+                                              foreach($re as $row)      
+                                                  {
+                                                    ?>
+                                                    
+                                                     <option value="<?php echo $row['cod_item'] ?>"><?php echo $row['desc_item'] ?></option>
+                                                        
+                                                    <?php
+                                                  }    
+                                              ?>  
+                              </select>
+                            </div>
+                            <br>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" >Numero Doc:</label>
+                            <div class="col-sm-3">
+                            <input type="number" class="form-control" id="nro_doc" name="nro_doc" >
+                            </div>
+                            <label class="col-sm-3 col-form-label float-right" >Fecha Vencimiento:</label>
+                            <div class="col-sm-3">
+                            <input type="date" class="form-control" id="fec_ven_doc" name="fec_ven_doc" onchange="plazo()">
+                            </div>
+                          </div>
+                           <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" >Monto ($):</label>
+                            <div class="col-sm-3">
+                            <input type="number" class="form-control" id="monto_doc" name="monto_doc" onchange="plazo()">
+                            </div>
+                            <label class="col-sm-2 col-form-label" >Anticipo (%):</label>
+                            <div class="col-sm-3">
+                            <input type="number" class="form-control" id="ant_doc"  name="ant_doc" min="0" maxlength="100" onchange="calculo()">
+                            </div>
+                            
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" >Financiado ($):</label>
+                            <div class="col-sm-3">
+                            <input type="number" class="form-control" id="finan_doc"  name="finan_doc" readonly>
+                            </div>
+                            <label class="col-sm-2 col-form-label" >Plazo:</label>
+                            <div class="col-sm-3">
+                            <input type="number" class="form-control" id="plazo_doc"  name="plazo_doc">
+                            </div>
+                          </div>
+                            <hr>
+                            
+                            <button type="button" class="btn btn-outline-dark" onclick="agregar()">Agregar</button><br><br>
+                      
+                      </div>
+                    
+                  </div>
+                </div>
+              </div>
+
 
           </form>
+          <input type="submit" class="btn btn-info" id="btnDoc" name="btnDoc" value="Guardar Operación">
   </div>
-  </div>
+  
 
-
-
-</div>
 
 </body>
 </html>

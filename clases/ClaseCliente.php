@@ -20,6 +20,8 @@ class ClienteDAO extends PersonaDAO
     private $usu_cre_cli;
     private $gg_cli;
     private $gf_cli;
+    private $bco_cli;
+    private $fec_ven_cli;
 
     public function __construct($id=null,
                                 $rut_cli=null,
@@ -36,7 +38,9 @@ class ClienteDAO extends PersonaDAO
                                 $contraseña=null,
                                 $mail=null,
                                 $gg_cli=null,
-                                $gf_cli=null) {
+                                $gf_cli=null,
+                                $bco_cli=null,
+                                $fec_ven_cli=null) {
 
 
 
@@ -56,6 +60,8 @@ class ClienteDAO extends PersonaDAO
     $this->contraseña = $contraseña;
     $this->vigencia = $vigencia;
     $this->mail = $mail;
+    $this->bco_cli = $bco_cli;
+    $this->fec_ven_cli = $fec_ven_cli;
     }
 
     public function getCli() {
@@ -73,8 +79,8 @@ class ClienteDAO extends PersonaDAO
              
                 $pdo = AccesoDB::getCon();
 
-                $sql_crear_cli = "INSERT INTO `clientes`(`RUT_CLI`,`NOM_CLI`,`TASA_INICIAL`,`COM_COB_INICIAL`,`COM_CUR_INICIAL`,`APERTURA_INICIAL`,`FEC_CRE_CLI`,`USU_CRE_CLI`,`VIG_CLI`,`PASS_CLI`,`MAIL_CLI`,`GG_CLI`,`GF_CLI`,`LINEA_CRED_CLI`,`NRO_CTA_CLI`)
-                            VALUES(:rut,:nom,:tasa,:comicobini,:comicurini,:aperturaini,:fecha,:usuario,:vig,:pass,:mail,:gg,:gf,:lineacred,:numcta)";
+                $sql_crear_cli = "INSERT INTO `clientes`(`RUT_CLI`,`NOM_CLI`,`TASA_INICIAL`,`COM_COB_INICIAL`,`COM_CUR_INICIAL`,`APERTURA_INICIAL`,`FEC_CRE_CLI`,`USU_CRE_CLI`,`VIG_CLI`,`PASS_CLI`,`MAIL_CLI`,`GG_CLI`,`GF_CLI`,`LINEA_CRED_CLI`,`NRO_CTA_CLI`,`BCO_CLI`,`VENC_LIN_CRED_CLI`)
+                            VALUES(:rut,:nom,:tasa,:comicobini,:comicurini,:aperturaini,:fecha,:usuario,:vig,:pass,:mail,:gg,:gf,:lineacred,:numcta, :bco_cli, :fec_ven_cli)";
 
 
                 $stmt = $pdo->prepare($sql_crear_cli);
@@ -92,7 +98,9 @@ class ClienteDAO extends PersonaDAO
                 $stmt->bindParam(":gg", $this->gg_cli, PDO::PARAM_STR); 
                 $stmt->bindParam(":gf", $this->gf_cli, PDO::PARAM_STR); 
                 $stmt->bindParam(":lineacred", $this->lin_cre_cli, PDO::PARAM_STR); 
-                $stmt->bindParam(":numcta", $this->num_cta_cli, PDO::PARAM_STR); 
+                $stmt->bindParam(":numcta", $this->num_cta_cli, PDO::PARAM_INT); 
+                $stmt->bindParam(":bco_cli", $this->bco_cli, PDO::PARAM_INT); 
+                $stmt->bindParam(":fec_ven_cli", $this->fec_ven_cli, PDO::PARAM_STR); 
 
                 $stmt->execute();
         

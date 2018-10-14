@@ -30,6 +30,8 @@
         $usu_creador = $_SESSION['id_fac'];
 		$vig = 1;
 		$lin_cre_cli = $_POST['lin_cre_cli'];
+		$bco_cli = $_POST['bco_cli'];
+		$fec_ven = $_POST['fec_ven'];
 
 		//
 		/*
