@@ -14,12 +14,14 @@ class ClienteDAO extends PersonaDAO
     private $com_cob_cli;
     private $com_cur_cli;
     private $aper_cli;
-    private $dia_cli;
+    private $num_cta_cli;
+    private $lin_cre_cli;
     private $fec_cre_cli;
     private $usu_cre_cli;
-    private $ot_desc_cli;
     private $gg_cli;
     private $gf_cli;
+    private $bco_cli;
+    private $fec_ven_cli;
 
     public function __construct($id=null,
                                 $rut_cli=null,
@@ -28,15 +30,17 @@ class ClienteDAO extends PersonaDAO
                                 $com_cob_cli=null,
                                 $com_cur_cli=null,
                                 $aper_cli=null,
-                                $dia_cli=null,
+                                $num_cta_cli=null,
+                                $lin_cre_cli=null,
                                 $fec_cre_cli=null,
                                 $usu_cre_cli=null,
                                 $vigencia=null,
                                 $contraseña=null,
                                 $mail=null,
-                                $ot_desc_cli=null,
                                 $gg_cli=null,
-                                $gf_cli=null) {
+                                $gf_cli=null,
+                                $bco_cli=null,
+                                $fec_ven_cli=null) {
 
 
 
@@ -47,15 +51,17 @@ class ClienteDAO extends PersonaDAO
     $this->com_cob_cli = $com_cob_cli;
     $this->com_cur_cli = $com_cur_cli;
     $this->aper_cli = $aper_cli;
-    $this->dia_cli = $dia_cli;
+    $this->num_cta_cli = $num_cta_cli;
+    $this->lin_cre_cli = $lin_cre_cli;
     $this->fec_cre_cli = $fec_cre_cli;
     $this->usu_cre_cli = $usu_cre_cli;
-    $this->ot_desc_cli = $ot_desc_cli;
     $this->gg_cli = $gg_cli;
     $this->gf_cli = $gf_cli;
     $this->contraseña = $contraseña;
     $this->vigencia = $vigencia;
     $this->mail = $mail;
+    $this->bco_cli = $bco_cli;
+    $this->fec_ven_cli = $fec_ven_cli;
     }
 
     public function getCli() {
@@ -73,32 +79,34 @@ class ClienteDAO extends PersonaDAO
              
                 $pdo = AccesoDB::getCon();
 
-                $sql_crear_cli = "INSERT INTO `bd_factoring`.`clientes`(`RUT_CLI`,`NOM_CLI`,`TASA_CLI`,`COM_COB_CLI`,`COM_CUR_CLI`,`APERTURA_CLI`,`DIA_CLI`,`FEC_CRE_USU`,`USU_CRE_CLI`,`VIG_CLI`,`PASS_CLI`,`MAIL_CLI`.`OTROS_DESC_CLI`,`GG_CLI`,`GF_CLI`)
-                            VALUES(:rut,:nom,:tasa,:comicob,:comicur,:apertura,:dia,:fecha,:usuario,:vig,:pass,:mail,:otros,:gg,:gf);
-                            ";
+                $sql_crear_cli = "INSERT INTO `clientes`(`RUT_CLI`,`NOM_CLI`,`TASA_INICIAL`,`COM_COB_INICIAL`,`COM_CUR_INICIAL`,`APERTURA_INICIAL`,`FEC_CRE_CLI`,`USU_CRE_CLI`,`VIG_CLI`,`PASS_CLI`,`MAIL_CLI`,`GG_CLI`,`GF_CLI`,`LINEA_CRED_CLI`,`NRO_CTA_CLI`,`BCO_CLI`,`VENC_LIN_CRED_CLI`)
+                            VALUES(:rut,:nom,:tasa,:comicobini,:comicurini,:aperturaini,:fecha,:usuario,:vig,:pass,:mail,:gg,:gf,:lineacred,:numcta, :bco_cli, :fec_ven_cli)";
 
 
                 $stmt = $pdo->prepare($sql_crear_cli);
-                $stmt->bindParam(":rut", $this->rut, PDO::PARAM_STR);
-                $stmt->bindParam(":nom", $this->nom_cli, PDO::PARAM_STR);
-                $stmt->bindParam(":tasa", $this->tasa_cli, PDO::PARAM_STR);
-                $stmt->bindParam(":comicob", $this->com_cob_cli, PDO::PARAM_STR);
-                $stmt->bindParam(":comicur", $this->com_cur_cli, PDO::PARAM_STR);
-                $stmt->bindParam(":apertura", $this->aper_cli, PDO::PARAM_STR);
-                $stmt->bindParam(":dia", $this->dia_cli, PDO::PARAM_INT);
-                $stmt->bindParam(":fecha", $this->fec_cre_cli, PDO::PARAM_STR);
-                $stmt->bindParam(":usuario", $this->usu_cre_cli, PDO::PARAM_INT);
-                $stmt->bindParam(":vig", $this->contraseña, PDO::PARAM_STR);
-                $stmt->bindParam(":pass", $this->vigencia, PDO::PARAM_BOOL);
-                $stmt->bindParam(":mail", $this->mail, PDO::PARAM_STR);
-                $stmt->bindParam(":otros", $this->ot_desc_cli, PDO::PARAM_STR);
-                $stmt->bindParam(":gg", $this->gg_cli, PDO::PARAM_STR);
-                $stmt->bindParam(":gf", $this->gf_cli, PDO::PARAM_STR);
+                $stmt->bindParam(":rut", $this->rut, PDO::PARAM_STR); 
+                $stmt->bindParam(":nom", $this->nom_cli, PDO::PARAM_STR); 
+                $stmt->bindParam(":tasa", $this->tasa_cli, PDO::PARAM_STR); 
+                $stmt->bindParam(":comicobini", $this->com_cob_cli, PDO::PARAM_STR); 
+                $stmt->bindParam(":comicurini", $this->com_cur_cli, PDO::PARAM_STR); 
+                $stmt->bindParam(":aperturaini", $this->aper_cli, PDO::PARAM_STR); 
+                $stmt->bindParam(":fecha", $this->fec_cre_cli, PDO::PARAM_STR); 
+                $stmt->bindParam(":usuario", $this->usu_cre_cli, PDO::PARAM_INT); 
+                $stmt->bindParam(":vig", $this->vigencia, PDO::PARAM_BOOL); 
+                $stmt->bindParam(":pass", $this->contraseña, PDO::PARAM_STR);
+                $stmt->bindParam(":mail", $this->mail, PDO::PARAM_STR); 
+                $stmt->bindParam(":gg", $this->gg_cli, PDO::PARAM_STR); 
+                $stmt->bindParam(":gf", $this->gf_cli, PDO::PARAM_STR); 
+                $stmt->bindParam(":lineacred", $this->lin_cre_cli, PDO::PARAM_STR); 
+                $stmt->bindParam(":numcta", $this->num_cta_cli, PDO::PARAM_INT); 
+                $stmt->bindParam(":bco_cli", $this->bco_cli, PDO::PARAM_INT); 
+                $stmt->bindParam(":fec_ven_cli", $this->fec_ven_cli, PDO::PARAM_STR); 
+
                 $stmt->execute();
         
 
             } catch (Exception $e) {
-                echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()."'); window.location='../paginas_co/crear_co.php';</script>";; 
+                echo"Error, comuniquese con el administrador".  $e->getMessage().""; 
             }
     }
 

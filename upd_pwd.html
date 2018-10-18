@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Viracocha</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" >
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" ></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+  
+$(document).ajaxStart(function() {
+  $("#upd_pwd").hide();
+  $("#loading").show();
+     }).ajaxStop(function() {
+  $("#loading").hide();
+  $("#upd_pwd").show();
+  });  
+
+
+$(document).ready(function() {
+  $("#upd_pwd").submit(function() {    
+    $.ajax({
+      type: "POST",
+      url: 'controles/controlResetPWD.php',
+      data:$("#upd_pwd").serialize(),
+      success: function (result) { 
+        var msg = result.trim();
+
+        switch(msg) {
+                case '0':
+                    swal("Error de datos", "Favor verifique los datos ingresados", "warning");
+                    break;
+                case '1':
+                    swal("Error de Datos", "Los datos ingresados no son validos, favor reintente", "warning");
+                    break;
+                
+                case '3':
+                    swal("Error Base de Datos", "Error de base de datos, comuniquese con el administrador", "warning");
+                    break;
+                default:
+                    swal("Contraseña Reestablecida", msg, "success");
+                    setInterval('location.reload()',10000);
+            }
+      },
+      error: function(){
+              alert('Verifique los datos')      
+      }
+    });
+    return false;
+  });
+});
+
+</script>
+
+  <style type="text/css">
+  #main{
+  width: 50%;
+}
+
+  
+    @media (max-width: 800px) {
+    
+        #main{
+                    width: 100%;
+                  }
+        
+
+}
+
+  </style>
+
+</head>
+
+<body>
+
+
+
+  <nav class="navbar navbar-expand-sm ">
+              <img class="img-fluid" src="recursos/img/logo/logo_fa.png" alt="Viracocha" width="150" height="30">
+  </nav>
+    <div class="container" id="main">
+
+  <div id="loading" style="display: none;">
+    <center><img src="recursos/img/load.gif"></center>
+  </div>
+  <form id="upd_pwd" onsubmit="return false;"   name="upd_pwd">
+    <div class="form-group">
+      <label for="email">Rut:</label>
+      <input type="text" class="form-control" id="rut" placeholder="xxxxxxxx-x" pattern="\d{3,8}-[\d|kK]{1}" name="rut" required>
+    </div>
+    <div class="form-group">
+      <label for="mail">Mail registrado en el sistema:</label>
+      <input type="text" class="form-control" id="mail" maxlength="50" name="mail" required>
+    </div>
+    <button type="submit" class="btn btn-outline-info">Recuperar Contraseña</button>
+  </form>
+</div>
+</body>
+</html>

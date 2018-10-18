@@ -32,13 +32,15 @@ Clase abstracta Persona
 
                 $stmt = $pdo->prepare($sql_login);
                 $stmt->bindParam(":rut", $rut, PDO::PARAM_STR);
+           
                 $stmt->execute();
 
+               
 
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
-             
-                 if ($row["pass"] == $pwd) { 
-                        session_start();
+                
+                if ($pwd == $row["pass"]){
+                    session_start();
                         $_SESSION['id_fac'] = $row['id'];
                         $_SESSION['mail_fac'] = $row['mail'];
                         $_SESSION['nom_fac'] = $row['nom'];
@@ -50,14 +52,48 @@ Clase abstracta Persona
                             echo"<script type=\"text/javascript\">      window.location='../paginas_cli/entrenamiento.php';</script>"; 
                         }else  {
                             echo"<script type=\"text/javascript\">       window.location='../paginas_fa/datos_pers.php';</script>"; 
-                             
-
                         }
-                        
-                        }else { 
-                           echo"<script type=\"text/javascript\">alert('Error, favor verifique sus datos e intente nuevamente o comuniquese con Viracocha Factoring para revisar su vigencia.');window.location='../../index.html';        </script>"; 
-                         }
+                }else{
+                    echo"<script type=\"text/javascript\">alert('Error, favor verifique sus datos e intente nuevamente o comuniquese con Viracocha Factoring para revisar su vigencia.');window.location='../index.html';        </script>"; 
+                }
+             
+ 
 
+        
+
+        } catch (Exception $e) {
+                echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../../index.html';</script>"; 
+        }
+    }
+
+
+    /*///////////////////////////////////////
+    Actualizar Contraseña 
+    //////////////////////////////////////*/
+    public static function actualizar_contraseña($id,$pwd,$iden){
+
+        try{
+
+                
+                $pdo = AccesoDB::getCon();
+
+                if ($iden == 0) {
+                     $sql_pwd = "update clientes
+                                  set pass_cli = :pwd
+                                  where id_cli = :id";
+                }elseif ($iden == 1) {
+                    $sql_pwd = "update usuarios
+                                  set pass_usu = :pwd
+                                  where id_usu = :id";
+
+                }
+
+                
+                $stmt = $pdo->prepare($sql_pwd);
+                $stmt->bindParam(":pwd", $pwd, PDO::PARAM_STR);
+                $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+           
+                $stmt->execute();
         
 
         } catch (Exception $e) {
