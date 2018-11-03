@@ -40,26 +40,26 @@ class GastosOpeDAO
     }
 
     /*///////////////////////////////////////
-    Crear Gastos Operacionales
+    Guardar Gastos Operacionales
     //////////////////////////////////////*/
-    public function crear_GastosOpe($id_cli) {
+    public function ing_GastosOpe($id_ope) {
 
     			 try{
              
                 $pdo = AccesoDB::getCon();
 
-                $sql_crear_gastos = "INSERT INTO `gastos_ope`(`NOT_DEUDOR_GASTO`,`ENVIO_CORREO_GASTO`,`PROC_GASTO`,`COPIA_FAC_GASTO`,`SII_CERT_GASTO`,`VIG_GASTO`,`ID_CLI_GASTO`)
-									VALUES(:not_deudor,:envio_correo,:proc_gasto,:copia_fac,:sii_cert,:vig,:cli)";
+                $sql_guardar_gastos = "INSERT INTO `gastos_ope`(`NOT_DEUDOR_GASTO`,`ENVIO_CORREO_GASTO`,`PROC_GASTO`,`COPIA_FAC_GASTO`,`SII_CERT_GASTO`,`VIG_GASTO`,`ID_OPE_GASTO`)
+									VALUES(:not_deudor,:envio_correo,:proc_gasto,:copia_fac,:sii_cert,:vig,:ope)";
 
 
-                $stmt = $pdo->prepare($sql_crear_gastos);
+                $stmt = $pdo->prepare($sql_guardar_gastos);
                 $stmt->bindParam(":not_deudor", $this->not_deudor, PDO::PARAM_INT);
                 $stmt->bindParam(":envio_correo", $this->envio_correo, PDO::PARAM_INT);
                 $stmt->bindParam(":proc_gasto", $this->proc, PDO::PARAM_INT);
                 $stmt->bindParam(":copia_fac", $this->copia_fac, PDO::PARAM_INT);
                 $stmt->bindParam(":sii_cert", $this->sii_cert, PDO::PARAM_INT);
                 $stmt->bindParam(":vig", $this->vig, PDO::PARAM_BOOL);
-                $stmt->bindParam(":cli", $id_cli, PDO::PARAM_INT);
+                $stmt->bindParam(":ope", $id_ope, PDO::PARAM_INT);
                 $stmt->execute();
         
 

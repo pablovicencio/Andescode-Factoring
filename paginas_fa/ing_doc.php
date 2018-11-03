@@ -104,13 +104,16 @@ var totals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   $(".total td").each(function(i) {
     if (i != 0 && i != 2 && i != 3 && i != 5 && i != 7 && i != 8 && i != 9)
       $(this).html(totals[i - 1]);
+     document.getElementById("monto_giro").value = totals[5];
   });
+
 }
 
 
 function deleteRow(r) {
     var i = r.parentNode.parentNode.rowIndex;
     document.getElementById("docs").deleteRow(i);
+     CalcularTotales()
 }
 
 
@@ -186,30 +189,80 @@ $(document).ajaxStart(function() {
   });  
 
 
-$(document).ready(function() {
-  $("#formIngDoc").submit(function() {    
-    $.ajax({
-      type: "POST",
-      url: '../controles/controlIngDoc.php',
-      data:$("#formIngDoc").serialize(),
-      success: function (result) { 
-        var msg = result.trim();
 
-        switch(msg) {
-                case '2':
-                    swal("Error Base de Datos", "Error de base de datos, comuniquese con el administrador", "warning");
-                    break;
-                default:
-                    swal("Documento Ingresado", msg, "success");
-            }
-      },
-      error: function(){
-              alert('Verifique los datos')      
+
+
+
+
+
+
+function GuardarOpe()
+        {
+          console.log("entra");
+        
+            var TableData = new Array();
+    
+            $('#docs tr').each(function(row, tr){
+                TableData[row]={
+                  "nom_deudor" : $(tr).find('td:eq(0)').text()
+                    ,"tipo_doc" : $(tr).find('td:eq(1)').text()
+                    , "rut_deudor" :$(tr).find('td:eq(2)').text()
+                    , "nro_doc" : $(tr).find('td:eq(3)').text()
+                    , "monto_doc" : $(tr).find('td:eq(4)').text()
+                    , "anticipo_porc" : $(tr).find('td:eq(5)').text()
+                    , "financiado" : $(tr).find('td:eq(6)').text()
+                    , "fec_ope" : $(tr).find('td:eq(7)').text()
+                    , "fec_ven" : $(tr).find('td:eq(8)').text()
+                    , "plazo" : $(tr).find('td:eq(9)').text()
+                    , "dif_precio" : $(tr).find('td:eq(10)').text()
+                    , "com_cob" : $(tr).find('td:eq(11)').text()
+                    , "anticipo" : $(tr).find('td:eq(12)').text()
+                    , "excedente" : $(tr).find('td:eq(13)').text()
+                    
+                }
+
+
+            }); 
+
+            TableData.shift();  // first row will be empty - so remove
+            TableData.shift();
+            TableData = JSON.stringify(TableData);
+            $('#tbConvertToJSON').val('JSON array: \n\n' + TableData.replace(/},/g, "},\n"));
+
+            console.log(TableData);
+            var cli = document.getElementById('cli').value;
+            var fec_ope = document.getElementById('fec_ope').value;
+            var tipo_ope = document.getElementById('ope').value;
+            var tasa_ope = document.getElementById('tasa_ope').value;
+            var com_cob = document.getElementById('com_cob').value;
+            var com_cur = document.getElementById('com_cur').value;
+            var ape_ope = document.getElementById('ape_ope').value;
+            var dia_ope = document.getElementById('dia_ope').value;
+            var otros_desc_ope = document.getElementById('otros_desc_ope').value;
+            var monto_giro = document.getElementById('monto_giro').value;
+            var not_gas = document.getElementById('not_gas').value;
+            var env_gas = document.getElementById('env_gas').value;
+            var proc_gas = document.getElementById('proc_gas').value;
+            var copia_fac_gas = document.getElementById('copia_fac_gas').value;
+            var cert_gas = document.getElementById('cert_gas').value;
+            var obs_ope = document.getElementById('obs_ope').value;
+            console.log(fec_ope);
+                       
+            //console.log(fec_rut);
+            
+            $.ajax({
+                type: "POST",
+                url: "../controles/controlGuardarOpe.php",
+                data:   { "data" : TableData, "cli":cli,"fec_ope":fec_ope,"tipo_ope":tipo_ope,"tasa_ope":tasa_ope,"com_cob":com_cob,"com_cur":com_cur,"ape_ope":ape_ope,"dia_ope":dia_ope,"otros_desc_ope":otros_desc_ope,"monto_giro":monto_giro,"not_gas":not_gas,"env_gas":env_gas,"proc_gas":proc_gas,"copia_fac_gas":copia_fac_gas,"cert_gas":cert_gas, "obs_ope" :obs_ope},
+                cache: false,
+                success: function(respuesta){
+            alert(respuesta);
+            //window.location='carga_entrenamiento.php?cli='.concat(cli);
         }
-    });
-    return false;
-  });
-});
+
+            });
+            
+        }
 
 </script>
  
@@ -236,7 +289,7 @@ $(document).ready(function() {
     <center><img src="../recursos/img/load.gif"></center>
   </div>
   
-  <form id="formIngDoc" onsubmit="return false;">
+  <form id="formIngDoc" name="formIngDoc" onsubmit="return false;">
     <div class="col-12">
       <select class="form-control" id="cli" name="cli" style="width: 500px" onchange="mod(this.value)">
           <option value="" selected disabled>Seleccione Cliente</option>
@@ -407,8 +460,8 @@ $(document).ready(function() {
   </thead>
 
   <tbody>
-  
   </tbody>
+  
     <tr class="total">
       <td style="display: none"></td>
       <td style="display: none"></td>
@@ -425,8 +478,10 @@ $(document).ready(function() {
       <td>0</td>
       <td>0</td>
     </tr>
+    
 </table>
 
+          
 
 
           
@@ -451,7 +506,7 @@ $(document).ready(function() {
                            <div class="form-group row">
                             <label class="col-sm-2 col-form-label" >Rut Deudor:</label>
                             <div class="col-sm-2">
-                            <input type="text" class="form-control" id="rut_deu" name="rut_deu" placeholder="xxxxxxxx-x" pattern="\d{3,8}-[\d|kK]{1}"  >
+                            <input type="text" class="form-control" id="rut_deu" name="rut_deu" placeholder="xxxxxxxx-x" pattern="\d{3,8}-[\d|kK]{1}" maxlength="10" >
                             </div>
                             <label class="col-sm-3 col-form-label" >Nombre Deudor:</label>
                             <div class="col-sm-5">
@@ -519,12 +574,11 @@ $(document).ready(function() {
                 </div>
               </div>
 
-
-          </form>
-          <input type="submit" class="btn btn-info" id="btnDoc" name="btnDoc" value="Guardar Operación">
+          <textarea class="form-control" rows="5" id="obs_ope" name="obs_ope"></textarea>
+          <input type="submit" class="btn btn-info" id="btnDoc" name="btnDoc" value="Guardar Operación" onclick="GuardarOpe()">
   </div>
   
-
+</form>
 
 </body>
 </html>
