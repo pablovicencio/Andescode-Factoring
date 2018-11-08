@@ -55,7 +55,9 @@
 			}else{
 			$contraseña = $fun->generaPass();
 
-			$dao = new ClienteDAO('',$rut,$nom, $tasa_ini, $com_cob_ini, $com_cur_ini,$apertura_ini, $fecha,$usu_creador,$vig, md5($contraseña), $mail,$gg,$gf,$lin_cre_cli,$num_cta_cli,$bco_cli,$fec_ven);
+
+
+			$dao = new ClienteDAO('',$rut,$nom, $tasa_ini, $com_cob_ini, $com_cur_ini,$apertura_ini,$num_cta_cli, $lin_cre_cli,$fecha,$usu_creador,$vig, md5($contraseña), $mail,$gg,$gf,$bco_cli,$fec_ven);
 		
 			$crear_cli = $dao->crear_cliente();
 

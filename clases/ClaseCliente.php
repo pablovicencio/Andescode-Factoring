@@ -23,6 +23,8 @@ class ClienteDAO extends PersonaDAO
     private $bco_cli;
     private $fec_ven_cli;
 
+
+
     public function __construct($id=null,
                                 $rut_cli=null,
                                 $nom_cli=null,
