@@ -11,7 +11,7 @@
  		goto salir;
  	}      
  	     
- 	require_once '../clases/Funciones.php';
+	require_once '../clases/Funciones.php';
  	require_once '../clases/ClaseUsuario.php';
  
  	try{
@@ -30,10 +30,10 @@
  		
  		$fun = new Funciones(); 
  
-		if ($mail != ''){
-		$val = $fun->validar_rut($rut,1); //1-usuario sistema/0-cliente sistema
-		if ($val <> ""){
-			
+		if ($mail != '')
+		{
+			$val = $fun->validar_rut($rut,1); //1-usuario sistema/0-cliente sistema
+			if ($val <> ""){
 			echo "1";
 			
 		}else{

@@ -15,7 +15,6 @@
 	//require_once '../clases/ClaseGastosOpe.php';
 
 	try{
-
 		$nom = $_POST['nom_cli'];
         $gg = $_POST['gg_cli'];
         $gf = $_POST['gf_cli'];
@@ -56,7 +55,7 @@
 			}else{
 			$contraseña = $fun->generaPass();
 
-			$dao = new ClienteDAO('',$rut,$nom, $tasa_ini, $com_cob_ini, $com_cur_ini,$apertura_ini, $fecha,$num_cta_cli,$lin_cre_cli, $usu_creador,$vig, md5($contraseña), $mail,$gg,$gf);
+			$dao = new ClienteDAO('',$rut,$nom, $tasa_ini, $com_cob_ini, $com_cur_ini,$apertura_ini, $fecha,$usu_creador,$vig, md5($contraseña), $mail,$gg,$gf,$lin_cre_cli,$num_cta_cli,$bco_cli,$fec_ven);
 		
 			$crear_cli = $dao->crear_cliente();
 
@@ -67,6 +66,7 @@
 
 			//$crear_gastos_ope = $dao->crear_GastosOpe($cli->getCli());
 
+			//echo " ",$nom," ",$gg," ",$gf," ",$rut," ",$mail," ",$tasa_ini," ",$com_cob_ini," ",$com_cur_ini," ",$apertura_ini," ",$fecha ," ",$num_cta_cli," ",$usu_creador," ",$vig," ",$lin_cre_cli," ",$bco_cli," ",$fec_ven;
 			
 				if (count($crear_cli)>0){// and (count($crear_gastos_ope)>0))
 				echo"2";    

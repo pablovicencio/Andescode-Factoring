@@ -6,6 +6,7 @@
               </button>
               <div class="navbar-collapse collapse" id="navb" >
               <ul class="navbar-nav" >
+                <li class="nav-item "><a class="nav-link" href="#">Inicio</a></li> 
                 <li class="nav-item "><a class="nav-link" href="datos_pers.php">Mis Datos</a></li> 
                 <!-- Dropdown -->
                     <li class="nav-item dropdown">
@@ -20,14 +21,33 @@
                     <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Operaciones</a>
                       <div class="dropdown-menu">
-                        <a class="dropdown-item" href="ing_doc.php">Ingresar Operación</a>
-                        <a class="dropdown-item" href="crear_ope.php">Modificar Operación</a>
+                        <a class="dropdown-item" href="ing_doc.php">Ingresar</a>
+                        <a class="dropdown-item" href="crear_ope.php">Modificar</a>
                         <a class="dropdown-item" href="crear_ope.php">Revisar</a>
                         <a class="dropdown-item" href="crear_ope.php">Aprobar</a>
                         <a class="dropdown-item" href="crear_ope.php">Anular</a>
 
                       </div>
                     </li>
+                
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Cursatura</a>
+                      <div class="dropdown-menu">
+                        <a class="dropdown-item" href="check_cursatura.php">Consultar</a>
+                        <a class="dropdown-item" href="cursatura.php">Aprobar</a>
+                        <a class="dropdown-item" href="#.php">Anular</a>
+                      </div>
+                    </li>   
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Transacciones</a>
+                      <div class="dropdown-menu">
+                        <a class="dropdown-item" href="mora.php">Cobros por Mora</a>
+                        <a class="dropdown-item" href="#.php">Exedentes</a>
+                        <a class="dropdown-item" href="#.php">Resumen</a>
+                      </div>
+                    </li>  
                 <li class="nav-item"><a class="nav-link" href="#">Informes</a></li>
                 <!-- Dropdown -->
                     <li class="nav-item dropdown">

@@ -43,7 +43,7 @@ $(document).ready(function() {
                     swal("Error Mail", "Favor ingrese un correo electronico para enviar las credenciales", "warning");
                     break;
                 default:
-                    swal("Usuario Creado", msg, "success");
+                    swal("Cliente Creado", msg, "success");
             }
       },
       error: function(){
@@ -114,7 +114,7 @@ $(document).ready(function(){
         <div class="row">
             <div class="col-6">
                 <div class="form-group">
-                    <label for="rut">Rut:</label>
+                    <label for="rut_cli">Rut:</label>
                     <input type="text"  class="form-control" id="rut_cli" name="rut_cli" maxlength="10" placeholder="xxxxxxxx-x" pattern="\d{3,8}-[\d|kK]{1}"  required>
                 </div>
             </div>
@@ -129,7 +129,7 @@ $(document).ready(function(){
         <div class="row">
             <div class="col-6">
                 <div class="form-group">
-                    <label for="mail">Mail:</label>
+                    <label for="mail_cli">Mail:</label>
                     <input type="email" class="form-control" id="mail_cli" name="mail_cli" maxlength="50" required>
                 </div>
             </div>
@@ -169,13 +169,13 @@ $(document).ready(function(){
             </div>
             <div class="col-4">
               <div class="form-group">
-                  <label for="numero_cuenta">Número de Cuenta:</label>
+                  <label for="num_cta_cli">Número de Cuenta:</label>
                   <input type="number" class="form-control" id="num_cta_cli" name="num_cta_cli" required>
               </div>
             </div>
             <div class="col-4">
               <div class="form-group">
-                  <label for="linea_credito">Línea de Crédito:</label>
+                  <label for="lin_cre_cli">Línea de Crédito:</label>
                   <input type="number" class="form-control" id="lin_cre_cli" name="lin_cre_cli" required>
               </div>
             </div>

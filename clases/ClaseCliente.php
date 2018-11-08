@@ -3,7 +3,7 @@ require_once '../recursos/db/db.php';
 require_once 'ClasePersona.php';
 
 /*/////////////////////////////
-Clase Usuario
+Clase CLIENTE
 ////////////////////////////*/
 
 class ClienteDAO extends PersonaDAO
@@ -51,15 +51,15 @@ class ClienteDAO extends PersonaDAO
     $this->com_cob_cli = $com_cob_cli;
     $this->com_cur_cli = $com_cur_cli;
     $this->aper_cli = $aper_cli;
-    $this->num_cta_cli = $num_cta_cli;
-    $this->lin_cre_cli = $lin_cre_cli;
     $this->fec_cre_cli = $fec_cre_cli;
     $this->usu_cre_cli = $usu_cre_cli;
+    $this->vigencia = $vigencia;
+    $this->contraseña = $contraseña;
+    $this->mail = $mail;
     $this->gg_cli = $gg_cli;
     $this->gf_cli = $gf_cli;
-    $this->contraseña = $contraseña;
-    $this->vigencia = $vigencia;
-    $this->mail = $mail;
+    $this->lin_cre_cli = $lin_cre_cli;
+    $this->num_cta_cli = $num_cta_cli;
     $this->bco_cli = $bco_cli;
     $this->fec_ven_cli = $fec_ven_cli;
     }
@@ -79,8 +79,40 @@ class ClienteDAO extends PersonaDAO
              
                 $pdo = AccesoDB::getCon();
 
-                $sql_crear_cli = "INSERT INTO `clientes`(`RUT_CLI`,`NOM_CLI`,`TASA_INICIAL`,`COM_COB_INICIAL`,`COM_CUR_INICIAL`,`APERTURA_INICIAL`,`FEC_CRE_CLI`,`USU_CRE_CLI`,`VIG_CLI`,`PASS_CLI`,`MAIL_CLI`,`GG_CLI`,`GF_CLI`,`LINEA_CRED_CLI`,`NRO_CTA_CLI`,`BCO_CLI`,`VENC_LIN_CRED_CLI`)
-                            VALUES(:rut,:nom,:tasa,:comicobini,:comicurini,:aperturaini,:fecha,:usuario,:vig,:pass,:mail,:gg,:gf,:lineacred,:numcta, :bco_cli, :fec_ven_cli)";
+                $sql_crear_cli = "INSERT INTO `clientes`(`RUT_CLI`,
+                                                        `NOM_CLI`,
+                                                        `TASA_INICIAL`,
+                                                        `COM_COB_INICIAL`,
+                                                        `COM_CUR_INICIAL`,
+                                                        `APERTURA_INICIAL`,
+                                                        `FEC_CRE_CLI`,
+                                                        `USU_CRE_CLI`,
+                                                        `VIG_CLI`,
+                                                        `PASS_CLI`,
+                                                        `MAIL_CLI`,
+                                                        `GG_CLI`,
+                                                        `GF_CLI`,
+                                                        `LINEA_CRED_CLI`,
+                                                        `NRO_CTA_CLI`,
+                                                        `BCO_CLI`,
+                                                        `VENC_LIN_CRED_CLI`)
+                                VALUES( :rut,
+                                        :nom,
+                                        :tasa,
+                                        :comicobini,
+                                        :comicurini,
+                                        :aperturaini,
+                                        :fecha,
+                                        :usuario,
+                                        :vig,
+                                        :pass,
+                                        :mail,
+                                        :gg,
+                                        :gf,
+                                        :lineacred,
+                                        :numcta,
+                                        :bco_cli,
+                                        :fec_ven_cli)";
 
 
                 $stmt = $pdo->prepare($sql_crear_cli);
@@ -101,15 +133,60 @@ class ClienteDAO extends PersonaDAO
                 $stmt->bindParam(":numcta", $this->num_cta_cli, PDO::PARAM_INT); 
                 $stmt->bindParam(":bco_cli", $this->bco_cli, PDO::PARAM_INT); 
                 $stmt->bindParam(":fec_ven_cli", $this->fec_ven_cli, PDO::PARAM_STR); 
-
                 $stmt->execute();
-        
+            
+               
 
             } catch (Exception $e) {
                 echo"Error, comuniquese con el administrador".  $e->getMessage().""; 
             }
     }
 
+     /*///////////////////////////////////////
+    Modificar Cliente
+    //////////////////////////////////////*/
+    public function modificar_cliente() {
+
+
+        try{
+             
+                $pdo = AccesoDB::getCon();
+
+                $sql_mod_cli = "UPDATE `clientes`
+                                    SET
+                                    `NOM_CLI` = :nom_cli,
+                                    `GG_CLI` = :gg_cli,
+                                    `GF_CLI` = :gf_cli,
+                                    `MAIL_CLI` = :mail_cli,
+                                    `TASA_INICIAL` = :tasa_inicial,
+                                    `NRO_CTA_CLI` = :nro_cta_cli,
+                                    `LINEA_CRED_CLI` = :linea_cred_cli,
+                                    `COM_COB_INICIAL` = :com_cob_inicial,
+                                    `COM_CUR_INICIAL` = :com_cur_inicial,
+                                    `APERTURA_INICIAL` = :apertura_inicial
+                                    WHERE `ID_CLI` = :id";
+
+
+                $stmt = $pdo->prepare($sql_mod_cli);
+                $stmt->bindParam(":nom_cli", $this->nom_cli, PDO::PARAM_STR);
+                $stmt->bindParam(":gg_cli", $this->gg_cli, PDO::PARAM_STR);
+                $stmt->bindParam(":gf_cli", $this->gf_cli, PDO::PARAM_STR);
+                $stmt->bindParam(":mail_cli", $this->mail, PDO::PARAM_STR);
+                $stmt->bindParam(":tasa_inicial", $this->tasa_cli, PDO::PARAM_STR);
+                $stmt->bindParam(":nro_cta_cli", $this->num_cta_cli, PDO::PARAM_INT);
+                $stmt->bindParam(":linea_cred_cli", $this->lin_cre_cli, PDO::PARAM_INT);
+                $stmt->bindParam(":com_cob_inicial", $this->com_cob_cli, PDO::PARAM_BOOL);
+                $stmt->bindParam(":com_cur_inicial", $this->com_cur_cli, PDO::PARAM_INT);
+                $stmt->bindParam(":apertura_inicial", $this->aper_cli, PDO::PARAM_INT);
+                $stmt->bindParam(":id", $this->id, PDO::PARAM_INT);
+                $stmt->execute();
+        
+
+            } catch (Exception $e) {
+                echo"Error, comuniquese con el administrador".  $e->getMessage()."";
+            }
+    }
+    
 
 }
 

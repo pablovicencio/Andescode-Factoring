@@ -23,25 +23,18 @@ function mod(cli) {
       success:function(result){
         console.log(result);
         $('#rut_cli').val(result[0].rut_cli);
-        $('#nom_cli').val(result[0].nom_cli);
-        $('#tasa_cli').val(result[0].tasa_cli);
-        $('#com_cob_cli').val(result[0].com_cob_cli);
-        $('#com_cur_cli').val(result[0].com_cur_cli);
-        $('#apertura_cli').val(result[0].apertura_cli);
-        $('#dia_cli').val(result[0].dia_cli);
+        $('#nom_cli').val(result[0].nom_cli);/////////////
+        $('#tasa_cli').val(result[0].tasa_inicial);/////////////
+        $('#com_cob_cli').val(result[0].com_cob_inicial);/////////////
+        $('#com_cur_cli').val(result[0].com_cur_inicial);/////////////
+        $('#apertura_cli').val(result[0].apertura_inicial);/////////////
+        $('#num_cta_cli').val(result[0].nro_cta_cli);/////////////
+        $('#lin_cre_cli').val(result[0].linea_cred_cli);/////////////
         $('#fec_cre_cli').val(result[0].fec_cre_cli);
         $("#usu_cre_cli").val(result[0].usu_cre_cli);
-        $("#mail_cli").val(result[0].mail_cli);
-        //$("#otros_desc_cli").val(result[0].otros_desc_cli);
-        $("#gg_cli").val(result[0].gg_cli);
-        $("#gf_cli").val(result[0].gf_cli);
-        //$("#ndeudor").val(result[0].not_deudor_gasto);
-        //$("#envio_correo_gasto").val(result[0].envio_correo_gasto);
-        //$("#proc_gasto").val(result[0].proc_gasto);
-        //$("#copia_fac_gasto").val(result[0].copia_fac_gasto);
-        //$("#sii_cert_gasto").val(result[0].sii_cert_gasto);
-
-
+        $("#mail_cli").val(result[0].mail_cli);/////////////
+        $("#gg_cli").val(result[0].gg_cli);/////////////
+        $("#gf_cli").val(result[0].gf_cli); /////////////
         if ((result[0].vig_cli)==1) {  
           $('#vig_cli').prop('checked', true);
               }else  {
