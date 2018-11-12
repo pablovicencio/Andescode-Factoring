@@ -105,6 +105,54 @@ var totals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     if (i != 0 && i != 2 && i != 3 && i != 5 && i != 7 && i != 8 && i != 9)
       $(this).html(totals[i - 1]);
      document.getElementById("monto_giro").value = totals[5];
+
+     document.getElementById("monto_financiar").value = totals[5];
+     document.getElementById("dif_pre").value = totals[9];
+
+     document.getElementById("com_cob_ope").value = totals[10];
+     var iva_com_cob = Math.round(parseInt(totals[10]) * 0.19)
+     document.getElementById("iva_com_cob").value = iva_com_cob;
+     document.getElementById("com_cob_tot").value = Math.round(parseInt(totals[10]) + parseInt(iva_com_cob));
+
+     document.getElementById("com_ape_ope").value = document.getElementById("ape_ope").value;
+     document.getElementById("com_cur_ope").value = document.getElementById("com_cur").value;
+     var iva_comi = Math.round((parseInt(document.getElementById("com_cur").value))* 0.19 );
+     document.getElementById("iva_comi_tot").value = iva_comi;
+     document.getElementById("comi_tot").value = Math.round(parseInt(document.getElementById("ape_ope").value) + parseInt(document.getElementById("com_cur").value) + parseInt(iva_comi));
+
+
+
+                var TableData = new Array();
+
+                 $('#docs tr').each(function(row, tr){
+                TableData[row]={
+                    "rut_deudor" :$(tr).find('td:eq(2)').text()
+                }
+
+
+            }); 
+
+            TableData.shift();  // first row will be empty - so remove
+            TableData.shift();
+
+            var docs = TableData.length;
+
+            var deudores = jQuery.unique(TableData);
+
+            if (document.getElementById('ope').value == 1) {
+                var ga_ope = Math.round(parseInt(deudores)*  parseInt(document.getElementById("not_gas").value) +   parseInt(deudores)*  parseInt(document.getElementById("env_gas").value) + 
+                          parseInt(docs)*  parseInt(document.getElementById("proc_gas").value) + parseInt(docs)*  parseInt(document.getElementById("copia_fac_gas").value) + parseInt(deudores)*  parseInt(document.getElementById("cert_gas").value))
+            }else {
+                 var ga_ope = Math.round(parseInt(docs)*  parseInt(document.getElementById("proc_gas").value))
+            }
+
+    document.getElementById("ga_ope").value = ga_ope
+
+    document.getElementById("descu").value = document.getElementById("otros_desc_ope").value;
+
+    document.getElementById("liqui_ope").value = Math.round(parseInt(totals[5])-parseInt(totals[9])-parseInt(document.getElementById("com_cob_tot").value) - parseInt(document.getElementById("comi_tot").value) - parseInt(ga_ope) - parseInt(document.getElementById("otros_desc_ope").value))
+
+
   });
 
 }
@@ -438,7 +486,7 @@ function GuardarOpe()
         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalDoc" id="btn-modal_doc" name="btn-modal_doc">Agregar Documento</button><br><br>   
 
 
-            <table class="table table-sm table-light" id="docs" name="docs">
+            <table class="table table-sm table-striped table-bordered" id="docs" name="docs">
   <thead>
     <tr class="encabezado">
       <th scope="col"  style="display: none">Nom Deudor</th>
@@ -481,7 +529,112 @@ function GuardarOpe()
     
 </table>
 
-          
+<div class="row">
+
+    <div class="col-4">   
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Monto a Financiar</span>
+          </div>
+          <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name="monto_financiar" id="monto_financiar" readonly>
+        </div>
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Diferencia de precio</span>
+          </div>
+          <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name="dif_pre" id="dif_pre" readonly>
+        </div>
+    </div>
+
+
+       <div class="col-4">   
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Comisión Cobranza</span>
+          </div>
+          <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name="com_cob_ope" id="com_cob_ope" readonly>
+        </div>
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">IVA Com. Cobranza</span>
+          </div>
+          <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name="iva_com_cob" id="iva_com_cob" readonly>
+        </div>
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Total Com. Cobranza</span>
+          </div>
+          <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name="com_cob_tot" id="com_cob_tot" readonly>
+        </div>
+    </div>
+
+
+    <div class="col-4">   
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Comisión Apertura</span>
+          </div>
+          <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name="com_ape_ope" id="com_ape_ope" readonly>
+        </div>
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Comisión Curse</span>
+          </div>
+          <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name="com_cur_ope" id="com_cur_ope" readonly>
+        </div>
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">IVA Comisiones</span>
+          </div>
+          <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name="iva_comi_tot" id="iva_comi_tot" readonly>
+        </div>
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Total Comisiones</span>
+          </div>
+          <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name="comi_tot" id="comi_tot" readonly>
+        </div>
+    </div>
+</div>        
+
+
+<div class="row">
+
+    <div class="col-4">   
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Gastos Operacionales</span>
+          </div>
+          <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name="ga_ope" id="ga_ope" readonly>
+        </div>
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Otros Descuentos</span>
+          </div>
+          <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name="descu" id="descu" readonly>
+        </div>
+    </div>
+
+
+       <div class="col-4">   
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Líquido</span>
+          </div>
+          <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name="liqui_ope" id="liqui_ope" readonly>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Excedente a favor Cliente</span>
+          </div>
+          <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name="exc_ope" id="exc_ope" readonly>
+        </div>
+        
+    </div>
+
+
+    
+</div>        
 
 
           
