@@ -78,7 +78,7 @@ $(document).ready(function(){
     <form id="formCrearCli" onsubmit="return false;">
         <!-- DIV PARA TITULO PRINCIPAL--> 
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 text-center">
                 <h3 "text-align">Nuevo Cliente&nbsp;&nbsp;<i class="fa fa-plus-square" aria-hidden="true"></i></h3>
             </div>
         </div>
@@ -133,7 +133,54 @@ $(document).ready(function(){
                     <input type="email" class="form-control" id="mail_cli" name="mail_cli" maxlength="50" required>
                 </div>
             </div>
-            <div class="col-6">
+            
+        </div>
+        <!-- DIV TITULO 2-->
+        <hr>
+        <div class="row">
+            <div class="col-12">
+                <h5>Datos Financieros</h5>
+            </div>
+        </div>  
+        <!-- DIV COL4 TASA - CUENTA - LINEACREDITO-->
+        <div class="row">
+            <div class="col-4">
+              <div class="form-group">
+                  <label for="lin_cre_cli">Línea de Crédito:</label>
+                  <input type="number" class="form-control" id="lin_cre_cli" name="lin_cre_cli" required>
+              </div>
+            </div>  
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="fec_ven">Vencimiento de Linea:</label>
+                        <input type="date" class="form-control" id="fec_ven" name="fec_ven"required>    
+                </div>
+            </div>                                    
+            <div class="col-4">
+              <div class="form-group">
+                  <label for="tasa">Tasa de Interés Inicial:</label>
+                  <input type="number" class="form-control" id="tasa_cli_ini" name="tasa_cli_ini" step="any" required>
+              </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="cobranza">Comisión Cobranza:</label>
+                    <input type="number" class="form-control" id="comc_cli_ini" name="comc_cli_ini" step="any" required>   
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="curse">Comisión Curse:</label>
+                    <input type="number" class="form-control" id="comcu_cli_ini" name="comcu_cli_ini"  required>          
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="apertura">Apertura:</label>
+                    <input type="number" class="form-control" id="aper_cli_ini" name="aper_cli_ini" required>    
+                </div>
+            </div>
+            <div class="col-4">
                 <div class="form-group">
                     <label for="bco_cli">Banco Cliente:</label>
                     <select class="form-control" name="bco_cli" id="bco_cli" required>
@@ -151,63 +198,18 @@ $(document).ready(function(){
                         </select>
                 </div>
             </div>
-        </div>
-        <!-- DIV TITULO 2-->
-        <hr>
-        <div class="row">
-            <div class="col-12">
-                <h5>Datos Financieros</h5>
-            </div>
-        </div>  
-        <!-- DIV COL4 TASA - CUENTA - LINEACREDITO-->
-        <div class="row">
-            <div class="col-4">
-              <div class="form-group">
-                  <label for="tasa">Tasa de Interés Inicial:</label>
-                  <input type="number" class="form-control" id="tasa_cli_ini" name="tasa_cli_ini" step="any" required>
-              </div>
-            </div>
             <div class="col-4">
               <div class="form-group">
                   <label for="num_cta_cli">Número de Cuenta:</label>
                   <input type="number" class="form-control" id="num_cta_cli" name="num_cta_cli" required>
               </div>
             </div>
-            <div class="col-4">
-              <div class="form-group">
-                  <label for="lin_cre_cli">Línea de Crédito:</label>
-                  <input type="number" class="form-control" id="lin_cre_cli" name="lin_cre_cli" required>
-              </div>
-            </div>
+
         </div>
-        <!-- DIV COL4 COBRANZA-CURSE - APERTURA-->
+
+        <!-- TERCERA COLUMNA-->
         <div class="row">
-          <div class="col-4">
-            <div class="form-group">
-                <label for="cobranza">Comisión Cobranza:</label>
-                <input type="number" class="form-control" id="comc_cli_ini" name="comc_cli_ini" step="any" required>   
-            </div>
-          </div>
-          <div class="col-4">
-            <div class="form-group">
-                <label for="curse">Comisión Curse:</label>
-                <input type="number" class="form-control" id="comcu_cli_ini" name="comcu_cli_ini"  required>          
-            </div>
-          </div>
-          <div class="col-4">
-            <div class="form-group">
-                <label for="apertura">Apertura:</label>
-                <input type="number" class="form-control" id="aper_cli_ini" name="aper_cli_ini" required>    
-            </div>
-          </div>
-        </div>
-        <div class="row">
-        <div class="col-4">
-            <div class="form-group">
-                <label for="fec_ven">Fecha de Vencimiento:</label>
-                    <input type="date" class="form-control" id="fec_ven" name="fec_ven"required>    
-            </div>
-          </div>  
+
        </div>
         <!-- DIV BOTON ENVIAR CONSULTA-->
         <hr>

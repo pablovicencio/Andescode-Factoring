@@ -22,7 +22,7 @@ function mod(cli) {
       dataType:'json',
       success:function(result){
         console.log(result);
-        $('#rut_cli').val(result[0].rut_cli);
+        $('#rut_cli').val(result[0].rut_cli);/////////////
         $('#nom_cli').val(result[0].nom_cli);/////////////
         $('#tasa_cli').val(result[0].tasa_inicial);/////////////
         $('#com_cob_cli').val(result[0].com_cob_inicial);/////////////
@@ -30,11 +30,13 @@ function mod(cli) {
         $('#apertura_cli').val(result[0].apertura_inicial);/////////////
         $('#num_cta_cli').val(result[0].nro_cta_cli);/////////////
         $('#lin_cre_cli').val(result[0].linea_cred_cli);/////////////
-        $('#fec_cre_cli').val(result[0].fec_cre_cli);
-        $("#usu_cre_cli").val(result[0].usu_cre_cli);
+        $('#fec_cre_cli').val(result[0].fec_cre_cli);/////////////
+        $("#usu_cre_cli").val(result[0].usu_cre_cli);/////////////
         $("#mail_cli").val(result[0].mail_cli);/////////////
         $("#gg_cli").val(result[0].gg_cli);/////////////
         $("#gf_cli").val(result[0].gf_cli); /////////////
+        $("#bco_cli").val(result[0].bco_cli);/////////////
+        $("#fec_ven").val(result[0].venc_lin_cred_cli);/////////////
         if ((result[0].vig_cli)==1) {  
           $('#vig_cli').prop('checked', true);
               }else  {
@@ -191,22 +193,24 @@ $(document).ready(function() {
         <div class="row">
             <div class="col-4">
               <div class="form-group">
-                    <label for="tasa">Tasa de Interés:</label>
-                    <input type="number" class="form-control" id="tasa_cli" name="tasa_cli" step="any" required>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="form-group">
-                  <label for="numero_cuenta">Número de Cuenta:</label>
-                  <input type="number" class="form-control" id="num_cta_cli" name="num_cta_cli" required>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="form-group">
                   <label for="linea_credito">Línea de Crédito:</label>
                   <input type="number" class="form-control" id="lin_cre_cli" name="lin_cre_cli" required>
               </div>
             </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="fec_ven">Vencimiento de Linea:</label>
+                        <input type="date" class="form-control" id="fec_ven" name="fec_ven"required>    
+                </div>
+            </div>     
+            <div class="col-4">
+              <div class="form-group">
+                    <label for="tasa">Tasa de Interés:</label>
+                    <input type="number" class="form-control" id="tasa_cli" name="tasa_cli" step="any" required>
+              </div>
+            </div>
+
+            
         </div>
         <!-- DIV COL4 COBRANZA-CURSE - APERTURA-->
         <div class="row">
@@ -229,6 +233,33 @@ $(document).ready(function() {
             </div>
           </div>
         </div>
+        <div class="row">
+                                          
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="bco_cli">Banco Cliente:</label>
+                    <select class="form-control" name="bco_cli" id="bco_cli" required>
+                          <option value="" selected disabled>Seleccione el Banco</option>
+                                       <?php 
+                                        $re = $fun->cargar_bcos(1);   
+                                        foreach($re as $row)      
+                                            {
+                                              ?>
+                                               <option value="<?php echo $row['cod_item'] ?>"><?php echo $row['desc_item'] ?></option>
+                                                  
+                                              <?php
+                                            }    
+                                        ?>       
+                        </select>
+                </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                  <label for="numero_cuenta">Número de Cuenta:</label>
+                  <input type="number" class="form-control" id="num_cta_cli" name="num_cta_cli" required>
+              </div>
+            </div>
+        </div>
         <!-- DIV BOTON ENVIAR CONSULTA-->
         <hr>
         <div class="row">
@@ -240,188 +271,5 @@ $(document).ready(function() {
 <!-- FIN TABLA NUEVA PARA CREACION CLIENTE-->   
   </form>
 </div>
-
-
-<!--
-
-<div class="container" id="main">
-  <div class="row">
-  <div class="col-12">
-    <h3>Modificar Cliente&nbsp;&nbsp;<i class="fa fa-pencil-square" aria-hidden="true"></i>
-</h3>
-    <hr>
-  </div>
-  </div>
-
-  <div id="loading" style="display: none;">
-    <center><img src="../recursos/img/load.gif"></center>
-  </div>
-  
-    <form id="formModCli" onsubmit="return false;"  >
-    <div class="col-12">
-      <select class="form-control" id="cli" name="cli" style="width: 500px" onchange="mod(this.value)">
-          <option value="" selected disabled>Seleccione Cliente</option>
-                     <?php /*
-                      $re = $fun->cargar_clientes(1);   
-                      foreach($re as $row)      
-                          {
-                            ?>      
-                             <option value="<?php echo $row['id_cli'] ?> ">
-                             <?php echo $row['nom_cli'] ?>
-                             </option>
-                                
-                            <?php
-                          }    
-                      */?>
-      </select><hr>
-    </div>
-
-
-
-  <div class="row" >
-    <div class="col-6">
-        <div class="form-group">
-            <div class="row">
-                <div class="col-12">
-                <label for="nom">Nombre o Razón Social:</label>
-                <input type="text" class="form-control" id="nom_cli" name="nom_cli"  maxlength="100" placeholder="Nombre o Razón Social" required>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="row">
-                <div class="col-6">
-                  <label for="gg_cli">Gerente General:</label>
-                  <input type="text" class="form-control" id="gg_cli" name="gg_cli"  maxlength="50"  required>
-                </div>
-                <div class="col-6">
-                  <label for="gf_cli">Gerente de Finanzas:</label>
-                  <input type="text" class="form-control" id="gf_cli" name="gf_cli"  maxlength="50" required>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="rut">Rut:</label>
-            <input type="text"  class="form-control" id="rut_cli" name="rut_cli" maxlength="10" placeholder="xxxxxxxx-x" pattern="\d{3,8}-[\d|kK]{1}" readonly required>
-        </div>
-        <div class="form-group">
-            <label for="mail">Mail:</label>
-            <input type="email" class="form-control" id="mail_cli" name="mail_cli" maxlength="50" required>
-        </div> 
-        <div class="form-group">
-            <label for="fec">Fecha de Creación:</label>
-            <input type="text" class="form-control" id="fec_cre_cli" name="fec_cre_cli" readonly>
-        </div> 
-        <div class="form-group">
-                    <label for="dia">Días:</label>
-                    <input type="number" class="form-control" id="dia_cli" name="dia_cli" required> 
-        </div>      
-    </div>
-    <div class="col-6">
-        <div class="row">
-            <div class="col-6">
-                <div class="form-group">
-                    <label for="tasa">Tasa de Interés:</label>
-                    <input type="number" class="form-control" id="tasa_cli" name="tasa_cli" step="any" required>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="form-group">
-                    <label for="comisionc">Comisión Cobranza:</label>
-                    <input type="number" class="form-control" id="com_cob_cli" name="com_cob_cli" step="any" required>  
-                </div> 
-            </div>
-        </div> 
-        <div class="row">
-            <div class="col-6">
-                <div class="form-group">
-                    <label for="com_cur_cli">Comisión Curse:</label>
-                    <input type="number" class="form-control" id="com_cur_cli" name="com_cur_cli" step="any" required>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="form-group">
-                    <label for="Apertura">Apertura:</label>
-                    <input type="number" class="form-control" id="apertura_cli" name="apertura_cli" step="any" required>  
-                </div> 
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6">
-                <div class="form-group">
-                    <label for="desc">Otros Descuentos:</label>
-                    <input type="number" class="form-control" id="otros_desc_cli" name="otros_desc_cli" required>    
-                </div>  
-            </div>
-            <div class="col-6">
-                <div class="form-group">
-                    <label for="notificacion">Notificación Deudor:</label>
-                    <input type="number" class="form-control" id="ndeudor" name="ndeudor" required>    
-                </div>  
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6">
-                <div class="form-group">
-                    <label for="envio">Envió por Correo:</label>
-                    <input type="number" class="form-control" id="envio_correo_gasto" name="envio_correo_gasto" required> 
-                </div>
-            </div>
-           <div class="col-6">
-                <div class="form-group">
-                    <label for="PROC_GASTO">Gastos Procesamiento:</label>
-                    <input type="number" class="form-control" id="proc_gasto" name="proc_gasto" required>    
-                </div>  
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6">
-                <div class="form-group">
-                    <label for="facfot">Fotocopia Factura:</label>
-                    <input type="number" class="form-control" id="copia_fac_gasto" name="copia_fac_gasto" required> 
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="form-group">
-                    <label for="PROC_GASTO">Certificado SII:</label>
-                    <input type="number" class="form-control" id="sii_cert_gasto" name="sii_cert_gasto" required>    
-                </div>  
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6">
-                <div class="form-check">
-                    <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" name="vig_cli" id="vig_cli"> Vigencia</label>
-                </div>
-            </div>   
-        </div>
-        
-        <input type="submit" class="btn btn-info" id="btnAc" name="btnAc" value="Modificar Cliente" >
-
-      </div>   
-    </div>
-</div>
-</form>
-</div>
-</div>
-
-
-
-</div>
--->
-
-
-
-
-
-
-
-
-
-
-
-
-
 </body>
 </html>

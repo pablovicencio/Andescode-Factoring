@@ -17,6 +17,7 @@ class UsuarioDAO extends PersonaDAO
     private $cargo_usu;
     private $nick_usu;
 
+
     public function __construct($id=null,
                                 $nom1_usu=null,
                                 $nom2_usu=null,

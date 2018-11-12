@@ -32,13 +32,10 @@ session_start();
 		}else{
 			$vig = 0;
 		}
-		
 			
-
-			$dao = new UsuarioDAO($usu,$nom1,$nom2, $apepat, $apemat, ' ',$mail,$perfil, ' ', $cargo, ' ', $vig, ' ');
+		$dao = new UsuarioDAO($usu,$nom1,$nom2, $apepat, $apemat, ' ',$mail,$perfil, ' ', $cargo, ' ', $vig, ' ');
  		
 			$mod_usu = $dao->modificar_usuario();
-			
 			if (count($mod_usu)>0){
 			
 			echo "1";    

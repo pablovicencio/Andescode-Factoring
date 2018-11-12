@@ -1,12 +1,14 @@
 
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark" style ="background-color:#0c2e8a ">
+<div class="row">
+<div class="col-12 text-center">
+  <nav class="navbar navbar-expand-md navbar-dark" style ="background-color:#0c2e8a ">
         <button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-target="#navb" aria-expanded="false">
               <span class="navbar-toggler-icon"></span>
               </button>
               <div class="navbar-collapse collapse" id="navb" >
               <ul class="navbar-nav" >
-                <li class="nav-item "><a class="nav-link" href="#">Inicio</a></li> 
+                <li class="nav-item "><a class="nav-link" href="resumen_inicio.php">Inicio</a></li> 
                 <li class="nav-item "><a class="nav-link" href="datos_pers.php">Mis Datos</a></li> 
                 <!-- Dropdown -->
                     <li class="nav-item dropdown">
@@ -57,7 +59,18 @@
                         <a class="dropdown-item" href="mod_usu.php">Modificar Usuario</a>
                       </div>
                     </li>
+                  <!-- Dropdown -->
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mantenedor General</a>
+                    <div class="dropdown-menu">
+
+                    </div>
+                  </li>
               </ul>
             </div>
       </nav> 
+  </div>
+</div>
+  
+
 </body>

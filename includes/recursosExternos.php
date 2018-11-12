@@ -9,3 +9,9 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="../diseño/estilos.css">
+<link rel="stylesheet" href="../css/datatables.min.css">
+<link rel="stylesheet" href="../css/datatables.css">
+<script src="../js/datatables.min.js"></script>
+<script src="../js/datatables.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>

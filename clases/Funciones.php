@@ -241,6 +241,34 @@ class Funciones
                 echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
             }
         }
+ /*///////////////////////////////////////
+    Cargar Datos de Operaciones
+    //////////////////////////////////////*/
+    public function cargar_datos_ope(){
+
+        try{
+            
+            
+            $pdo = AccesoDB::getCon();
+            $sql = "SELECT O.ID_OPE OPE,O.FEC_OPE FECHA,U.NICK_USU USUARIO,T1.DESC_ITEM TIPO,TASA_OPE TASA,MONTO_GIRO_OPE GIRADO,C.NOM_CLI CLIENTE,C.RUT_CLI RUT,T2.DESC_ITEM AS ESTADO
+            FROM OPERACIONES O, USUARIOS U,TAB_PARAM T1,CLIENTES C,TAB_PARAM T2
+            WHERE O.EST_OPE = T2.COD_ITEM AND T2.COD_GRUPO = 7 AND T2.VIG_ITEM = 1
+            AND O.TIPO_OPE = T1.COD_ITEM AND T1.COD_GRUPO = 3 AND T1.VIG_ITEM = 1
+            AND U.ID_USU = O.USU_OPE AND  C.ID_CLI = O.CLI_OPE ORDER BY fecha DESC";
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+
+            $response = $stmt->fetchAll();
+            return $response;
+
+        } catch (Exception $e) {
+            echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+        }
+    }
+
+
+
 
 
 
@@ -487,7 +515,8 @@ class Funciones
                                 from usuarios a
                                 where 
                                 a.ID_USU = :id_usu";
-                }  
+                }
+                
 
 
 
@@ -505,6 +534,38 @@ class Funciones
                 echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
             }
         }
+
+
+    /*///////////////////////////////////////
+    Cargar datos de usuario
+    //////////////////////////////////////*/
+    public function cargar_datos_perfiles(){
+
+        try{
+            
+            
+            $pdo = AccesoDB::getCon();
+            $sql = "select u.id_usu,concat(u.NOM1_USU,' ',u.APEPAT_USU) nom,RUT_USU as rut,MAIL_USU as mail,a.desc_item as perf, DATE_FORMAT(u.fec_cre_usu, '%d-%m-%Y') as crea,b.desc_item as carg,if(u.vig_usu=1, 'Vigente','No Vigente') as vig
+            from usuarios u , tab_param a,tab_param b
+            where u.id_perfil = a.cod_item and a.cod_grupo = 1 and a.vig_item = 1
+            and u.cargo_usu =  b.cod_item and b.cod_grupo = 2 and b.vig_item = 1";
+        
+
+
+
+                   
+            
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+
+            $response = $stmt->fetchAll();
+            return $response;
+
+        } catch (Exception $e) {
+            echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+        }
+    }
 
 
     /*///////////////////////////////////////

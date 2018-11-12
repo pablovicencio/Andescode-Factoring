@@ -35,6 +35,24 @@
             </div>
         </div>
         <hr>
+        <div class="col-12">
+                <select class="form-control" id="cli" name="cli" style="width: 500px" onchange="mod(this.value)">
+                        <option value="" selected disabled>Seleccione Cliente</option>
+                        <?php 
+                                $re = $fun->cargar_clientes(1);   
+                                    foreach($re as $row)      
+                                    {
+                                    ?>      
+                                    <option value="<?php echo $row['id_cli'] ?> ">
+                                    <?php echo $row['nom_cli'] ?>
+                                    </option>
+                                        
+                                    <?php
+                          }    
+                        ?>
+                </select>
+        </div>
+        <hr>
         <!-- Cliente y Fecha--> 
         <div class="row">
             <div class="col-6">
@@ -277,7 +295,7 @@
             <div class="col-12">
             <br>
                 <div class="col-12">
-                <table class="table">
+                <table class="display" id="table_id">
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col">Deudor</th>

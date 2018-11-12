@@ -438,7 +438,7 @@ function GuardarOpe()
         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalDoc" id="btn-modal_doc" name="btn-modal_doc">Agregar Documento</button><br><br>   
 
 
-            <table class="table table-sm table-dark" id="docs" name="docs">
+            <table class="table table-sm table-light" id="docs" name="docs">
   <thead>
     <tr class="encabezado">
       <th scope="col"  style="display: none">Nom Deudor</th>
@@ -503,6 +503,7 @@ function GuardarOpe()
                       </button>
                     </div>
                     <div class="col-12">
+                          <br>
                            <div class="form-group row">
                             <label class="col-sm-2 col-form-label" >Rut Deudor:</label>
                             <div class="col-sm-2">

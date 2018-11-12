@@ -104,7 +104,7 @@ $(document).ready(function() {
 
 <div class="container" id="main">
   <div class="row">
-  <div class="col-12">
+  <div class="col-12 text-center">
     <h3>Modificar Usuario&nbsp;&nbsp;<i class="fa fa-pencil-square" aria-hidden="true"></i></h3>
     <hr>
   </div>
@@ -135,7 +135,6 @@ $(document).ready(function() {
 
   <div class="row" >
   <div class="col-6">
-
           <div class="form-group">
             <label for="nom">Nombres:</label>
               <div class="row">
@@ -205,7 +204,16 @@ $(document).ready(function() {
              <label for="mail">Nickname:</label>
              <input type="text" class="form-control" id="nick_usu" name="nick_usu" maxlength="20"  readonly>
           </div>
-
+          <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Ejecutivo&nbsp;&nbsp;</span>
+                        <div class="input-group-text">
+                        <input type="checkbox" aria-label="Checkbox for following text input" name="vig_usu" id="vig_usu">
+                        </div>
+                        <span class="input-group-text">Carlos Nelidow</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Text input with checkbox">
+                </div>                                      
           <div class="form-check">
             <label class="form-check-label">
             <input class="form-check-input" type="checkbox" name="vig_usu" id="vig_usu"> Vigencia</label>
