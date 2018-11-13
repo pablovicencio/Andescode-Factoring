@@ -136,17 +136,28 @@ var totals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
             TableData.shift();
 
             var docs = TableData.length;
+            console.log(TableData);
 
-            var deudores = jQuery.unique(TableData);
+            var deudores = TableData.filter(unique);
+
+            console.log(deudores);
+            var deudores = deudores.length;
+
+
+  
+
+               console.log(document.getElementById('ope').value);
+               console.log(docs);
+               console.log(deudores);
 
             if (document.getElementById('ope').value == 1) {
                 var ga_ope = Math.round(parseInt(deudores)*  parseInt(document.getElementById("not_gas").value) +   parseInt(deudores)*  parseInt(document.getElementById("env_gas").value) + 
-                          parseInt(docs)*  parseInt(document.getElementById("proc_gas").value) + parseInt(docs)*  parseInt(document.getElementById("copia_fac_gas").value) + parseInt(deudores)*  parseInt(document.getElementById("cert_gas").value))
+                          parseInt(docs)*  parseInt(document.getElementById("proc_gas").value) + parseInt(docs)*  parseInt(document.getElementById("copia_fac_gas").value) + parseInt(deudores)*  parseInt(document.getElementById("cert_gas").value));
             }else {
-                 var ga_ope = Math.round(parseInt(docs)*  parseInt(document.getElementById("proc_gas").value))
+                 var ga_ope = Math.round(parseInt(docs)*  parseInt(document.getElementById("proc_gas").value));
             }
 
-    document.getElementById("ga_ope").value = ga_ope
+    document.getElementById("ga_ope").value = ga_ope;
 
     document.getElementById("descu").value = document.getElementById("otros_desc_ope").value;
 
@@ -155,6 +166,10 @@ var totals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
   });
 
+}
+
+function unique(value, index, self) { 
+    return self.indexOf(value) === index;
 }
 
 
