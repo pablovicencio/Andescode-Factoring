@@ -21,6 +21,11 @@
   include("../includes/infoLog.php");
   include("../includes/menuUsuario.php");
 ?>
+<?php
+    $idope = $_GET["idope"];
+    
+?>
+
 
 <!-- TABLA NUEVA PARA MODIFICACION CURSATURA-->
 
@@ -29,7 +34,7 @@
         <!-- DIV PARA TITULO PRINCIPAL--> 
         <div class="row">
             <div class="col-12 text-center">
-                <h3>BUSCAR CURSATURA&nbsp;&nbsp;<i class="fa fa-list-alt" aria-hidden="true"></i>
+                <h3>CURSATURA OPERACIÓN N° <?php echo $idope ?>&nbsp;&nbsp;<i class="fa fa-list-alt" aria-hidden="true"></i>
                 <br>
             </div>
         </div>
@@ -37,12 +42,31 @@
         <!-- Cliente y Fecha--> 
         <div class="row">
             <div class="col-6">
-                <label for="nom">Cliente&nbsp;<i class="fa fa-user-circle-o" aria-hidden="true">&nbsp;</i>:</label> 
-                <input type="text" class="form-control" id="nom_cli" name="nom_cli"  maxlength="100" placeholder="Nombre o Razón Social" required readonly> 
+            <?php
+  
+                    $re = $fun ->cargar_datos_cli(1,2);
+                    foreach($re as $row)
+                        {   
+                            ?>
+                <label for="nom">Nombre o Razón Social&nbsp;<i class="fa fa-user-circle-o" aria-hidden="true">&nbsp;</i>:</label> 
+                <input type="text" value="<?php echo $row["nom_cli"]?>" class="form-control" id="nom_cli" name="nom_cli"  maxlength="100" placeholder="Nombre o Razón Social" required readonly> 
+                <?php
+                }
+                ?>
             </div>
             <div class="col-6">
+            <?php
+  
+            $st = $fun ->cargar_datos_ope(1);
+            foreach($st as $row)
+                {   
+                    ?>                  
+          
                 <label for="fec">Fecha&nbsp;<i class="fa fa-calendar" aria-hidden="true">&nbsp;</i>:</label>
-                <input type="text" class="form-control" id="fec_cre_cli" name="fec_cre_cli" readonly>
+                <input type="text" value="<?php echo $row["fecha"]?>" class="form-control" id="fec_cre_cli" name="fec_cre_cli" readonly>
+                <?php
+                }
+                ?>
             </div>
         </div>
         <hr>
@@ -63,7 +87,7 @@
                         <br>
                            
                         <label for="lineafacnac">Linea Factoring Nacional:</label>
-                        <input type="number" class="form-control" id="lineafacnac" name="lineafacnac"  maxlength="100" placeholder="$0" required>
+                        <input type="number" value="<?php echo $row["linea_cred_cli"]?>"class="form-control" id="lineafacnac" name="lineafacnac"  maxlength="100" placeholder="$0" required>
 
                         <label for="ocupaprod">Ocupada Producto:</label>
                         <input type="number" class="form-control" id="ocupaprod" name="ocupaprod"  maxlength="100" placeholder="$0" required>
@@ -85,7 +109,7 @@
                    
                     </div>
                 </div>
-                
+
                 <!-- CONDICIONES MOROSAS -->
                 <div class="col-md-4 border-right">
                      <div class="col-12">
@@ -267,62 +291,70 @@
             <div class="col-12">
             
             <br>
-                <div class="col-12">
-                <hr>
-                <h5>Información Deudores</h5>
-                </div>
+                
                 
             </div>
             <div class="col-12">
             <br>
                 <div class="col-12">
-                <table class="table">
-                        <thead class="thead-light">
-                            <tr>
-                                <th scope="col">Deudor</th>
-                                <th scope="col">Deuda Operación</th>
-                                <th scope="col">Deuda con Cliente</th>
-                                <th scope="col">% Conc. Cliente</th>
-                                <th scope="col">Mora con Cliente</th>
-                                <th scope="col">Deuda con Viracocha</th>
-                                <th scope="col">Mora con Viracocha</th>
-                            </tr>
-                        </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">Ejemplo #1</th>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Ejemplo #2</th>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Ejemplo #3</th>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                </tbody>
-                </table>
+               
                 </div>
 
                 </div>     
             </div>
         </div>
+         
+
+    <hr>
+    <h5>Información Deudores &nbsp;<i class="fa fa-clock-o" aria-hidden="true"></i></i></h5>
+    <br>
+    <table id="dtBasicExample" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead class="thead-dark">
+      <tr>
+        <th class="th-sm">Deudor</th>
+        <th class="th-sm">Deuda Operación</th>
+        <th class="th-sm">Deuda con Cliente</th>
+        <th class="th-sm">% Conc. Cliente</th>
+        <th class="th-sm">Mora con CLiente</th>
+        <th class="th-sm">Deuda con Viracocha</i></th>
+        <th class="th-sm">Mora con Viracocha</i></th>
+       </tr>
+    </thead>
+    <tbody>
+
+    <?php
+  
+      $re = $fun ->infodeudores($idope);
+      foreach($re as $row)
+        {
+
+        
+      ?>
+    
+    <tr>
+                  <td><?php echo $row['deu']?></td>
+                  <td><?php echo $row['mon']?></td>
+                  <td><?php echo $row['fac']?></td>
+                  <td><?php echo $row['feope']?></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                
+
+  
+      </tr>
+
+              </tr>
+
+<?php } ?>  
+
+    </tbody>
+
+  </table>
+
+
+
+
         <!--FIN TABLA INFORMACION DEUDORES--> 
 
 
