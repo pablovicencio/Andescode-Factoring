@@ -26,6 +26,8 @@ class OperacionDAO
     private $bco_dep_ope;
     private $fec_reg;
     private $est_ope;
+    private $iva_com_cob;
+    private $iva_comi_tot;
 
 
     public function __construct(    $id_ope=null,
@@ -45,7 +47,9 @@ class OperacionDAO
                                     $bco_giro_ope=null,
                                     $bco_dep_ope=null,
                                     $fec_reg=null,
-                                    $est_ope=null) {
+                                    $est_ope=null,
+                                    $iva_com_cob=null,
+                                    $iva_comi_tot=null) {
 
 
     $this->id_ope =$id_ope;
@@ -66,6 +70,8 @@ class OperacionDAO
     $this->bco_dep_ope=$bco_dep_ope;
     $this->fec_reg=$fec_reg;
     $this->est_ope=$est_ope;
+    $this->iva_com_cob=$iva_com_cob;
+    $this->iva_comi_tot=$iva_comi_tot;
 
 
     }
@@ -83,8 +89,8 @@ class OperacionDAO
              
                 $pdo = AccesoDB::getCon();
 
-                $sql_ing_ope = "INSERT INTO `operaciones`(`FEC_OPE`,`USU_OPE`,`TIPO_OPE`,`OBS_OPE`,`TASA_OPE`,`COM_COB_OPE`,`COM_CUR_OPE`,`APERTURA_OPE`,`DIA_OPE`,`OTROS_DESC_OPE`,`MONTO_GIRO_OPE`,`CLI_OPE`,`FEC_REG_OPE`,`EST_OPE`)
-                    VALUES(:fec_ope, :usu_ope, :tipo_ope, ' ', :tasa_ope, :com_cob_ope, :com_cur_ope, :apertura_ope, :dia_ope, :otros_desc_ope, :monto_giro_ope, :cli_ope, :fec_reg_ope, :est_ope)";
+                $sql_ing_ope = "INSERT INTO `operaciones`(`FEC_OPE`,`USU_OPE`,`TIPO_OPE`,`OBS_OPE`,`TASA_OPE`,`COM_COB_OPE`,`COM_CUR_OPE`,`APERTURA_OPE`,`DIA_OPE`,`OTROS_DESC_OPE`,`MONTO_GIRO_OPE`,`CLI_OPE`,`FEC_REG_OPE`,`EST_OPE`,`IVA_COM_COB_OPE`,`IVA_COM_OPE`)
+                    VALUES(:fec_ope, :usu_ope, :tipo_ope, ' ', :tasa_ope, :com_cob_ope, :com_cur_ope, :apertura_ope, :dia_ope, :otros_desc_ope, :monto_giro_ope, :cli_ope, :fec_reg_ope, :est_ope, :iva_com_cob, :iva_comi_tot)";
 
 
                 $stmt = $pdo->prepare($sql_ing_ope);
@@ -101,6 +107,8 @@ class OperacionDAO
                 $stmt->bindParam(":cli_ope", $this->cli_ope, PDO::PARAM_INT);
                 $stmt->bindParam(":fec_reg_ope", $this->fec_reg, PDO::PARAM_INT);
                 $stmt->bindParam(":est_ope", $this->est_ope, PDO::PARAM_INT);
+                $stmt->bindParam(":iva_com_cob", $this->iva_com_cob, PDO::PARAM_INT);
+                $stmt->bindParam(":iva_comi_tot", $this->iva_comi_tot, PDO::PARAM_INT);
                 $stmt->execute();
 
                 $sql_ope = "select  id_ope from operaciones order by id_ope desc limit 1";

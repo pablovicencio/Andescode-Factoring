@@ -1,5 +1,5 @@
 
-<body>
+
 <div class="row">
 <div class="col-12 text-center">
   <nav class="navbar navbar-expand-md navbar-dark" style ="background-color:#0c2e8a ">
@@ -73,4 +73,4 @@
 </div>
   
 
-</body>
+

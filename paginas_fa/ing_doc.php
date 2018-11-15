@@ -16,6 +16,14 @@
 
 function agregar() {
 
+  $("#finan-gas :input").attr("disabled", true);
+  $("#reing").attr("disabled", false);
+  $("#reing").css("display", "block");
+
+  if (document.forms['formIngDoc'].otros_desc_ope.value == "") {
+    document.forms['formIngDoc'].otros_desc_ope.value = 0;
+  }
+
   console.log(document.forms['formIngDoc'].tasa_ope.value);
 
   var dif_precio = document.forms['formIngDoc'].finan_doc.value * 
@@ -79,6 +87,8 @@ function agregar() {
   td = tr.insertCell(tr.cells.length);
   td.innerHTML ='<input type="button" value="X" onclick="deleteRow(this)" class="btn btn-outline-danger">';
 
+  document.getElementById("divdoc").style.visibility = "hidden";
+
  CalcularTotales();
 
 
@@ -136,19 +146,21 @@ var totals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
             TableData.shift();
 
             var docs = TableData.length;
-            console.log(TableData);
+            //console.log(TableData);
 
-            var deudores = TableData.filter(unique);
 
-            console.log(deudores);
+
+            var deudores = eliminarObjetosDuplicados(TableData, 'rut_deudor');
+
+            //console.log(deudores);
             var deudores = deudores.length;
 
 
   
 
-               console.log(document.getElementById('ope').value);
-               console.log(docs);
-               console.log(deudores);
+               //console.log(document.getElementById('ope').value);
+               //console.log(docs);
+               //console.log(deudores);
 
             if (document.getElementById('ope').value == 1) {
                 var ga_ope = Math.round(parseInt(deudores)*  parseInt(document.getElementById("not_gas").value) +   parseInt(deudores)*  parseInt(document.getElementById("env_gas").value) + 
@@ -162,16 +174,26 @@ var totals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     document.getElementById("descu").value = document.getElementById("otros_desc_ope").value;
 
     document.getElementById("liqui_ope").value = Math.round(parseInt(totals[5])-parseInt(totals[9])-parseInt(document.getElementById("com_cob_tot").value) - parseInt(document.getElementById("comi_tot").value) - parseInt(ga_ope) - parseInt(document.getElementById("otros_desc_ope").value))
-
+    document.getElementById("exc_ope").value = totals[12];
 
   });
 
 }
 
-function unique(value, index, self) { 
-    return self.indexOf(value) === index;
+function eliminarObjetosDuplicados(arr, prop) {
+     var nuevoArray = [];
+     var lookup  = {};
+ 
+     for (var i in arr) {
+         lookup[arr[i][prop]] = arr[i];
+     }
+ 
+     for (i in lookup) {
+         nuevoArray.push(lookup[i]);
+     }
+ 
+     return nuevoArray;
 }
-
 
 function deleteRow(r) {
     var i = r.parentNode.parentNode.rowIndex;
@@ -252,9 +274,75 @@ $(document).ajaxStart(function() {
   });  
 
 
+function reIngFinanGas() {
+
+    swal({
+            title: "Reingresar Datos",
+            text: "Para reingresar los Datos Financieros y Gastos Operacionales, se eliminaran los documentos ingresados\n¿Esta seguro que desea reingresar estos datos?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+       .then((willDelete) => {
+          if (willDelete) {
+            $("#docs tbody").remove();
+            $("#resumen").find('input:text').val('');
+            $("#monto_giro").val('');
+            $("#finan-gas :input").attr("disabled", false);
+            $("#reing").css("display", "none");
 
 
+             var totales= "<tr class='total'>"+
+          "<td style='display: none'></td>"+
+          "<td style='display: none'></td>"+
+          "<td>Total</td>"+
+          "<td></td>"+
+          "<td>0</td>"+
+          "<td></td>"+
+          "<td>0</td>"+
+          "<td></td>"+
+          "<td></td>"+
+          "<td></td>"+
+          "<td>0</td>"+
+          "<td>0</td>"+
+          "<td>0</td>"+
+          "<td>0</td>"+
+          "</tr>"
+     
+          $("#docs").append(totales)
 
+            swal("Ahora puede reingresar los valores y Documentos", {
+              icon: "success",
+            });
+          }
+    });
+}
+
+function verificador() {
+    //See notes about 'which' and 'key'
+    console.log("entra verificador");
+  
+      var cadena = document.forms['formIngDoc'].rut_deu.value;
+      var separador = "-"; // un espacio en blanco
+      var limite    = 2;
+      arregloDeSubCadenas = cadena.split(separador, limite);
+console.log(arregloDeSubCadenas);
+      var M=0,S=1;
+        for(;arregloDeSubCadenas[0];arregloDeSubCadenas[0]=Math.floor(arregloDeSubCadenas[0]/10))
+          S=(S+arregloDeSubCadenas[0]%10*(9-M++%6))%11;
+        //return S?S-1:'k';
+          
+          var digito = (S?S-1:'k');
+        
+  
+
+    if (arregloDeSubCadenas[1] != digito ) {
+      alert("el digito no corresponde" + arregloDeSubCadenas[1] + "deberia ser" + digito);
+    }else{
+      document.getElementById("divdoc").style.visibility = "visible";
+      document.getElementById("rut_deu").disabled = true;
+    }
+}
 
 
 
@@ -309,6 +397,8 @@ function GuardarOpe()
             var copia_fac_gas = document.getElementById('copia_fac_gas').value;
             var cert_gas = document.getElementById('cert_gas').value;
             var obs_ope = document.getElementById('obs_ope').value;
+            var iva_com_cob = document.getElementById('iva_com_cob').value;
+            var iva_comi_tot = document.getElementById('iva_comi_tot').value;
             console.log(fec_ope);
                        
             //console.log(fec_rut);
@@ -316,7 +406,8 @@ function GuardarOpe()
             $.ajax({
                 type: "POST",
                 url: "../controles/controlGuardarOpe.php",
-                data:   { "data" : TableData, "cli":cli,"fec_ope":fec_ope,"tipo_ope":tipo_ope,"tasa_ope":tasa_ope,"com_cob":com_cob,"com_cur":com_cur,"ape_ope":ape_ope,"dia_ope":dia_ope,"otros_desc_ope":otros_desc_ope,"monto_giro":monto_giro,"not_gas":not_gas,"env_gas":env_gas,"proc_gas":proc_gas,"copia_fac_gas":copia_fac_gas,"cert_gas":cert_gas, "obs_ope" :obs_ope},
+                data:   { "data" : TableData, "cli":cli,"fec_ope":fec_ope,"tipo_ope":tipo_ope,"tasa_ope":tasa_ope,"com_cob":com_cob,"com_cur":com_cur,"ape_ope":ape_ope,"dia_ope":dia_ope,"otros_desc_ope":otros_desc_ope,
+                "monto_giro":monto_giro,"not_gas":not_gas,"env_gas":env_gas,"proc_gas":proc_gas,"copia_fac_gas":copia_fac_gas,"cert_gas":cert_gas, "obs_ope" :obs_ope, "iva_com_cob" :iva_com_cob, "iva_comi_tot" :iva_comi_tot},
                 cache: false,
                 success: function(respuesta){
             alert(respuesta);
@@ -414,12 +505,13 @@ function GuardarOpe()
       </select>
     </div>
     <hr>
+    <div id="finan-gas" name="finan-gas">
     <div class="row" >
     <div class="col-12">
                 <h5>Datos Financieros</h5>
     </div>
     <div class="col-4">
-          <div class="form-group">
+          <div class="form-group" "row">
             <label for="tasa_ope">Tasa Operación:</label>
             <input type="number" class="form-control" id="tasa_ope" name="tasa_ope" min="0" step="any" required>
           </div>
@@ -492,58 +584,62 @@ function GuardarOpe()
     </div>
      <div class="col-4">   
           
-    <div class="form-group">
-            <label for="cert_gas">Certificado SII:</label>
-            <input type="number" class="form-control" id="cert_gas" name="cert_gas" min="0" required>
+          <div class="form-group">
+                  <label for="cert_gas">Certificado SII:</label>
+                  <input type="number" class="form-control" id="cert_gas" name="cert_gas" min="0" required>
           </div>
+          <div class="form-group">
+                <label for="cert_gas"> </label>
+                <button type="button" class="btn btn-outline-danger" onclick="reIngFinanGas()" id="reing" name="reing" style="display: none">Reingresar</button>
+          </div>
+    </div>
     </div>
     </div>
         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalDoc" id="btn-modal_doc" name="btn-modal_doc">Agregar Documento</button><br><br>   
 
 
-            <table class="table table-sm table-striped table-bordered" id="docs" name="docs">
-  <thead>
-    <tr class="encabezado">
-      <th scope="col"  style="display: none">Nom Deudor</th>
-      <th scope="col" style="display: none">Tipo Doc</th>
-      <th scope="col" >Rut Deudor</th>
-      <th scope="col" >Nro Documento</th>
-      <th scope="col">Monto ($)</th>
-      <th scope="col">Anticipo (%)</th>
-      <th scope="col">Financiado</th>
-      <th scope="col">Fecha Operación</th>
-      <th scope="col">Fecha Vencimiento</th>
-      <th scope="col">Plazo</th>
-      <th scope="col">Dif Precio</th>
-      <th scope="col">Com. Cobranza</th>
-      <th scope="col">Anticipado</th>
-      <th scope="col">Excedente</th>
+    <table class="table table-sm table-striped table-bordered" id="docs" name="docs">
+      <thead>
+        <tr class="encabezado">
+          <th scope="col"  style="display: none">Nom Deudor</th>
+          <th scope="col" style="display: none">Tipo Doc</th>
+          <th scope="col" >Rut Deudor</th>
+          <th scope="col" >Nro Documento</th>
+          <th scope="col">Monto ($)</th>
+          <th scope="col">Anticipo (%)</th>
+          <th scope="col">Financiado</th>
+          <th scope="col">Fecha Operación</th>
+          <th scope="col">Fecha Vencimiento</th>
+          <th scope="col">Plazo</th>
+          <th scope="col">Dif Precio</th>
+          <th scope="col">Com. Cobranza</th>
+          <th scope="col">Anticipado</th>
+          <th scope="col">Excedente</th>
 
-    </tr>
-  </thead>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+      
+        <tr class="total">
+          <td style="display: none"></td>
+          <td style="display: none"></td>
+          <td>Total</td>
+          <td></td>
+          <td>0</td>
+          <td></td>
+          <td>0</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr> 
+    </table>
 
-  <tbody>
-  </tbody>
-  
-    <tr class="total">
-      <td style="display: none"></td>
-      <td style="display: none"></td>
-      <td>Total</td>
-      <td></td>
-      <td>0</td>
-      <td></td>
-      <td>0</td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    
-</table>
-
+<div id="resumen" name="resumen">
 <div class="row">
 
     <div class="col-4">   
@@ -659,7 +755,9 @@ function GuardarOpe()
             <input type="number" class="form-control" id="monto_giro" name="monto_giro" style="width: 500px" required readonly>
           </div>
     </div>
-    
+
+</div>
+   
     
                 <div class="modal fade " id="ModalDoc" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
@@ -676,13 +774,15 @@ function GuardarOpe()
                             <label class="col-sm-2 col-form-label" >Rut Deudor:</label>
                             <div class="col-sm-2">
                             <input type="text" class="form-control" id="rut_deu" name="rut_deu" placeholder="xxxxxxxx-x" pattern="\d{3,8}-[\d|kK]{1}" maxlength="10" >
+
                             </div>
                             <label class="col-sm-3 col-form-label" >Nombre Deudor:</label>
                             <div class="col-sm-5">
-                            <input type="text" class="form-control" id="nom_deu" name="nom_deu" >
+                            <input type="text" class="form-control" id="nom_deu" name="nom_deu" onClick="verificador()" readonly>
                             </div>
                           </div>
                           <hr>
+                          <div name="divdoc" id="divdoc" style="visibility: hidden">
                            <div class="form-group row">
                             <div class="col-sm-6">
                             <select class="form-control" id="tip_doc" name="tip_doc" >
@@ -738,7 +838,7 @@ function GuardarOpe()
                             <button type="button" class="btn btn-outline-dark" onclick="agregar()">Agregar</button><br><br>
                       
                       </div>
-                    
+                    </div>
                   </div>
                 </div>
               </div>
@@ -747,7 +847,7 @@ function GuardarOpe()
           <input type="submit" class="btn btn-info" id="btnDoc" name="btnDoc" value="Guardar Operación" onclick="GuardarOpe()">
   </div>
   
-</form>
+</form> 
 
 </body>
 </html>

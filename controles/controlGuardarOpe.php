@@ -48,10 +48,13 @@ $TableData= json_decode($TableData,TRUE);
 		$copia_fac_gas = $_POST['copia_fac_gas'];
 		$cert_gas = $_POST['cert_gas'];
 
+		$iva_com_cob = $_POST['iva_com_cob'];
+		$iva_comi_tot = $_POST['iva_comi_tot'];
+
 		$vig_gasto = 1;
 
 		
-		$dao_ope = new OperacionDAO('', $fec_ope,$id_usu, $tipo_ope,$obs_ope,$tasa_ope,$com_cob,$com_cur,$ape_ope,$dia_ope,$otros_desc_ope,' ',$monto_giro,$cli_ope,'','', $fec_reg, $est_ope);
+		$dao_ope = new OperacionDAO('', $fec_ope,$id_usu, $tipo_ope,$obs_ope,$tasa_ope,$com_cob,$com_cur,$ape_ope,$dia_ope,$otros_desc_ope,' ',$monto_giro,$cli_ope,'','', $fec_reg, $est_ope,$iva_com_cob,$iva_comi_tot);
 
 
 
