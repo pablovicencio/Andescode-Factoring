@@ -31,6 +31,12 @@ $(document).ready(function () {
   ?>
 
 
+
+
+
+
+
+
 <div class="container" id="main">
     <div class="row">
         <div class="col-12 text-center">
@@ -39,7 +45,7 @@ $(document).ready(function () {
         <hr>
     </div>
     <hr>
-    <h5>Operaciónes y sus Estados&nbsp;<i class="fa fa-file-text" aria-hidden="true"></i></h5>
+    <h5>Operaciones Pendientes &nbsp;<i class="fa fa-clock-o" aria-hidden="true"></i></i></h5>
     <br>
     <table id="dtBasicExample" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead class="thead-dark">
@@ -53,12 +59,13 @@ $(document).ready(function () {
         <th class="th-sm">Cliente<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
         <th class="th-sm">Rut<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
         <th class="th-sm">Estado<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+        <th class="th-sm">Cursar<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
       </tr>
     </thead>
     <tbody>
 
     <?php
-      $re = $fun ->cargar_datos_ope();
+      $re = $fun ->cargar_datos_ope(2);
       foreach($re as $row)
         {
 
@@ -75,6 +82,9 @@ $(document).ready(function () {
                   <td><?php echo $row['cliente']?></td>
                   <td><?php echo $row['rut']?></td>
                   <td><?php echo $row['estado']?></td>
+                  <td><a style="text-decoration:none" href="check_cursatura.php?idope=<?php echo $row['ope']?>" name="" value="">Cursar</a>  <i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
+                
+
   
       </tr>
 
@@ -83,7 +93,7 @@ $(document).ready(function () {
 <?php } ?>  
 
     </tbody>
-    <!--<tfoot>
+    <tfoot>
       <tr>
         <th>N°</th>
         <th>Fecha</th>
@@ -94,8 +104,9 @@ $(document).ready(function () {
         <th>Cliente</th>
         <th>Rut</th>
         <th>Estado</th>
+        <th>Cursar</th>
       </tr>
-    </tfoot> -->
+    </tfoot> 
   </table>
 
 
