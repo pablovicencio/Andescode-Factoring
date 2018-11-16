@@ -90,13 +90,14 @@ class OperacionDAO
                 $pdo = AccesoDB::getCon();
 
                 $sql_ing_ope = "INSERT INTO `operaciones`(`FEC_OPE`,`USU_OPE`,`TIPO_OPE`,`OBS_OPE`,`TASA_OPE`,`COM_COB_OPE`,`COM_CUR_OPE`,`APERTURA_OPE`,`DIA_OPE`,`OTROS_DESC_OPE`,`MONTO_GIRO_OPE`,`CLI_OPE`,`FEC_REG_OPE`,`EST_OPE`,`IVA_COM_COB_OPE`,`IVA_COM_OPE`)
-                    VALUES(:fec_ope, :usu_ope, :tipo_ope, ' ', :tasa_ope, :com_cob_ope, :com_cur_ope, :apertura_ope, :dia_ope, :otros_desc_ope, :monto_giro_ope, :cli_ope, :fec_reg_ope, :est_ope, :iva_com_cob, :iva_comi_tot)";
+                    VALUES(:fec_ope, :usu_ope, :tipo_ope, :obs_ope, :tasa_ope, :com_cob_ope, :com_cur_ope, :apertura_ope, :dia_ope, :otros_desc_ope, :monto_giro_ope, :cli_ope, :fec_reg_ope, :est_ope, :iva_com_cob, :iva_comi_tot)";
 
 
                 $stmt = $pdo->prepare($sql_ing_ope);
                 $stmt->bindParam(":fec_ope", $this->fec_ope, PDO::PARAM_STR);
                 $stmt->bindParam(":usu_ope", $this->id_usu, PDO::PARAM_STR);
                 $stmt->bindParam(":tipo_ope", $this->tipo_ope, PDO::PARAM_INT);
+                $stmt->bindParam(":obs_ope", $this->obs_ope, PDO::PARAM_STR);
                 $stmt->bindParam(":tasa_ope", $this->tasa_ope, PDO::PARAM_INT);
                 $stmt->bindParam(":com_cob_ope", $this->com_cob, PDO::PARAM_INT);
                 $stmt->bindParam(":com_cur_ope", $this->com_cur, PDO::PARAM_INT);

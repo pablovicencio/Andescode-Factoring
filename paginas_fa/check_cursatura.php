@@ -57,7 +57,7 @@
             <div class="col-6">
             <?php
   
-            $st = $fun ->cargar_datos_ope(1);
+            $st = $fun ->cargar_datos_ope($idope);
             foreach($st as $row)
                 {   
                     ?>                  

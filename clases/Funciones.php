@@ -9,6 +9,47 @@ class Funciones
 
 
 
+   /*///////////////////////////////////////
+    Validar rut deudor
+    //////////////////////////////////////*/
+        public function validar_rut_deudor($rut) {
+
+            try{
+                
+                
+                $pdo = AccesoDB::getCon();
+
+               
+                    $sql = "select nom_deu_doc from documentos where rut_deu_doc = :rut order by 1 limit 1;";
+                
+                
+
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(":rut", $rut, PDO::PARAM_STR);
+                $stmt->execute();
+
+                
+
+                $totalFilas    =    $stmt->rowCount();
+
+                if ($totalFilas == 0 ) {
+                    return ('0');
+                 }else{
+                $response = $stmt->fetchAll();
+                   return $response;
+                 }
+
+
+            } catch (Exception $e) {
+                echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+            }
+        }
+
+
+
+
+
+
 
 
    /*///////////////////////////////////////

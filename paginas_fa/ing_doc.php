@@ -320,13 +320,13 @@ function reIngFinanGas() {
 
 function verificador() {
     //See notes about 'which' and 'key'
-    console.log("entra verificador");
+    //console.log("entra verificador");
   
       var cadena = document.forms['formIngDoc'].rut_deu.value;
       var separador = "-"; // un espacio en blanco
       var limite    = 2;
       arregloDeSubCadenas = cadena.split(separador, limite);
-console.log(arregloDeSubCadenas);
+//console.log(arregloDeSubCadenas);
       var M=0,S=1;
         for(;arregloDeSubCadenas[0];arregloDeSubCadenas[0]=Math.floor(arregloDeSubCadenas[0]/10))
           S=(S+arregloDeSubCadenas[0]%10*(9-M++%6))%11;
@@ -337,11 +337,45 @@ console.log(arregloDeSubCadenas);
   
 
     if (arregloDeSubCadenas[1] != digito ) {
-      alert("el digito no corresponde" + arregloDeSubCadenas[1] + "deberia ser" + digito);
+      swal("Error de Rut", "El digito verificador: " + arregloDeSubCadenas[1] + " no corresponde,  deberia ser " + digito, "error");
     }else{
-      document.getElementById("divdoc").style.visibility = "visible";
-      document.getElementById("rut_deu").disabled = true;
+      $.ajax({
+                type: "POST",
+                url: "../controles/controlValidarRutDeudor.php",
+                data:   { "rut" : document.forms['formIngDoc'].rut_deu.value},
+                cache: false,
+                success: function(respuesta){
+            console.log(respuesta);
+            if (respuesta == 0) {
+                    document.getElementById("rut_desc").style.display = "block";
+                    document.getElementById("rut_deu").disabled = true;
+                    document.getElementById("nom_deu").readOnly = false;
+                    document.getElementById("divdoc").style.visibility = "visible";
+                    document.getElementById("val_rut").style.display = "none";
+                    document.getElementById("nom_deu").focus();
+            }else{
+                    document.getElementById("nom_deu").value = respuesta;
+                    document.getElementById("rut_deu").disabled = true;
+                    document.getElementById("divdoc").style.visibility = "visible";
+                    document.getElementById("val_rut").style.display = "none";
+
+
+            }
+        }
+
+            });
     }
+}
+
+
+
+function CambiaDeudor() {
+          document.getElementById("rut_deu").value = '';
+          document.getElementById("nom_deu").value = '';
+          document.getElementById("divdoc").style.visibility = "hidden";
+          document.getElementById("rut_deu").disabled = false;
+          document.getElementById("val_rut").style.display = "block";
+
 }
 
 
@@ -771,16 +805,27 @@ function GuardarOpe()
                     <div class="col-12">
                           <br>
                            <div class="form-group row">
-                            <label class="col-sm-2 col-form-label" >Rut Deudor:</label>
-                            <div class="col-sm-2">
-                            <input type="text" class="form-control" id="rut_deu" name="rut_deu" placeholder="xxxxxxxx-x" pattern="\d{3,8}-[\d|kK]{1}" maxlength="10" >
 
+                            <div class="col-4"> 
+                                <div class="input-group input-group mb-3">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Rut Deudor</span>
+                                  </div>
+                                  <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="rut_deu" name="rut_deu" placeholder="xxxxxxxx-x" pattern="\d{3,8}-[\d|kK]{1}" maxlength="10">
+                                </div>
+                                <button type="button" class="btn btn-outline-info" onclick="verificador()" id="val_rut" name="val_rut">Validar</button>
                             </div>
-                            <label class="col-sm-3 col-form-label" >Nombre Deudor:</label>
-                            <div class="col-sm-5">
-                            <input type="text" class="form-control" id="nom_deu" name="nom_deu" onClick="verificador()" readonly>
+
+                            <div class="col-7"> 
+                                <div class="input-group input-group mb-3">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Nombre Deudor</span>
+                                  </div>
+                                  <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="nom_deu" name="nom_deu" readonly>
+                                </div>
+                                <h6><span id="rut_desc" name="rut_in" style="display: none" class="badge badge-info">El rut no fue encontrado, favor ingrese el nombre del deudor</span></h6>
+                              </div>
                             </div>
-                          </div>
                           <hr>
                           <div name="divdoc" id="divdoc" style="visibility: hidden">
                            <div class="form-group row">
@@ -835,7 +880,9 @@ function GuardarOpe()
                           </div>
                             <hr>
                             
-                            <button type="button" class="btn btn-outline-dark" onclick="agregar()">Agregar</button><br><br>
+                            <button type="button" class="btn btn-outline-danger" onclick="CambiaDeudor()">Cambiar Deudor</button>
+                             <button type="button" class="btn btn-outline-info float-right" onclick="agregar()">Agregar</button>
+                            <br><br>
                       
                       </div>
                     </div>

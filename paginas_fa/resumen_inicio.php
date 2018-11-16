@@ -65,7 +65,7 @@ $(document).ready(function () {
     <tbody>
 
     <?php
-      $re = $fun ->cargar_datos_ope(2);
+      $re = $fun ->cargar_datos_ope(1);
       foreach($re as $row)
         {
 

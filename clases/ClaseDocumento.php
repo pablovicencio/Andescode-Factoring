@@ -44,7 +44,7 @@ class DocumentoDAO
                 
                 foreach ($this->data as $row) {
                               $rut_deu = $row['rut_deudor'];
-                              $nom_deu = $row['nom_deudor'];
+                              $nom_deu = strtoupper($row['nom_deudor']);
                               $nro_doc = $row['nro_doc'];
                               $monto_doc = $row['monto_doc'];
                               $anticipo_doc = $row['anticipo'];
