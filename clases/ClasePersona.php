@@ -23,10 +23,10 @@ Clase abstracta Persona
                 
                 $pdo = AccesoDB::getCon();
 
-                $sql_login = "select id_usu id, concat(NOM1_USU,' ',APEPAT_USU,' ',APEMAT_USU) nom, mail_usu mail, id_perfil perfil, pass_usu pass
+                $sql_login = "select id_usu id, concat(NOM1_USU,' ',APEPAT_USU,' ',APEMAT_USU) nom, mail_usu mail, id_perfil perfil, pass_usu pass, cargo_usu
                                 from usuarios where vig_usu = 1 and rut_usu = :rut
                                 union all 
-                                select id_cli, nom_cli, MAIL_CLI, 0, pass_cli
+                                select id_cli, nom_cli, MAIL_CLI, 0, pass_cli, 0
                                 from clientes
                                 where vig_cli= 1 and rut_cli = :rut ";
 
@@ -45,6 +45,7 @@ Clase abstracta Persona
                         $_SESSION['mail_fac'] = $row['mail'];
                         $_SESSION['nom_fac'] = $row['nom'];
                         $_SESSION['perfil_fac'] = $row['perfil'];
+                        $_SESSION['cargo_fac'] = $row['cargo_usu'];
                         $_SESSION['start_fac'] = time();
                         $_SESSION['expire_fac'] = $_SESSION['start_fac'] + (5 * 60);
                         

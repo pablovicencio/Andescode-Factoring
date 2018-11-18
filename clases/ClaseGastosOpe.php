@@ -15,6 +15,7 @@ class GastosOpeDAO
     private $copia_fac_gasto;
     private $sii_cert_gasto;
     private $vig_gasto;
+    private $total_gasto;
 
     public function __construct($id=null,
                                 $not_deudor_gasto=null,
@@ -22,7 +23,8 @@ class GastosOpeDAO
                                 $proc_gasto=null,
                                 $copia_fac_gasto=null,
                                 $sii_cert_gasto=null,
-                            	$vig_gasto=null) {
+                            	$vig_gasto=null,
+                                $total_gasto=null) {
 
 
 
@@ -33,6 +35,7 @@ class GastosOpeDAO
     $this->copia_fac = $copia_fac_gasto;
     $this->sii_cert = $sii_cert_gasto;
     $this->vig = $vig_gasto;
+    $this->total_gasto = $total_gasto;
     }
 
     public function getGastosOpe() {
@@ -48,8 +51,8 @@ class GastosOpeDAO
              
                 $pdo = AccesoDB::getCon();
 
-                $sql_guardar_gastos = "INSERT INTO `gastos_ope`(`NOT_DEUDOR_GASTO`,`ENVIO_CORREO_GASTO`,`PROC_GASTO`,`COPIA_FAC_GASTO`,`SII_CERT_GASTO`,`VIG_GASTO`,`ID_OPE_GASTO`)
-									VALUES(:not_deudor,:envio_correo,:proc_gasto,:copia_fac,:sii_cert,:vig,:ope)";
+                $sql_guardar_gastos = "INSERT INTO `gastos_ope`(`NOT_DEUDOR_GASTO`,`ENVIO_CORREO_GASTO`,`PROC_GASTO`,`COPIA_FAC_GASTO`,`SII_CERT_GASTO`,`VIG_GASTO`,`ID_OPE_GASTO`,`total_gasto_ope`)
+									VALUES(:not_deudor,:envio_correo,:proc_gasto,:copia_fac,:sii_cert,:vig,:ope, :total)";
 
 
                 $stmt = $pdo->prepare($sql_guardar_gastos);
@@ -60,6 +63,7 @@ class GastosOpeDAO
                 $stmt->bindParam(":sii_cert", $this->sii_cert, PDO::PARAM_INT);
                 $stmt->bindParam(":vig", $this->vig, PDO::PARAM_BOOL);
                 $stmt->bindParam(":ope", $id_ope, PDO::PARAM_INT);
+                $stmt->bindParam(":total", $this->total_gasto, PDO::PARAM_INT);
                 $stmt->execute();
         
 

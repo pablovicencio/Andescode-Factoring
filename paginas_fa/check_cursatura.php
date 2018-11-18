@@ -44,29 +44,16 @@
             <div class="col-6">
             <?php
   
-                    $re = $fun ->cargar_datos_cli(1,2);
+                    $re = $fun ->cargar_datos_cli_ope($idope);
                     foreach($re as $row)
                         {   
-                            ?>
+            ?>
                 <label for="nom">Nombre o Razón Social&nbsp;<i class="fa fa-user-circle-o" aria-hidden="true">&nbsp;</i>:</label> 
                 <input type="text" value="<?php echo $row["nom_cli"]?>" class="form-control" id="nom_cli" name="nom_cli"  maxlength="100" placeholder="Nombre o Razón Social" required readonly> 
-                <?php
-                }
-                ?>
             </div>
             <div class="col-6">
-            <?php
-  
-            $st = $fun ->cargar_datos_ope($idope);
-            foreach($st as $row)
-                {   
-                    ?>                  
-          
                 <label for="fec">Fecha&nbsp;<i class="fa fa-calendar" aria-hidden="true">&nbsp;</i>:</label>
-                <input type="text" value="<?php echo $row["fecha"]?>" class="form-control" id="fec_cre_cli" name="fec_cre_cli" readonly>
-                <?php
-                }
-                ?>
+                <input type="text" value="<?php echo date('d-m-Y',strtotime($row["fec_ope"]));?>" class="form-control" id="fec_ope" name="fec_cre_cli" readonly>
             </div>
         </div>
         <hr>
@@ -87,26 +74,19 @@
                         <br>
                            
                         <label for="lineafacnac">Linea Factoring Nacional:</label>
-                        <input type="number" value="<?php echo $row["linea_cred_cli"]?>"class="form-control" id="lineafacnac" name="lineafacnac"  maxlength="100" placeholder="$0" required>
+                        <input type="number" value="<?php echo $row["linea_cred_cli"]?>" class="form-control" id="lineafacnac" name="lineafacnac"  maxlength="100" placeholder="$0" required>
 
                         <label for="ocupaprod">Ocupada Producto:</label>
-                        <input type="number" class="form-control" id="ocupaprod" name="ocupaprod"  maxlength="100" placeholder="$0" required>
+                        <input type="number" value="<?php echo $row["ocupada"]?>" class="form-control" id="ocupaprod" name="ocupaprod"  maxlength="100" placeholder="$0" required>
                         
                         <label for="lineatotal">Linea Total:</label>
-                        <input type="number" class="form-control" id="lineatotal" name="lineatotal"  maxlength="100" placeholder="$0" required>
+                        <input type="number" value="<?php echo $row["linea_cred_cli"]?>" class="form-control" id="lineatotal" name="lineatotal"  maxlength="100" placeholder="$0" required>
                         
                         <label for="ocupatotal">Ocupada Total.:</label>
-                        <input type="number" class="form-control" id="ocupatotal" name="ocupatotal"  maxlength="100" placeholder="$0" required>
-                        
-                        <label for="linocupdeu">Linea Ocupada Deudor:</label>
-                        <input type="number" class="form-control" id="linocupdeu" name="linocupdeu"  maxlength="100" placeholder="$0" required>
-                        
-                        <label for="deudaleasing">Deuda Leasing:</label>
-                        <input type="number" class="form-control" id="deudaleasing" name="deudaleasing"  maxlength="100" placeholder="$0" required>
-                        
-                        <label for="venclinea">Vencimiento Linea:</label>
-                        <input type="date" class="form-control" id="venclinea" name="venclinea"  maxlength="100" placeholder="$0" required>
-                   
+                        <input type="number" value="<?php echo $row["ocupada"]?>" class="form-control" id="ocupatotal" name="ocupatotal"  maxlength="100" placeholder="$0" required>
+                <?php
+                    }   
+                ?>     
                     </div>
                 </div>
 
@@ -129,8 +109,6 @@
                         <label for="masde60">Más de 60 Días:</label>
                         <input type="number" class="form-control" id="masde60" name="masde60"  maxlength="100" placeholder="$0" required>
 
-                        <label for="ctasxcobrar">Cuentas x cobrar:</label>
-                        <input type="number" class="form-control" id="ctasxcobrar" name="ctasxcobrar"  maxlength="100" placeholder="$0" required>
 
                         <label for="deudaemprelac">Deuda Emp. Relac.:</label>
                         <input type="number" class="form-control" id="deudaemprelac" name="deudaemprelac"  maxlength="100" placeholder="$0" required>
@@ -188,24 +166,31 @@
                     <!-- Contenido 1--> 
                     
                     <br>
+
+                    <?php
+  
+                        $re1 = $fun ->cargar_datos_det_ope($idope);
+                        foreach($re1 as $row1)
+                            { }  
+                    ?>
                     
                     <label for="tipoope">Tipo de Operación:</label>
-                    <input type="text" class="form-control" id="tipoope" name="tipoope"  maxlength="100" placeholder="Tipo operación" required>
+                    <input type="text" value="<?php echo $row1["tipo_ope"]?>" class="form-control" id="tipoope" name="tipoope"  maxlength="100" placeholder="Tipo operación" required>
 
                     <label for="numcesion">Número de Cesión:</label>
-                    <input type="number" class="form-control" id="numcesion" name="numcesion"  maxlength="100" placeholder="0" required>
+                    <input type="number" value="<?php echo $row1["id_ope"]?>" class="form-control" id="numcesion" name="numcesion"  maxlength="100" placeholder="0" required>
                     
                     <label for="fechope">Fecha de Operación:</label>
-                    <input type="date" class="form-control" id="fechope" name="fechope"  maxlength="100" placeholder="$0" required>
+                    <input type="text" value="<?php echo date('d-m-Y',strtotime($row1["fec_ope"]));?>" class="form-control" id="fechope" name="fechope"  maxlength="100" placeholder="$0" required>
 
                     <label for="cantdoc">Cantidad de Documentos:</label>
-                    <input type="number" class="form-control" id="cantdoc" name="cantdoc"  maxlength="100" placeholder="0" required>
+                    <input type="number" value="<?php echo $row1["cant_doc"]?>" class="form-control" id="cantdoc" name="cantdoc"  maxlength="100" placeholder="0" required>
 
                     <label for="tipodoc">Tipo de Documento:</label>
-                    <input type="text" class="form-control" id="tipodoc" name="tipodoc"  maxlength="100" placeholder="Tipo operación" required>
+                    <input type="text" value="<?php echo $row1["tipo_doc"]?>" class="form-control" id="tipodoc" name="tipodoc"  maxlength="100" placeholder="Tipo operación" required>
                     <hr>
                     <label for="plazoprom">Plazo Promedio:</label>
-                    <input type="number" class="form-control" id="plazoprom" name="plazoprom"  maxlength="100" placeholder="0" required>
+                    <input type="number" value="<?php echo $row1["plazo_prom"]?>" class="form-control" id="plazoprom" name="plazoprom"  maxlength="100" placeholder="0" required>
 
                     <label for="vencmas90">Vencimiento más de 90 días:</label>
                     <input type="number" class="form-control" id="vencmas90" name="vencmas90"  maxlength="100" placeholder="0" required>
@@ -224,19 +209,19 @@
                     <br>
 
                     <label for="porcenticipo">% Anticipo:</label>
-                    <input type="text" class="form-control" id="porcenticipo" name="porcenticipo"  maxlength="100" placeholder="%" required>
+                    <input type="number" value="<?php echo $row1["anticipo_prom"]?>" class="form-control" id="porcenticipo" name="porcenticipo"  maxlength="100" placeholder="%" required>
 
                     <label for="servfactoring">Servicio Factoring:</label>
-                    <input type="number" class="form-control" id="servfactoring" name="servfactoring"  maxlength="100" placeholder="0" required>
+                    <input type="number" value="<?php echo $row1["com_cob_ope"]?>" class="form-control" id="servfactoring" name="servfactoring"  maxlength="100" placeholder="0" required>
 
                     <label for="tasaope">Tasa de Operación:</label>
-                    <input type="number" class="form-control" id="tasaope" name="tasaope"  maxlength="100" placeholder="0" required>
+                    <input type="number" value="<?php echo $row1["tasa_ope"]?>" class="form-control" id="tasaope" name="tasaope"  maxlength="100" placeholder="0" required>
                     
                     <label for="mbssapertura">Margen Bru. Mens. s/apertura:</label>
                     <input type="number" class="form-control" id="mbssapertura" name="mbssapertura"  maxlength="100" placeholder="0" required>
 
                     <label for="ipocapertura">Ingresos por Operación c/apertura:</label>
-                    <input type="number" class="form-control" id="ipocapertura" name="ipocapertura"  maxlength="100" placeholder="0" required>     
+                    <input type="number" value="<?php echo $row1["ing_por_ope"]?>" class="form-control" id="ipocapertura" name="ipocapertura"  maxlength="100" placeholder="0" required>     
                 </div>
                 <!-- FIN Contenido 2--> 
             </div>
@@ -245,29 +230,29 @@
                 <div class="col-12">
                 <!--  Contenido 3-->
                     <label for="mondoc">Monto de Documentos:</label>
-                    <input type="number" class="form-control" id="mondoc" name="mondoc"  maxlength="100" placeholder="0" required>
+                    <input type="number" value="<?php echo $row1["monto_docs"]?>" class="form-control" id="mondoc" name="mondoc"  maxlength="100" placeholder="0" required>
                     
                     <label for="precompra">Precio de Compra:</label>
-                    <input type="number" class="form-control" id="precompra" name="precompra"  maxlength="100" placeholder="0" required>
+                    <input type="number" value="<?php echo $row1["monto_finan"]?>"  class="form-control" id="precompra" name="precompra"  maxlength="100" placeholder="0" required>
                    
                     <label for="difprecio">Diferencia de Precio:</label>
-                    <input type="number" class="form-control" id="difprecio" name="difprecio"  maxlength="100" placeholder="0" required>
+                    <input type="number" value="<?php echo $row1["dif_pre"]?>"  class="form-control" id="difprecio" name="difprecio"  maxlength="100" placeholder="0" required>
                    
                     <label for="monantici">Monto Anticipado:</label>
-                    <input type="number" class="form-control" id="monantici" name="monantici"  maxlength="100" placeholder="0" required>
+                    <input type="number" value="<?php echo $row1["ant_doc"]?>"  class="form-control" id="monantici" name="monantici"  maxlength="100" placeholder="0" required>
                    
                     <label for="servfactoring">Servicio Factoring c/IVA:</label>
-                    <input type="number" class="form-control" id="servfactoring" name="servfactoring"  maxlength="100" placeholder="0" required>
+                    <input type="number" value="<?php echo $row1["serv_fact"]?>"  class="form-control" id="servfactoring" name="servfactoring"  maxlength="100" placeholder="0" required>
                    
                     <label for="servadmin">Serv. Admin. c/IVA:</label>
-                    <input type="number" class="form-control" id="servadmin" name="servadmin"  maxlength="100" placeholder="0" required>
+                    <input type="number" value="<?php echo $row1["serv_adm"]?>"  class="form-control" id="servadmin" name="servadmin"  maxlength="100" placeholder="0" required>
                    
                     <label for="gastosope">Gastos Operacionales:</label>
-                    <input type="number" class="form-control" id="gastosope" name="gastosope"  maxlength="100" placeholder="0" required>
+                    <input type="number" value="<?php echo $row1["gasto_ope"]?>" class="form-control" id="gastosope" name="gastosope"  maxlength="100" placeholder="0" required>
                     <br><br><br><br>
 
                     <label for="giro">Giro Total:</label>
-                    <input type="text" class="form-control" id="giro" name="giro"  maxlength="100" placeholder="0" required>
+                    <input type="text" value="<?php echo $row1["monto_giro_ope"]?>" class="form-control" id="giro" name="giro"  maxlength="100" placeholder="0" required>
                     <div class="input-group"> 
                     <br>
                     <!--

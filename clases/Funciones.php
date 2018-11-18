@@ -7,6 +7,102 @@ class Funciones
 {
 
 
+    /*///////////////////////////////////////
+    Cargar Datos de detalle de la operacion (check_cursatura) 
+    //////////////////////////////////////*/
+    public function cargar_datos_det_ope($idope){
+
+        try{
+            $pdo = AccesoDB::getCon();
+            
+                $sql = "select t_o.desc_item tipo_ope, a.id_ope,a.fec_ope,
+                        (select count(id_doc) from documentos d where d.id_ope = a.id_ope) cant_doc,
+                        (select t_d.desc_item from tab_param t_d where cod_grupo = 3 and t_d.cod_item = 
+                                (select distinct tipo_doc from documentos e where e.id_ope = a.id_ope)) tipo_doc,
+                        round(((select sum(plazo_doc) from documentos e where e.id_ope = a.id_ope)/
+                        (select count(id_doc) from documentos d where d.id_ope = a.id_ope)
+                        ),0) plazo_prom,
+                         round(((select sum(anticipo_porc) from documentos e where e.id_ope = a.id_ope)/
+                        (select count(id_doc) from documentos d where d.id_ope = a.id_ope)
+                        ),0) anticipo_prom,
+                        a.com_cob_ope, a.tasa_ope,
+                        round(((select sum(COM_COB_DOC) from documentos e where e.id_ope = a.id_ope)/
+                        (select count(id_doc) from documentos d where d.id_ope = a.id_ope)
+                        ),0) ing_por_ope,
+                        (select sum(monto_doc) from documentos d where d.id_ope = a.id_ope) monto_docs,
+                        (select sum(monto_finan_doc) from documentos d where d.id_ope = a.id_ope) monto_finan,
+                        (select sum(dif_pre_doc) from documentos d where d.id_ope = a.id_ope) dif_pre,
+                        (select sum(anticipo_doc) from documentos d where d.id_ope = a.id_ope) ant_doc,
+                        round(((select sum(monto_doc) from documentos d where d.id_ope = a.id_ope)*
+                        (select (sum(com_cob_doc) /100)/30 from documentos d where d.id_ope = a.id_ope)
+                        *((select sum(plazo_doc) from documentos e where e.id_ope = a.id_ope)/
+                        (select count(id_doc) from documentos d where d.id_ope = a.id_ope)
+                        )),0) serv_fact,
+                        (a.com_cur_ope + a.iva_com_ope) serv_adm,
+                        (select total_gasto_ope from gastos_ope g where g.id_ope_gasto = a.id_ope) gasto_ope,
+                        a.monto_giro_ope
+                        from operaciones a, tab_param t_o
+                        where a.id_ope = :ope and  t_o.cod_grupo = 6 and t_o.COD_ITEM = a.tipo_ope";
+            
+            
+               
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(":ope", $idope, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $response = $stmt->fetchAll();
+            return $response;
+
+        } catch (Exception $e) {
+            echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+        }
+    }
+
+
+
+
+   /*///////////////////////////////////////
+    Contar Ope para resumen por cargo
+    //////////////////////////////////////*/
+        public function contador_ope($cargo){
+
+            try{
+                
+                
+                $pdo = AccesoDB::getCon();
+
+
+               if ($cargo == 2) {
+                  $sql = "select count(id_ope) ope from operaciones where est_ope = 1";
+               }elseif ($cargo == 3) {
+                   $sql = "select count(id_ope) ope from operaciones where est_ope = 3";
+               }
+                    
+                
+                
+
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute();
+
+                
+
+                $totalFilas    =    $stmt->rowCount();
+
+                if ($totalFilas == 0 ) {
+                    return ('0');
+                 }else{
+                $response = $stmt->fetchAll();
+                   return $response;
+                 }
+
+
+            } catch (Exception $e) {
+                echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+            }
+        }
+
+
 
 
    /*///////////////////////////////////////
@@ -20,7 +116,7 @@ class Funciones
                 $pdo = AccesoDB::getCon();
 
                
-                    $sql = "select nom_deu_doc from documentos where rut_deu_doc = :rut order by 1 limit 1;";
+                    $sql = "select nom_deu_doc from documentos where rut_deu_doc = :rut order by 1 limit 1";
                 
                 
 
@@ -282,27 +378,27 @@ class Funciones
                 echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
             }
         }
- /*///////////////////////////////////////
+    /*///////////////////////////////////////
     Cargar Datos de Operaciones 
     //////////////////////////////////////*/
-    public function cargar_datos_ope($opc){
+    public function cargar_datos_ope(){
 
         try{
             $pdo = AccesoDB::getCon();
-            if($opc == 1){
+            //if($cargo == 1){
                 $sql = "SELECT O.ID_OPE OPE,O.FEC_OPE FECHA,U.NICK_USU USUARIO,T1.DESC_ITEM TIPO,TASA_OPE TASA,MONTO_GIRO_OPE GIRADO,C.NOM_CLI CLIENTE,C.RUT_CLI RUT,T2.DESC_ITEM AS ESTADO
                 FROM OPERACIONES O, USUARIOS U,TAB_PARAM T1,CLIENTES C,TAB_PARAM T2
                 WHERE O.EST_OPE = T2.COD_ITEM AND T2.COD_GRUPO = 7 AND T2.VIG_ITEM = 1
                 AND O.TIPO_OPE = T1.COD_ITEM AND T1.COD_GRUPO = 3 AND T1.VIG_ITEM = 1
                 AND U.ID_USU = O.USU_OPE AND  C.ID_CLI = O.CLI_OPE ORDER BY fecha DESC";
-            }else if ($opc == 2){
-                $sql = "SELECT O.ID_OPE OPE,DATE_FORMAT(O.FEC_OPE, '%d-%m-%Y') FECHA,U.NICK_USU USUARIO,T1.DESC_ITEM TIPO,TASA_OPE TASA,MONTO_GIRO_OPE GIRADO,C.NOM_CLI CLIENTE,C.RUT_CLI RUT,T2.DESC_ITEM AS ESTADO
-                FROM OPERACIONES O, USUARIOS U,TAB_PARAM T1,CLIENTES C,TAB_PARAM T2
-                WHERE O.EST_OPE = T2.COD_ITEM AND T2.COD_GRUPO = 7 AND T2.VIG_ITEM = 1
-                AND O.TIPO_OPE = T1.COD_ITEM AND T1.COD_GRUPO = 3 AND T1.VIG_ITEM = 1
-                AND U.ID_USU = O.USU_OPE AND  C.ID_CLI = O.CLI_OPE and T2.DESC_ITEM = 'APROBADA'";
+            // }else if ($opc == 2){
+            //     $sql = "SELECT O.ID_OPE OPE,DATE_FORMAT(O.FEC_OPE, '%d-%m-%Y') FECHA,U.NICK_USU USUARIO,T1.DESC_ITEM TIPO,TASA_OPE TASA,MONTO_GIRO_OPE GIRADO,C.NOM_CLI CLIENTE,C.RUT_CLI RUT,T2.DESC_ITEM AS ESTADO
+            //     FROM OPERACIONES O, USUARIOS U,TAB_PARAM T1,CLIENTES C,TAB_PARAM T2
+            //     WHERE O.EST_OPE = T2.COD_ITEM AND T2.COD_GRUPO = 7 AND T2.VIG_ITEM = 1
+            //     AND O.TIPO_OPE = T1.COD_ITEM AND T1.COD_GRUPO = 3 AND T1.VIG_ITEM = 1
+            //     AND U.ID_USU = O.USU_OPE AND  C.ID_CLI = O.CLI_OPE and T2.DESC_ITEM = 'APROBADA'";
 
-            }
+            //}
             
             
                
@@ -622,7 +718,7 @@ class Funciones
     /*///////////////////////////////////////
     Cargar datos de Cliente
     //////////////////////////////////////*/
-    public function cargar_datos_cli($id_cli,$sel){
+    public function cargar_datos_cli_ope($ope){
 
         try{
             
@@ -631,13 +727,14 @@ class Funciones
 
 
                     
-            if ($sel == 1) {
-                 $sql = "";
-            }else if ($sel == 2) {
-                $sql = "select *                
-
-                from clientes where ID_CLI = :id_cli";
-            }  
+            
+                $sql = "select 
+                        a.nom_cli, b.fec_ope ,
+                        a.linea_cred_cli, 
+                        (select sum(monto_giro_ope) from operaciones c where c.cli_ope = 1 and (c.est_ope = 3 or c.id_ope = b.id_ope)) ocupada,
+                        a.linea_cred_cli
+                        from clientes a inner join  operaciones b on a.id_cli = b.cli_ope where id_ope = :ope";
+    
 
 
 
@@ -645,12 +742,41 @@ class Funciones
             
 
             $stmt = $pdo->prepare($sql);
-            $stmt->bindParam(":id_cli", $id_cli, PDO::PARAM_INT);
+            $stmt->bindParam(":ope", $ope, PDO::PARAM_INT);
             $stmt->execute();
 
             $response = $stmt->fetchAll();
             return $response;
 
+        } catch (Exception $e) {
+            echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+        }
+    }
+
+
+    /*///////////////////////////////////////
+    Cargar datos de Cliente
+    //////////////////////////////////////*/
+    public function cargar_datos_cli($id_cli,$sel){
+
+         try{
+            
+            
+            $pdo = AccesoDB::getCon();
+                    
+            if ($sel == 1) {
+                 $sql = "";
+            }else if ($sel == 2) {
+                $sql = "select *                
+                from clientes where ID_CLI = :id_cli";
+            }  
+                   
+            
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(":id_cli", $id_cli, PDO::PARAM_INT);
+            $stmt->execute();
+            $response = $stmt->fetchAll();
+            return $response;
         } catch (Exception $e) {
             echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
         }

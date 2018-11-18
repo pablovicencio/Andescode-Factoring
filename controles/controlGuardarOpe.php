@@ -50,6 +50,7 @@ $TableData= json_decode($TableData,TRUE);
 
 		$iva_com_cob = $_POST['iva_com_cob'];
 		$iva_comi_tot = $_POST['iva_comi_tot'];
+		$ga_ope = $_POST['ga_ope'];
 
 		$vig_gasto = 1;
 
@@ -72,7 +73,7 @@ $TableData= json_decode($TableData,TRUE);
 						if (count($guardar_doc)>0){
 								echo"2";    
 								} else {
-											$dao_gastos = new GastosOpeDAO('',$not_gas,$env_gas,$proc_gas,$copia_fac_gas,$cert_gas,$vig_gasto);
+											$dao_gastos = new GastosOpeDAO('',$not_gas,$env_gas,$proc_gas,$copia_fac_gas,$cert_gas,$vig_gasto, $ga_ope);
 											$guardar_gastos = $dao_gastos->ing_GastosOpe($id_ope);
 											if (count($guardar_gastos)>0){
 											echo"2";    

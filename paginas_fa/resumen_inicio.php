@@ -45,6 +45,36 @@ $(document).ready(function () {
         <hr>
     </div>
     <hr>
+    <?php 
+          $cargo = $_SESSION['cargo_fac'];
+          if ($cargo <> 1) {
+                if ($cargo == 2) {
+                  $est_nuevo = 'Aprobar';
+                }elseif ($cargo == 3) {
+                  $est_nuevo = 'Cursar';
+                }
+                $re = $fun->contador_ope($cargo); 
+
+                if ($re != 0) {
+                     foreach($re as $row)      {
+                      if ($row['ope'] <> 0) {
+                        echo "<h6>Hola ".$_SESSION['nom_fac'].", actualmente hay ".$row['ope']." operaciones esperando por ".$est_nuevo."</h6>"; 
+                      }else{
+                              echo "<h6>Hola ".$_SESSION['nom_fac'].", actualmente no hay operaciones pendientes</h6>";
+                            }                                             
+                     }
+                      
+                  } else{
+                      echo "<h6>Hola ".$_SESSION['nom_fac'].", actualmente no hay operaciones pendientes</h6>";
+                  }                                             
+
+          }
+          
+
+          
+
+
+    ?>
     <h5>Operaciones Pendientes &nbsp;<i class="fa fa-clock-o" aria-hidden="true"></i></i></h5>
     <br>
     <table id="dtBasicExample" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -59,13 +89,13 @@ $(document).ready(function () {
         <th class="th-sm">Cliente<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
         <th class="th-sm">Rut<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
         <th class="th-sm">Estado<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
-        <th class="th-sm">Cursar<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+        <th class="th-sm">Acción<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
       </tr>
     </thead>
     <tbody>
 
     <?php
-      $re = $fun ->cargar_datos_ope(1);
+      $re = $fun ->cargar_datos_ope();
       foreach($re as $row)
         {
 
@@ -82,7 +112,15 @@ $(document).ready(function () {
                   <td><?php echo $row['cliente']?></td>
                   <td><?php echo $row['rut']?></td>
                   <td><?php echo $row['estado']?></td>
-                  <td><a style="text-decoration:none" href="check_cursatura.php?idope=<?php echo $row['ope']?>" name="" value="">Cursar</a>  <i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
+                  <?php 
+                  if($cargo <> 1){
+                       echo '<td><a style="text-decoration:none" href="check_cursatura.php?idope='.$row['ope'].'" name="" value="">'.$est_nuevo.'</a>  <i class="fa fa-check-circle-o" aria-hidden="true"></i></td>';
+
+                  }
+
+
+                  ?>
+                 
                 
 
   

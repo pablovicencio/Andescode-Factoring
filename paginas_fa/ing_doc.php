@@ -88,6 +88,8 @@ function agregar() {
   td.innerHTML ='<input type="button" value="X" onclick="deleteRow(this)" class="btn btn-outline-danger">';
 
   document.getElementById("divdoc").style.visibility = "hidden";
+  document.getElementById("rut_deu").disabled = false;
+  document.getElementById("val_rut").style.display = "block";
 
  CalcularTotales();
 
@@ -433,6 +435,7 @@ function GuardarOpe()
             var obs_ope = document.getElementById('obs_ope').value;
             var iva_com_cob = document.getElementById('iva_com_cob').value;
             var iva_comi_tot = document.getElementById('iva_comi_tot').value;
+            var ga_ope = document.getElementById('ga_ope').value;
             console.log(fec_ope);
                        
             //console.log(fec_rut);
@@ -441,7 +444,7 @@ function GuardarOpe()
                 type: "POST",
                 url: "../controles/controlGuardarOpe.php",
                 data:   { "data" : TableData, "cli":cli,"fec_ope":fec_ope,"tipo_ope":tipo_ope,"tasa_ope":tasa_ope,"com_cob":com_cob,"com_cur":com_cur,"ape_ope":ape_ope,"dia_ope":dia_ope,"otros_desc_ope":otros_desc_ope,
-                "monto_giro":monto_giro,"not_gas":not_gas,"env_gas":env_gas,"proc_gas":proc_gas,"copia_fac_gas":copia_fac_gas,"cert_gas":cert_gas, "obs_ope" :obs_ope, "iva_com_cob" :iva_com_cob, "iva_comi_tot" :iva_comi_tot},
+                "monto_giro":monto_giro,"not_gas":not_gas,"env_gas":env_gas,"proc_gas":proc_gas,"copia_fac_gas":copia_fac_gas,"cert_gas":cert_gas, "obs_ope" :obs_ope, "iva_com_cob" :iva_com_cob, "iva_comi_tot" :iva_comi_tot, "ga_ope" :ga_ope},
                 cache: false,
                 success: function(respuesta){
             alert(respuesta);
@@ -890,7 +893,7 @@ function GuardarOpe()
                 </div>
               </div>
 
-          <textarea class="form-control" rows="5" id="obs_ope" name="obs_ope"></textarea>
+          <textarea class="form-control" rows="5" id="obs_ope" name="obs_ope" placeholder="Observación"></textarea><br><br>
           <input type="submit" class="btn btn-info" id="btnDoc" name="btnDoc" value="Guardar Operación" onclick="GuardarOpe()">
   </div>
   
