@@ -23,6 +23,7 @@
 ?>
 <?php
     $idope = $_GET["idope"];
+ 
     
 ?>
 

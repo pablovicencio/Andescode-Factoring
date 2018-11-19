@@ -413,7 +413,40 @@ class Funciones
             echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
         }
     }
+    /*///////////////////////////////////////
+    Cargar Facturas
+    //////////////////////////////////////*/
+    public function cargar_facturas($opcion,$doc){
 
+        try{
+            $pdo = AccesoDB::getCon();
+            if($opcion == 1){
+                $sql = "SELECT D.ID_OPE,D.NOM_DEU_DOC,D.RUT_DEU_DOC,D.NRO_DOC,D.MONTO_DOC,D.MONTO_FINAN_DOC,O.TASA_OPE,DATE_FORMAT(D.FEC_VEN_DOC, '%d-%m-%Y') vencimiento,D.PLAZO_DOC
+                FROM DOCUMENTOS D,OPERACIONES O
+                WHERE FEC_VEN_DOC < CURDATE() AND D.ID_OPE = O.ID_OPE";
+            }elseif($opcion== 2){
+                $sql = "SELECT D.ID_OPE,D.NOM_DEU_DOC,D.RUT_DEU_DOC,D.NRO_DOC,D.MONTO_DOC,D.MONTO_FINAN_DOC,O.TASA_OPE,DATE_FORMAT(D.FEC_VEN_DOC, '%Y-%m-%d') vencimiento,D.PLAZO_DOC,C.NOM_CLI,C.RUT_CLI,T.DESC_ITEM as tipo
+                FROM DOCUMENTOS D,OPERACIONES O,CLIENTES C,TAB_PARAM T
+                WHERE O.CLI_OPE = C.ID_CLI AND D.FEC_VEN_DOC < CURDATE() AND D.ID_OPE = O.ID_OPE AND D.NRO_DOC = :doc AND D.TIPO_DOC = T.COD_ITEM AND T.COD_GRUPO = 6 AND T.VIG_ITEM = 1 ; ";
+            }
+            
+
+        
+            
+            
+               
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(":doc", $doc, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $response = $stmt->fetchAll();
+            return $response;
+
+        } catch (Exception $e) {
+            echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+        }
+    }
 
 
 
