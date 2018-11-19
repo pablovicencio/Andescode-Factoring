@@ -300,7 +300,7 @@
         <th class="th-sm">Deuda Operación</th>
         <th class="th-sm">Deuda con Cliente</th>
         <th class="th-sm">% Conc. Cliente</th>
-        <th class="th-sm">Mora con CLiente</th>
+        <th class="th-sm">Mora con Cliente</th>
         <th class="th-sm">Deuda con Viracocha</i></th>
         <th class="th-sm">Mora con Viracocha</i></th>
        </tr>
@@ -309,21 +309,22 @@
 
     <?php
   
-      $re = $fun ->infodeudores($idope);
-      foreach($re as $row)
+      $re5 = $fun ->infodeudores($idope);
+      foreach($re5 as $row5)
         {
 
         
       ?>
     
     <tr>
-                  <td><?php echo $row['deu']?></td>
-                  <td><?php echo $row['mon']?></td>
-                  <td><?php echo $row['fac']?></td>
-                  <td><?php echo $row['feope']?></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <td><?php echo $row5['nom_deu_doc']?></td>
+                  <td><?php echo $row5['deuda_ope']?></td>
+                  <td><?php echo $row5['deuda_cli']?></td>
+                  <td><?php echo $row5['conc_cli']?></td>
+                  <td><?php echo $row5['mora_cli']?></td>
+                  <td><?php echo $row5['deuda_cli']?></td>
+                  <td><?php echo $row5['mora_cli']?></td>
+                  
                 
 
   
@@ -351,7 +352,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">Comentarios</span>
                     </div>
-                    <textarea class="form-control" aria-label="With textarea"></textarea>
+                    <textarea class="form-control" aria-label="With textarea"><?php echo $row1["obs_ope"]?></textarea>
                 </div>
             </div>
         </div>
@@ -410,36 +411,65 @@
                 <br>
             </div>
             <div class="col-12">
-                <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Ejecutivo&nbsp;&nbsp;</span>
-                        <div class="input-group-text">
-                        <input type="checkbox" aria-label="Checkbox for following text input">
-                        </div>
-                        <span class="input-group-text">Carlos Nelidow</span>
-                    </div>
-                    <input type="text" class="form-control" aria-label="Text input with checkbox">
-                </div>
-                <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Finanzas &nbsp; </span>
-                        <div class="input-group-text">
-                        <input type="checkbox" aria-label="Checkbox for following text input">
-                        </div>
-                        <span class="input-group-text">Aline Bravo</span>
-                    </div>
-                    <input type="text" class="form-control" aria-label="Text input with checkbox">
-                </div>
-                <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Gerente General</span>
-                        <div class="input-group-text">
-                        <input type="checkbox" aria-label="Checkbox for following text input">
-                        </div>
-                        <span class="input-group-text">Rene Ponce</span>
-                    </div>
-                    <input type="text" class="form-control" aria-label="Text input with checkbox">
-                </div>
+
+                <?php
+                        
+                        $re2 = $fun ->cargar_aprobaciones($idope);
+                        for ($i=1; $i <= 3; $i++) {
+                            $row2 = 0; 
+                            foreach($re2 as $row2)
+                            {  }
+                                if ($row2['est_nue_ope'] == $i and !empty($re2)) {
+                                    echo '<div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">'.$row2['desc_item'].'</span>
+                                            <div class="input-group-text">
+                                            <input type="checkbox" checked="true"  aria-label="Checkbox for following text input">
+                                            </div>
+                                            <span class="input-group-text">'.$row2['nom'].'</span>
+                                        </div>
+                                        <input type="text" class="form-control" value="'.$row2['obs_log_ope'].'" aria-label="Text input with checkbox">
+                                    </div>';
+
+                            }else if($i == 1){
+                                echo '<div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Ejecutivo</span>
+                                            <div class="input-group-text">
+                                            <input type="checkbox"  aria-label="Checkbox for following text input">
+                                            </div>
+                                            <span class="input-group-text"> </span>
+                                        </div>
+                                        <input type="text" class="form-control" aria-label="Text input with checkbox">
+                                    </div>';
+                            }else if($i == 2){
+                                echo '<div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Finanzas</span>
+                                            <div class="input-group-text">
+                                            <input type="checkbox"  aria-label="Checkbox for following text input">
+                                            </div>
+                                            <span class="input-group-text"> </span>
+                                        </div>
+                                        <input type="text" class="form-control" aria-label="Text input with checkbox">
+                                    </div>';
+                            }
+                            else if($i == 3){
+                                echo '<div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Gerente General</span>
+                                            <div class="input-group-text">
+                                            <input type="checkbox"  aria-label="Checkbox for following text input">
+                                            </div>
+                                            <span class="input-group-text"> </span>
+                                        </div>
+                                        <input type="text" class="form-control" aria-label="Text input with checkbox">
+                                    </div>';
+                            }
+                         
+                        }
+                         
+                    ?>
 
             </div>
         </div>
@@ -454,24 +484,70 @@
                 <h5>Datos de Giro</h5>
             </div>
             <div class="col-6">
-                    <label for="formagiro">Forma de Giro:</label>
-                    <input type="text" class="form-control" id="formagiro" name="formagiro"  maxlength="100" placeholder="" required>
+                     <label for="bancogiro">Forma de Giro:</label>
+                     <select class="form-control" id="ope" name="ope" style="width: 500px" required>
+                      <option value="" selected disabled>Seleccione Forma de Giro</option>
+                                 <?php 
+                                  $re3 = $fun->cargar_formas_giro(1);   
+                                  foreach($re3 as $row3)      
+                                      {
+                                        ?>
+                                        
+                                         <option value="<?php echo $row3['cod_item'] ?>"><?php echo $row3['desc_item'] ?></option>
+                                            
+                                        <?php
+                                      }    
+                                  ?>  
+                  </select>
 
                     <label for="bancogiro">Banco Giro:</label>
-                    <input type="text" class="form-control" id="bancogiro" name="bancogiro"  maxlength="100" placeholder="" required>
+                    <select class="form-control" name="bco_cli" id="bco_cli" required>
+                          <option value="" selected disabled>Seleccione el Banco</option>
+                                       <?php 
+                                        $re4 = $fun->cargar_bcos(1);   
+                                        foreach($re4 as $row4)      
+                                            {
+                                              ?>
+                                               <option value="<?php echo $row4['cod_item'] ?>"><?php echo $row4['desc_item'] ?></option>
+                                                  
+                                              <?php
+                                            }    
+                                        ?>       
+                        </select>
 
                     <label for="montoagirar">Monto a Girar:</label>
-                    <input type="number" class="form-control" id="montoagirar" name="montoagirar"  maxlength="100" placeholder="" required>
+                    <?php 
+                                        $re6 = $fun->cargar_monto_giro($idope);   
+                                        foreach($re6 as $row6)      
+                                            {
+                                            }  
+                                            echo'<input type="number" class="form-control" id="montoagirar" name="montoagirar"  maxlength="100" value="'.$row6['monto'].'" required>' ;
+                                        ?>       
+                    
             </div>
             <div class="col-6">
                     <label for="bancodepo">Banco Depósito:</label>
-                    <input type="text" class="form-control" id="bancodepo" name="bancodepo"  maxlength="100" placeholder="" required>
+                    <select class="form-control" name="bco_cli" id="bco_cli" required>
+                          <option value="" selected disabled>Seleccione el Banco</option>
+                                       <?php 
+                                        $re4 = $fun->cargar_bcos(1);   
+                                        foreach($re4 as $row4)      
+                                            {
+                                              ?>
+                                               <option value="<?php echo $row4['cod_item'] ?>" 
+                                                <?php if ($row4['cod_item'] == $row['bco_cli']) { echo "selected";} ?>
+                                                ><?php echo $row4['desc_item'] ?></option>
+                                                  
+                                              <?php
+                                            }    
+                                        ?>       
+                        </select>
 
                     <label for="ctacte">Cuenta Corriente:</label>
-                    <input type="number" class="form-control" id="ctacte" name="ctacte"  maxlength="100" placeholder="" required>
+                    <input type="number" class="form-control" id="ctacte" name="ctacte"  maxlength="100" value="<?php echo $row["nro_cta_cli"]?>" required>
 
                     <label for="mail">Mail:</label>
-                    <input type="text" class="form-control" id="mail" name="mail"  maxlength="100" placeholder="" required>
+                    <input type="text" class="form-control" id="mail" name="mail"  maxlength="100" value="<?php echo $row["mail_cli"]?>" required>
             </div>
             
         </div>

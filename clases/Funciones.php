@@ -6,6 +6,94 @@ require_once '../recursos/db/db.php';
 class Funciones 
 {
 
+    /*///////////////////////////////////////
+    Cargar monto giro cursatura
+    //////////////////////////////////////*/
+        public function cargar_monto_giro($id_ope) {
+
+            try{
+                
+                
+                $pdo = AccesoDB::getCon();
+
+                
+                    $sql = "select sum(monto_finan_doc) monto from documentos where id_ope = :ope";
+                
+
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(":ope", $id_ope, PDO::PARAM_INT);
+                $stmt->execute();
+
+                $response = $stmt->fetchAll();
+                return $response;
+
+            } catch (Exception $e) {
+                echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+            }
+        }
+
+
+
+    /*///////////////////////////////////////
+    Cargar formas de giro
+    //////////////////////////////////////*/
+        public function cargar_formas_giro($vig_giro) {
+
+            try{
+                
+                
+                $pdo = AccesoDB::getCon();
+
+                if ($vig_giro == 0) {
+                    $sql = "select cod_item , desc_item  from tab_param where cod_grupo = 8 and cod_item <> 0";
+                }else if ($vig_giro == 1) {
+                    $sql = "select cod_item , desc_item  from tab_param where cod_grupo = 8 and cod_item <> 0 and vig_item = 1";
+                }  
+                
+
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute();
+
+                $response = $stmt->fetchAll();
+                return $response;
+
+            } catch (Exception $e) {
+                echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+            }
+        }
+
+
+
+    /*///////////////////////////////////////
+    Cargar Datos de aprobaciones de usuarios para form cursatura
+    //////////////////////////////////////*/
+    public function cargar_aprobaciones($idope){
+
+        try{
+            $pdo = AccesoDB::getCon();
+                
+                
+                $sql = " select a.est_nue_ope, concat(b.nom1_usu,' ', b.apepat_usu) nom, c.desc_item,a.obs_log_ope
+                         from log_ope a, usuarios b, tab_param c 
+                         where a.id_usu = b.id_usu and id_ope = :ope
+                         and c.cod_grupo = 2 and c.cod_item = a.cargo_usu_log and c.vig_item = 1";
+            
+            
+               
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(":ope", $idope, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $response = $stmt->fetchAll();
+            return $response;
+
+        } catch (Exception $e) {
+            echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+        }
+    }
+
+
 
     /*///////////////////////////////////////
     Cargar Datos de detalle de la operacion (check_cursatura) 
@@ -14,7 +102,8 @@ class Funciones
 
         try{
             $pdo = AccesoDB::getCon();
-            
+                
+                
                 $sql = "select t_o.desc_item tipo_ope, a.id_ope,a.fec_ope,
                         (select count(id_doc) from documentos d where d.id_ope = a.id_ope) cant_doc,
                         (select t_d.desc_item from tab_param t_d where cod_grupo = 3 and t_d.cod_item = 
@@ -40,7 +129,7 @@ class Funciones
                         )),0) serv_fact,
                         (a.com_cur_ope + a.iva_com_ope) serv_adm,
                         (select total_gasto_ope from gastos_ope g where g.id_ope_gasto = a.id_ope) gasto_ope,
-                        a.monto_giro_ope
+                        a.monto_giro_ope, a.obs_ope
                         from operaciones a, tab_param t_o
                         where a.id_ope = :ope and  t_o.cod_grupo = 6 and t_o.COD_ITEM = a.tipo_ope";
             
@@ -732,7 +821,7 @@ class Funciones
                         a.nom_cli, b.fec_ope ,
                         a.linea_cred_cli, 
                         (select sum(monto_giro_ope) from operaciones c where c.cli_ope = 1 and (c.est_ope = 3 or c.id_ope = b.id_ope)) ocupada,
-                        a.linea_cred_cli
+                        a.linea_cred_cli, a.bco_cli,a.nro_cta_cli, a.mail_cli
                         from clientes a inner join  operaciones b on a.id_cli = b.cli_ope where id_ope = :ope";
     
 
@@ -783,24 +872,53 @@ class Funciones
     }
 
     /*///////////////////////////////////////
-    Llenar Info Deudores
+    Llenar Info Deudores cursatura
     //////////////////////////////////////*/
 
-    public function infodeudores($num){
+    public function infodeudores($idope){
 
         try{
             
             
             $pdo = AccesoDB::getCon();
 
-
+            //OJO CON EL CALCULO DE LA MORA, SOLO SE TOMARA EL MONTO FINANCIADO
             
                 
             
-            $sql = "select NOM_DEU_DOC as deu,sum(MONTO_DOC) as mon,NRO_DOC AS fac,FEC_OPE_DOC AS feope
-            from documentos
-            where ID_OPE = 21
-            group by RUT_DEU_DOC";
+            // $sql = "select 
+            //         a.nom_deu_doc, 
+            //         round((sum(a.dif_pre_doc) + sum(a.com_cob_doc) + sum(a.anticipo_doc)), 0) deuda_ope,
+            //         (select round((sum(a.dif_pre_doc) + sum(a.com_cob_doc) + sum(a.anticipo_doc)), 0) 
+            //             from documentos b 
+            //             where b.rut_deu_doc = a.rut_deu_doc and b.est_doc = 1 group by b.rut_deu_doc) deuda_cli,
+            //         round(((select round((sum(a.dif_pre_doc) + sum(a.com_cob_doc) + sum(a.anticipo_doc)), 0) 
+            //             from documentos b 
+            //             where b.rut_deu_doc = a.rut_deu_doc and b.est_doc = 1 group by b.rut_deu_doc) / c.LINEA_CRED_CLI),2) conc_cli,
+            //         round((1.5/(select DATEDIFF(CURDATE() ,b.fec_ven_doc) * b.monto_finan_doc
+            //             from documentos b 
+            //             where b.rut_deu_doc = a.rut_deu_doc and b.est_doc = 1 group by b.rut_deu_doc) ) ,0) mora_cli
+            //         from documentos a inner join operaciones b on a.id_ope = b.id_ope
+            //         inner join clientes c on b.cli_ope = c.id_cli
+            //         where a.id_ope = :idope
+            //         group by a.NOM_DEU_DOC order by a.nom_deu_doc";
+
+            $sql = "select 
+                    a.nom_deu_doc, 
+                    round((sum(a.dif_pre_doc) + sum(a.com_cob_doc) + sum(a.anticipo_doc)), 0) deuda_ope,
+                    (select round((sum(a.dif_pre_doc) + sum(a.com_cob_doc) + sum(a.anticipo_doc)), 0) 
+                        from documentos b 
+                        where b.rut_deu_doc = a.rut_deu_doc and b.est_doc = 1 group by b.rut_deu_doc) deuda_cli,
+                    round(((select round((sum(a.dif_pre_doc) + sum(a.com_cob_doc) + sum(a.anticipo_doc)), 0) 
+                        from documentos b 
+                        where b.rut_deu_doc = a.rut_deu_doc and b.est_doc = 1 group by b.rut_deu_doc) / c.LINEA_CRED_CLI),2) conc_cli,
+                    round((select b.monto_finan_doc
+                        from documentos b 
+                        where b.rut_deu_doc = a.rut_deu_doc and b.est_doc = 1 group by b.rut_deu_doc)  ,0) mora_cli
+                    from documentos a inner join operaciones b on a.id_ope = b.id_ope
+                    inner join clientes c on b.cli_ope = c.id_cli
+                    where a.id_ope = :idope
+                    group by a.NOM_DEU_DOC order by a.nom_deu_doc";
 
 
 
@@ -809,7 +927,7 @@ class Funciones
             
 
             $stmt = $pdo->prepare($sql);
-            $stmt->bindParam(":num", $num, PDO::PARAM_INT);
+            $stmt->bindParam(":idope", $idope, PDO::PARAM_INT);
             $stmt->execute();
 
             $response = $stmt->fetchAll();
