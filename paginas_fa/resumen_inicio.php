@@ -71,8 +71,6 @@ $(document).ready(function () {
           }
           
 
-          
-
 
     ?>
     <h5>Operaciones Pendientes &nbsp;<i class="fa fa-clock-o" aria-hidden="true"></i></i></h5>
@@ -95,7 +93,9 @@ $(document).ready(function () {
     <tbody>
 
     <?php
-      $re = $fun ->cargar_datos_ope();
+      $re = $fun ->cargar_datos_ope($cargo);
+
+      if ($re != 0) {
       foreach($re as $row)
         {
 
@@ -128,7 +128,7 @@ $(document).ready(function () {
 
               </tr>
 
-<?php } ?>  
+<?php }} ?>  
 
     </tbody>
     <tfoot>

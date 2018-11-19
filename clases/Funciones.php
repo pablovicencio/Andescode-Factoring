@@ -470,16 +470,29 @@ class Funciones
     /*///////////////////////////////////////
     Cargar Datos de Operaciones 
     //////////////////////////////////////*/
-    public function cargar_datos_ope(){
+    public function cargar_datos_ope($cargo){
 
         try{
             $pdo = AccesoDB::getCon();
-            //if($cargo == 1){
+            if($cargo == 1){
                 $sql = "SELECT O.ID_OPE OPE,O.FEC_OPE FECHA,U.NICK_USU USUARIO,T1.DESC_ITEM TIPO,TASA_OPE TASA,MONTO_GIRO_OPE GIRADO,C.NOM_CLI CLIENTE,C.RUT_CLI RUT,T2.DESC_ITEM AS ESTADO
                 FROM OPERACIONES O, USUARIOS U,TAB_PARAM T1,CLIENTES C,TAB_PARAM T2
                 WHERE O.EST_OPE = T2.COD_ITEM AND T2.COD_GRUPO = 7 AND T2.VIG_ITEM = 1
                 AND O.TIPO_OPE = T1.COD_ITEM AND T1.COD_GRUPO = 3 AND T1.VIG_ITEM = 1
-                AND U.ID_USU = O.USU_OPE AND  C.ID_CLI = O.CLI_OPE ORDER BY fecha DESC";
+                AND U.ID_USU = O.USU_OPE AND  C.ID_CLI = O.CLI_OPE  ORDER BY fecha DESC";
+            }elseif($cargo == 2){
+                $sql = "SELECT O.ID_OPE OPE,O.FEC_OPE FECHA,U.NICK_USU USUARIO,T1.DESC_ITEM TIPO,TASA_OPE TASA,MONTO_GIRO_OPE GIRADO,C.NOM_CLI CLIENTE,C.RUT_CLI RUT,T2.DESC_ITEM AS ESTADO
+                FROM OPERACIONES O, USUARIOS U,TAB_PARAM T1,CLIENTES C,TAB_PARAM T2
+                WHERE O.EST_OPE = T2.COD_ITEM AND T2.COD_GRUPO = 7 AND T2.VIG_ITEM = 1
+                AND O.TIPO_OPE = T1.COD_ITEM AND T1.COD_GRUPO = 3 AND T1.VIG_ITEM = 1
+                AND U.ID_USU = O.USU_OPE AND O.EST_OPE = 1 AND  C.ID_CLI = O.CLI_OPE  ORDER BY fecha DESC";
+            }elseif($cargo == 3){
+                $sql = "SELECT O.ID_OPE OPE,O.FEC_OPE FECHA,U.NICK_USU USUARIO,T1.DESC_ITEM TIPO,TASA_OPE TASA,MONTO_GIRO_OPE GIRADO,C.NOM_CLI CLIENTE,C.RUT_CLI RUT,T2.DESC_ITEM AS ESTADO
+                FROM OPERACIONES O, USUARIOS U,TAB_PARAM T1,CLIENTES C,TAB_PARAM T2
+                WHERE O.EST_OPE = T2.COD_ITEM AND T2.COD_GRUPO = 7 AND T2.VIG_ITEM = 1
+                AND O.TIPO_OPE = T1.COD_ITEM AND T1.COD_GRUPO = 3 AND T1.VIG_ITEM = 1
+                AND U.ID_USU = O.USU_OPE AND T2.COD_ITEM = 3 AND  C.ID_CLI = O.CLI_OPE  ORDER BY fecha DESC";
+            }
             // }else if ($opc == 2){
             //     $sql = "SELECT O.ID_OPE OPE,DATE_FORMAT(O.FEC_OPE, '%d-%m-%Y') FECHA,U.NICK_USU USUARIO,T1.DESC_ITEM TIPO,TASA_OPE TASA,MONTO_GIRO_OPE GIRADO,C.NOM_CLI CLIENTE,C.RUT_CLI RUT,T2.DESC_ITEM AS ESTADO
             //     FROM OPERACIONES O, USUARIOS U,TAB_PARAM T1,CLIENTES C,TAB_PARAM T2
@@ -495,8 +508,18 @@ class Funciones
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
 
-            $response = $stmt->fetchAll();
-            return $response;
+            
+
+
+            $totalFilas    =    $stmt->rowCount();
+
+                if ($totalFilas == 0 ) {
+                    return ('0');
+                 }else{
+                   $response = $stmt->fetchAll();
+                   return $response;
+                 }
+         
 
         } catch (Exception $e) {
             echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
