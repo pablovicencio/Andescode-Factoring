@@ -88,7 +88,10 @@ function agregar() {
   td.innerHTML ='<input type="button" value="X" onclick="deleteRow(this)" class="btn btn-outline-danger">';
 
   document.getElementById("divdoc").style.visibility = "hidden";
+  document.getElementById("rut_desc").style.display = "none";
   document.getElementById("rut_deu").disabled = false;
+  document.getElementById("nom_deu").disabled = true;
+
   document.getElementById("val_rut").style.display = "block";
 
  CalcularTotales();

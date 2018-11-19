@@ -83,7 +83,7 @@ class OperacionDAO
     /*///////////////////////////////////////
     Guardar Operación
     //////////////////////////////////////*/
-    public function ing_ope() {
+    public function ing_ope($cargo) {
 
     			 try{
              
@@ -95,7 +95,7 @@ class OperacionDAO
 
                 $stmt = $pdo->prepare($sql_ing_ope);
                 $stmt->bindParam(":fec_ope", $this->fec_ope, PDO::PARAM_STR);
-                $stmt->bindParam(":usu_ope", $this->id_usu, PDO::PARAM_STR);
+                $stmt->bindParam(":usu_ope", $this->id_usu, PDO::PARAM_INT);
                 $stmt->bindParam(":tipo_ope", $this->tipo_ope, PDO::PARAM_INT);
                 $stmt->bindParam(":obs_ope", $this->obs_ope, PDO::PARAM_STR);
                 $stmt->bindParam(":tasa_ope", $this->tasa_ope, PDO::PARAM_INT);
@@ -106,7 +106,7 @@ class OperacionDAO
                 $stmt->bindParam(":otros_desc_ope", $this->otros_desc_ope, PDO::PARAM_INT);
                 $stmt->bindParam(":monto_giro_ope", $this->monto_giro, PDO::PARAM_INT);
                 $stmt->bindParam(":cli_ope", $this->cli_ope, PDO::PARAM_INT);
-                $stmt->bindParam(":fec_reg_ope", $this->fec_reg, PDO::PARAM_INT);
+                $stmt->bindParam(":fec_reg_ope", $this->fec_reg, PDO::PARAM_STR);
                 $stmt->bindParam(":est_ope", $this->est_ope, PDO::PARAM_INT);
                 $stmt->bindParam(":iva_com_cob", $this->iva_com_cob, PDO::PARAM_INT);
                 $stmt->bindParam(":iva_comi_tot", $this->iva_comi_tot, PDO::PARAM_INT);
@@ -119,6 +119,39 @@ class OperacionDAO
                 $stmt->execute();
 
                 $response = $stmt->fetchAll();
+
+                $id_ope =($response[0]['id_ope']);
+
+                $sql_ing_log_ope = "INSERT INTO `log_ope`
+                                    (`id_ope`,
+                                    `est_ant_ope`,
+                                    `est_nue_ope`,
+                                    `obs_log_ope`,
+                                    `id_usu`,
+                                    `fec_log_ope`,
+                                    `cargo_usu_log`)
+                                    VALUES
+                                    (:id_ope,
+                                    0,
+                                    1,
+                                    '',
+                                    :usu,
+                                    :fec,
+                                    :cargo)";
+
+
+                $stmt = $pdo->prepare($sql_ing_log_ope);
+                $stmt->bindParam(":id_ope", $id_ope, PDO::PARAM_INT);
+                $stmt->bindParam(":usu", $this->id_usu, PDO::PARAM_INT);
+                $stmt->bindParam(":fec", $this->fec_reg, PDO::PARAM_STR);
+                $stmt->bindParam(":cargo", $cargo, PDO::PARAM_INT);
+                
+                $stmt->execute();
+
+
+
+
+
                 return $response;
 
 
