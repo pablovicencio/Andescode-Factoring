@@ -104,7 +104,7 @@ class Funciones
             $pdo = AccesoDB::getCon();
                 
                 
-                $sql = "select t_o.desc_item tipo_ope, a.id_ope,a.fec_ope,
+                $sql = "select a.est_ope,t_o.desc_item tipo_ope, a.id_ope,a.fec_ope,
                         (select count(id_doc) from documentos d where d.id_ope = a.id_ope) cant_doc,
                         (select t_d.desc_item from tab_param t_d where cod_grupo = 3 and t_d.cod_item = 
                                 (select distinct tipo_doc from documentos e where e.id_ope = a.id_ope)) tipo_doc,

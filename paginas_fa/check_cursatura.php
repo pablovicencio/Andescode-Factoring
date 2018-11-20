@@ -11,6 +11,47 @@
   include("../includes/recursosExternos.php");
 ?>
 
+<script type="text/javascript">
+
+$(document).ajaxStart(function() {
+  $("#formActOpe").hide();
+  $("#loading").show();
+     }).ajaxStop(function() {
+  $("#loading").hide();
+  $("#formActOpe").show();
+  });  
+
+
+$(document).ready(function() {
+  $("#formActOpe").submit(function() {    
+    $.ajax({
+      type: "POST",
+      url: '../controles/controlActOpe.php',
+      data:$("#formActOpe").serialize(),
+      success: function (result) { 
+        var msg = result.trim();
+        console.log(result);
+        switch(msg) {
+                case '0':
+                    window.location.assign("../index.html")
+                    break;
+                case '1':
+                    swal("Error Base de Datos", "Error de base de datos, comuniquese con el administrador", "warning");
+                    break;
+                default:
+                    swal("Operación Actualizada", msg, "success");
+                    //location.reload(true);
+            }
+      },
+      error: function(){
+              alert('Verifique los datos')      
+        }
+    });
+    return false;
+  });
+});
+
+</script>
 
 </head>
 
@@ -20,18 +61,24 @@
 <?php
   include("../includes/infoLog.php");
   include("../includes/menuUsuario.php");
-?>
-<?php
+
     $idope = $_GET["idope"];
  
-    
+    $cargo = $_SESSION['cargo_fac'];
 ?>
+
+        <!-- CARGA DE GIF LOADING-->
+        <div id="loading" style="display: none;">
+            <center>
+                <img src="../recursos/img/load.gif">
+            </center>
+        </div>
 
 
 <!-- TABLA NUEVA PARA MODIFICACION CURSATURA-->
 
 <div class="container" id="main" bg="light">  
-    <form id="formCurFac" onsubmit="return false;">
+    <form id="formActOpe" onsubmit="return false;">
         <!-- DIV PARA TITULO PRINCIPAL--> 
         <div class="row">
             <div class="col-12 text-center">
@@ -174,12 +221,13 @@
                         foreach($re1 as $row1)
                             { }  
                     ?>
-                    
+                    <input type="text" value="<?php echo $row1["est_ope"]?>" class="form-control" id="estope" name="estope"  style="display: none" required>
+
                     <label for="tipoope">Tipo de Operación:</label>
                     <input type="text" value="<?php echo $row1["tipo_ope"]?>" class="form-control" id="tipoope" name="tipoope"  maxlength="100" placeholder="Tipo operación" required>
 
                     <label for="numcesion">Número de Cesión:</label>
-                    <input type="number" value="<?php echo $row1["id_ope"]?>" class="form-control" id="numcesion" name="numcesion"  maxlength="100" placeholder="0" required>
+                    <input type="number" value="<?php echo $row1["id_ope"]?>" class="form-control" id="numope" name="numope"  maxlength="100" placeholder="0" required>
                     
                     <label for="fechope">Fecha de Operación:</label>
                     <input type="text" value="<?php echo date('d-m-Y',strtotime($row1["fec_ope"]));?>" class="form-control" id="fechope" name="fechope"  maxlength="100" placeholder="$0" required>
@@ -452,7 +500,7 @@
                                             </div>
                                             <span class="input-group-text"> </span>
                                         </div>
-                                        <input type="text" class="form-control" aria-label="Text input with checkbox">
+                                        <input type="text" id="obs_2" name="obs_2" class="form-control" aria-label="Text input with checkbox">
                                     </div>';
                             }
                             else if($i == 3){
@@ -464,7 +512,7 @@
                                             </div>
                                             <span class="input-group-text"> </span>
                                         </div>
-                                        <input type="text" class="form-control" aria-label="Text input with checkbox">
+                                        <input type="text" id="obs_3" name="obs_3" class="form-control" aria-label="Text input with checkbox">
                                     </div>';
                             }
                          
@@ -486,7 +534,7 @@
             </div>
             <div class="col-6">
                      <label for="bancogiro">Forma de Giro:</label>
-                     <select class="form-control" id="ope" name="ope" style="width: 500px" required>
+                     <select class="form-control" id="forma_giro" name="forma_giro" style="width: 500px" required>
                       <option value="" selected disabled>Seleccione Forma de Giro</option>
                                  <?php 
                                   $re3 = $fun->cargar_formas_giro(1);   
@@ -502,7 +550,7 @@
                   </select>
 
                     <label for="bancogiro">Banco Giro:</label>
-                    <select class="form-control" name="bco_cli" id="bco_cli" required>
+                    <select class="form-control" name="bco_giro" id="bco_giro" required>
                           <option value="" selected disabled>Seleccione el Banco</option>
                                        <?php 
                                         $re4 = $fun->cargar_bcos(1);   
@@ -528,7 +576,7 @@
             </div>
             <div class="col-6">
                     <label for="bancodepo">Banco Depósito:</label>
-                    <select class="form-control" name="bco_cli" id="bco_cli" required>
+                    <select class="form-control" name="bco_dep" id="bco_dep" required>
                           <option value="" selected disabled>Seleccione el Banco</option>
                                        <?php 
                                         $re4 = $fun->cargar_bcos(1);   
@@ -553,6 +601,17 @@
             
         </div>
         <!--FIN DATOS DE GIRO-->
+        <br><br>
+        <div class="col-12 text-center">
+            <?php 
+                if ($cargo == 2) {
+                    echo'<input type="submit" class="btn btn-info" id="btnAc" name="btnAc" value="'."Aprobar".'">';
+                }else if ($cargo == 3) {
+                    echo'<input type="submit" class="btn btn-info" id="btnAc" name="btnAc" value="'."Cursar".'">';
+                }
+            ?> 
+                
+        </div>
     </form>
 </div>
 

@@ -28,6 +28,7 @@ class OperacionDAO
     private $est_ope;
     private $iva_com_cob;
     private $iva_comi_tot;
+    private $forma_giro;
 
 
     public function __construct(    $id_ope=null,
@@ -49,7 +50,8 @@ class OperacionDAO
                                     $fec_reg=null,
                                     $est_ope=null,
                                     $iva_com_cob=null,
-                                    $iva_comi_tot=null) {
+                                    $iva_comi_tot=null,
+                                    $forma_giro=null) {
 
 
     $this->id_ope =$id_ope;
@@ -72,6 +74,7 @@ class OperacionDAO
     $this->est_ope=$est_ope;
     $this->iva_com_cob=$iva_com_cob;
     $this->iva_comi_tot=$iva_comi_tot;
+    $this->forma_giro=$forma_giro;
 
 
     }
@@ -153,6 +156,251 @@ class OperacionDAO
 
 
                 return $response;
+
+
+        
+
+            } catch (Exception $e) {
+                echo"Error, comuniquese con el administrador".  $e->getMessage().""; 
+            }
+
+    }
+
+
+
+
+
+
+
+    /*///////////////////////////////////////
+    Actualizar Operación
+    //////////////////////////////////////*/
+    public function act_ope( $contratocesion, $dicomdeudorescli, $informeconfir, $ivaform , $cobrogastos , $garantia, $cargo,$est_ope) {
+
+                 try{
+             
+                $pdo = AccesoDB::getCon();
+
+                $sql_act_ope = "UPDATE `operaciones`
+                                SET
+                                `EST_OPE` = :est
+                                WHERE `ID_OPE` =  :id_ope";
+
+
+                $stmt = $pdo->prepare($sql_act_ope);
+                $stmt->bindParam(":est_ope", $est_ope, PDO::PARAM_INT);
+                $stmt->bindParam(":id_ope", $this->id_ope, PDO::PARAM_INT);
+
+                $stmt->execute();
+
+
+                $sql_ing_log_ope = "INSERT INTO `log_ope`
+                                    (`id_ope`,
+                                    `est_ant_ope`,
+                                    `est_nue_ope`,
+                                    `obs_log_ope`,
+                                    `id_usu`,
+                                    `fec_log_ope`,
+                                    `cargo_usu_log`)
+                                    VALUES
+                                    (:id_ope,
+                                    :est_act,
+                                    :est,
+                                    :obs,
+                                    :usu,
+                                    :fec,
+                                    :cargo)";
+
+
+                $stmt = $pdo->prepare($sql_ing_log_ope);
+                $stmt->bindParam(":id_ope", $this->id_ope, PDO::PARAM_INT);
+                $stmt->bindParam(":est_act", $this->est_ope, PDO::PARAM_INT);
+                $stmt->bindParam(":est", $est_ope, PDO::PARAM_INT);
+                $stmt->bindParam(":usu", $this->id_usu, PDO::PARAM_INT);
+                $stmt->bindParam(":obs", $this->obs_ope, PDO::PARAM_STR);
+                $stmt->bindParam(":fec", $this->fec_reg, PDO::PARAM_STR);
+                $stmt->bindParam(":cargo", $cargo, PDO::PARAM_INT);
+                
+                $stmt->execute();
+
+                if ($contratocesion <> 0) {
+                    $sql_ing_check_ope = "INSERT INTO `bd_factoring`.`check_ope`
+                                                (`ID_OPE`,
+                                                `ID_GRUPO`,
+                                                `ID_PARAM`,
+                                                `OBS_LOG`,
+                                                `VIG_LOG`,
+                                                `FEC_LOG`,
+                                                `ID_USU`)
+                                                VALUES
+                                                (:id_ope,
+                                                9,
+                                                :param,
+                                                ' ',
+                                                1,
+                                                :fec,
+                                                :usu)";
+
+
+                $stmt = $pdo->prepare($sql_ing_check_ope);
+                $stmt->bindParam(":id_ope", $this->id_ope, PDO::PARAM_INT);
+                $stmt->bindParam(":param", $contratocesion, PDO::PARAM_INT);
+                $stmt->bindParam(":fec", $this->fec_reg, PDO::PARAM_STR);
+                $stmt->bindParam(":usu", $this->id_usu, PDO::PARAM_INT);
+                
+                
+                $stmt->execute();
+                }
+
+                if ($dicomdeudorescli <> 0) {
+                    $sql_ing_check_ope = "INSERT INTO `bd_factoring`.`check_ope`
+                                                (`ID_OPE`,
+                                                `ID_GRUPO`,
+                                                `ID_PARAM`,
+                                                `OBS_LOG`,
+                                                `VIG_LOG`,
+                                                `FEC_LOG`,
+                                                `ID_USU`)
+                                                VALUES
+                                                (:id_ope,
+                                                9,
+                                                :param,
+                                                ' ',
+                                                1,
+                                                :fec,
+                                                :usu)";
+
+
+                $stmt = $pdo->prepare($informeconfir);
+                $stmt->bindParam(":id_ope", $this->id_ope, PDO::PARAM_INT);
+                $stmt->bindParam(":param", $dicomdeudorescli, PDO::PARAM_INT);
+                $stmt->bindParam(":fec", $this->fec_reg, PDO::PARAM_STR);
+                $stmt->bindParam(":usu", $this->id_usu, PDO::PARAM_INT);
+                
+                
+                $stmt->execute();
+                }
+
+                if ($informeconfir <> 0) {
+                    $sql_ing_check_ope = "INSERT INTO `bd_factoring`.`check_ope`
+                                                (`ID_OPE`,
+                                                `ID_GRUPO`,
+                                                `ID_PARAM`,
+                                                `OBS_LOG`,
+                                                `VIG_LOG`,
+                                                `FEC_LOG`,
+                                                `ID_USU`)
+                                                VALUES
+                                                (:id_ope,
+                                                9,
+                                                :param,
+                                                ' ',
+                                                1,
+                                                :fec,
+                                                :usu)";
+
+
+                $stmt = $pdo->prepare($ivaform);
+                $stmt->bindParam(":id_ope", $this->id_ope, PDO::PARAM_INT);
+                $stmt->bindParam(":param", $informeconfir, PDO::PARAM_INT);
+                $stmt->bindParam(":fec", $this->fec_reg, PDO::PARAM_STR);
+                $stmt->bindParam(":usu", $this->id_usu, PDO::PARAM_INT);
+                
+                
+                $stmt->execute();
+                }
+
+                if ($ivaform <> 0) {
+                    $sql_ing_check_ope = "INSERT INTO `bd_factoring`.`check_ope`
+                                                (`ID_OPE`,
+                                                `ID_GRUPO`,
+                                                `ID_PARAM`,
+                                                `OBS_LOG`,
+                                                `VIG_LOG`,
+                                                `FEC_LOG`,
+                                                `ID_USU`)
+                                                VALUES
+                                                (:id_ope,
+                                                9,
+                                                :param,
+                                                ' ',
+                                                1,
+                                                :fec,
+                                                :usu)";
+
+
+                $stmt = $pdo->prepare($sql_ing_check_ope);
+                $stmt->bindParam(":id_ope", $this->id_ope, PDO::PARAM_INT);
+                $stmt->bindParam(":param", $ivaform, PDO::PARAM_INT);
+                $stmt->bindParam(":fec", $this->fec_reg, PDO::PARAM_STR);
+                $stmt->bindParam(":usu", $this->id_usu, PDO::PARAM_INT);
+                
+                
+                $stmt->execute();
+                }
+
+                 if ($cobrogastos <> 0) {
+                    $sql_ing_check_ope = "INSERT INTO `bd_factoring`.`check_ope`
+                                                (`ID_OPE`,
+                                                `ID_GRUPO`,
+                                                `ID_PARAM`,
+                                                `OBS_LOG`,
+                                                `VIG_LOG`,
+                                                `FEC_LOG`,
+                                                `ID_USU`)
+                                                VALUES
+                                                (:id_ope,
+                                                9,
+                                                :param,
+                                                ' ',
+                                                1,
+                                                :fec,
+                                                :usu)";
+
+
+                $stmt = $pdo->prepare($sql_ing_check_ope);
+                $stmt->bindParam(":id_ope", $this->id_ope, PDO::PARAM_INT);
+                $stmt->bindParam(":param", $cobrogastos, PDO::PARAM_INT);
+                $stmt->bindParam(":fec", $this->fec_reg, PDO::PARAM_STR);
+                $stmt->bindParam(":usu", $this->id_usu, PDO::PARAM_INT);
+                
+                
+                $stmt->execute();
+                }
+
+                if ($garantia <> 0) {
+                    $sql_ing_check_ope = "INSERT INTO `bd_factoring`.`check_ope`
+                                                (`ID_OPE`,
+                                                `ID_GRUPO`,
+                                                `ID_PARAM`,
+                                                `OBS_LOG`,
+                                                `VIG_LOG`,
+                                                `FEC_LOG`,
+                                                `ID_USU`)
+                                                VALUES
+                                                (:id_ope,
+                                                9,
+                                                :param,
+                                                ' ',
+                                                1,
+                                                :fec,
+                                                :usu)";
+
+
+                $stmt = $pdo->prepare($sql_ing_check_ope);
+                $stmt->bindParam(":id_ope", $this->id_ope, PDO::PARAM_INT);
+                $stmt->bindParam(":param", $garantia, PDO::PARAM_INT);
+                $stmt->bindParam(":fec", $this->fec_reg, PDO::PARAM_STR);
+                $stmt->bindParam(":usu", $this->id_usu, PDO::PARAM_INT);
+                
+                
+                $stmt->execute();
+                }
+
+                
+
+
+
 
 
         
