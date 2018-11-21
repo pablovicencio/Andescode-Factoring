@@ -415,31 +415,31 @@ $(document).ready(function() {
             </div>
             <div class="col-4">
                 <div class="form-check form-check">
-                    <input class="form-check-input" type="checkbox" id="contratocesion" value="contratocesion">
+                    <input class="form-check-input" type="checkbox" id="contratocesion" name="contratocesion">
                     <label class="form-check-label" for="contratocesion">Contrato de Cesión</label>
                 </div>
                 <div class="form-check form-check">
-                    <input class="form-check-input" type="checkbox" id="dicomdeudorescli" value="dicomdeudorescli">
+                    <input class="form-check-input" type="checkbox" id="dicomdeudorescli" name="dicomdeudorescli">
                     <label class="form-check-label" for="dicomdeudorescli">Dicom Deudores y Cliente</label>
                 </div>
             </div>
             <div class="col-4">
             <div class="form-check form-check">
-                    <input class="form-check-input" type="checkbox" id="informeconfir" value="informeconfir">
+                    <input class="form-check-input" type="checkbox" id="informeconfir" name="informeconfir">
                     <label class="form-check-label" for="informeconfir">Informe de Confirmación</label>
                 </div> 
                 <div class="form-check form-check">
-                    <input class="form-check-input" type="checkbox" id="ivaform" value="ivaform">
+                    <input class="form-check-input" type="checkbox" id="ivaform" name="ivaform">
                     <label class="form-check-label" for="ivaform">Formulario IVA</label>
                 </div>
             </div>
             <div class="col-4">
                 <div class="form-check form-check">
-                    <input class="form-check-input" type="checkbox" id="cobrogastos" value="cobrogastos">
+                    <input class="form-check-input" type="checkbox" id="cobrogastos" name="cobrogastos">
                     <label class="form-check-label" for="cobrogastos">Cobro de Gastos</label>
                 </div>
                 <div class="form-check form-check">
-                    <input class="form-check-input" type="checkbox" id="garantia" value="garantia">
+                    <input class="form-check-input" type="checkbox" id="garantia" name="garantia">
                     <label class="form-check-label" for="garantia">Garantías</label>
                 </div>
             </div>
@@ -464,11 +464,14 @@ $(document).ready(function() {
                 <?php
                         
                         $re2 = $fun ->cargar_aprobaciones($idope);
-                        for ($i=1; $i <= 3; $i++) {
-                            $row2 = 0; 
+                        $i=1;
+                        $row2 = 0; 
+                        
+
+                            
                             foreach($re2 as $row2)
-                            {  }
-                                if ($row2['est_nue_ope'] == $i and !empty($re2)) {
+                            {  
+                                if ($row2['est_nue_ope']  and !empty($re2)) {
                                     echo '<div class="input-group mb-2">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">'.$row2['desc_item'].'</span>
@@ -479,44 +482,57 @@ $(document).ready(function() {
                                         </div>
                                         <input type="text" class="form-control" value="'.$row2['obs_log_ope'].'" aria-label="Text input with checkbox">
                                     </div>';
+                                    
+                                  
+                                    
+                                    $i++;
+                                
+                                        }
+                            }
+                            while($i <= 4) {
+                                         if($i == 1 and $row2['est_nue_ope'] <> 1){
+                                            
+                                            echo '<div class="input-group mb-2">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Ejecutivo</span>
+                                                        <div class="input-group-text">
+                                                        <input type="checkbox"  aria-label="Checkbox for following text input">
+                                                        </div>
+                                                        <span class="input-group-text"> </span>
+                                                    </div>
+                                                    <input type="text" class="form-control" aria-label="Text input with checkbox">
+                                                </div>';
+                                        }else if($i == 3 and $row2['est_nue_ope'] <> 3){
+                                            
+                                            echo '<div class="input-group mb-2">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Encargado de Finanzas</span>
+                                                        <div class="input-group-text">
+                                                        <input type="checkbox"  aria-label="Checkbox for following text input">
+                                                        </div>
+                                                        <span class="input-group-text"> </span>
+                                                    </div>
+                                                    <input type="text" id="obs_2" name="obs_2" class="form-control" aria-label="Text input with checkbox">
+                                                </div>';
+                                        }else if($i == 4  and $row2['est_nue_ope'] <> 4){
+                                            
+                                            echo '<div class="input-group mb-2">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Gerente General</span>
+                                                        <div class="input-group-text">
+                                                        <input type="checkbox"  aria-label="Checkbox for following text input">
+                                                        </div>
+                                                        <span class="input-group-text"> </span>
+                                                    </div>
+                                                    <input type="text" id="obs_3" name="obs_3" class="form-control" aria-label="Text input with checkbox">
+                                                </div>';
+                                        }
 
-                            }else if($i == 1){
-                                echo '<div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Ejecutivo</span>
-                                            <div class="input-group-text">
-                                            <input type="checkbox"  aria-label="Checkbox for following text input">
-                                            </div>
-                                            <span class="input-group-text"> </span>
-                                        </div>
-                                        <input type="text" class="form-control" aria-label="Text input with checkbox">
-                                    </div>';
-                            }else if($i == 2){
-                                echo '<div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Finanzas</span>
-                                            <div class="input-group-text">
-                                            <input type="checkbox"  aria-label="Checkbox for following text input">
-                                            </div>
-                                            <span class="input-group-text"> </span>
-                                        </div>
-                                        <input type="text" id="obs_2" name="obs_2" class="form-control" aria-label="Text input with checkbox">
-                                    </div>';
+                                        $i++;
+                                
+                                
                             }
-                            else if($i == 3){
-                                echo '<div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Gerente General</span>
-                                            <div class="input-group-text">
-                                            <input type="checkbox"  aria-label="Checkbox for following text input">
-                                            </div>
-                                            <span class="input-group-text"> </span>
-                                        </div>
-                                        <input type="text" id="obs_3" name="obs_3" class="form-control" aria-label="Text input with checkbox">
-                                    </div>';
-                            }
-                         
-                        }
+                        
                          
                     ?>
 

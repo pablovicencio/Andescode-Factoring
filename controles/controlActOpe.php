@@ -81,7 +81,7 @@ session_start();
 		
 
 
-		$fecha =  date("Y-m-d h:m:s", time());
+		$fec_reg =  date("Y-m-d h:m:s", time());
 		
 
 			$dao = new OperacionDAO($id_ope, '',$id_usu, '',$obs,'','','','','','',$ctacte,'','',$bco_giro,$bco_dep, $fec_reg, $est_act_ope,'','',$forma_giro);

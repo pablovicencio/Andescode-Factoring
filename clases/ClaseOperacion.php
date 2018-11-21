@@ -188,7 +188,7 @@ class OperacionDAO
 
 
                 $stmt = $pdo->prepare($sql_act_ope);
-                $stmt->bindParam(":est_ope", $est_ope, PDO::PARAM_INT);
+                $stmt->bindParam(":est", $est_ope, PDO::PARAM_INT);
                 $stmt->bindParam(":id_ope", $this->id_ope, PDO::PARAM_INT);
 
                 $stmt->execute();
