@@ -294,6 +294,34 @@ class Funciones
             }
         }
 
+/*///////////////////////////////////////
+    Cargar Bancos
+    //////////////////////////////////////*/
+    public function formas_pago_doc($vig_bcos) {
+
+        try{
+            
+            
+            $pdo = AccesoDB::getCon();
+
+            if ($vig_bcos == 0) {
+                $sql = "select cod_item , desc_item  from tab_param where cod_grupo = 9 and cod_item <> 0";
+            }else if ($vig_bcos == 1) {
+                $sql = "select cod_item , desc_item  from tab_param where cod_grupo = 9 and cod_item <> 0 and vig_item = 1";
+            }  
+            
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+
+            $response = $stmt->fetchAll();
+            return $response;
+
+        } catch (Exception $e) {
+            echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+        }
+    }
+
 
 
 
@@ -475,7 +503,7 @@ class Funciones
         try{
             $pdo = AccesoDB::getCon();
             //if($cargo == 1){
-                $sql = "SELECT O.ID_OPE OPE,O.FEC_OPE FECHA,U.NICK_USU USUARIO,T1.DESC_ITEM TIPO,TASA_OPE TASA,MONTO_GIRO_OPE GIRADO,C.NOM_CLI CLIENTE,C.RUT_CLI RUT,T2.DESC_ITEM AS ESTADO
+                $sql = "SELECT O.ID_OPE OPE,DATE_FORMAT(O.FEC_OPE, '%d-%m-%Y') FECHA,U.NICK_USU USUARIO,T1.DESC_ITEM TIPO,TASA_OPE TASA,MONTO_GIRO_OPE GIRADO,C.NOM_CLI CLIENTE,C.RUT_CLI RUT,T2.DESC_ITEM AS ESTADO
                 FROM OPERACIONES O, USUARIOS U,TAB_PARAM T1,CLIENTES C,TAB_PARAM T2
                 WHERE O.EST_OPE = T2.COD_ITEM AND T2.COD_GRUPO = 7 AND T2.VIG_ITEM = 1
                 AND O.TIPO_OPE = T1.COD_ITEM AND T1.COD_GRUPO = 3 AND T1.VIG_ITEM = 1
@@ -509,14 +537,15 @@ class Funciones
 
         try{
             $pdo = AccesoDB::getCon();
+            
             if($opcion == 1){
                 $sql = "SELECT D.ID_OPE,D.NOM_DEU_DOC,D.RUT_DEU_DOC,D.NRO_DOC,D.MONTO_DOC,D.MONTO_FINAN_DOC,O.TASA_OPE,DATE_FORMAT(D.FEC_VEN_DOC, '%d-%m-%Y') vencimiento,D.PLAZO_DOC
                 FROM DOCUMENTOS D,OPERACIONES O
-                WHERE FEC_VEN_DOC < CURDATE() AND D.ID_OPE = O.ID_OPE";
+                WHERE FEC_VEN_DOC < CURDATE() AND D.ID_OPE = O.ID_OPE AND D.EST_DOC <> 2";
             }elseif($opcion== 2){
-                $sql = "SELECT D.ID_OPE,D.NOM_DEU_DOC,D.RUT_DEU_DOC,D.NRO_DOC,D.MONTO_DOC,D.MONTO_FINAN_DOC,O.TASA_OPE,DATE_FORMAT(D.FEC_VEN_DOC, '%Y-%m-%d') vencimiento,D.PLAZO_DOC,C.NOM_CLI,C.RUT_CLI,T.DESC_ITEM as tipo
+                $sql = "SELECT *
                 FROM DOCUMENTOS D,OPERACIONES O,CLIENTES C,TAB_PARAM T
-                WHERE O.CLI_OPE = C.ID_CLI AND D.FEC_VEN_DOC < CURDATE() AND D.ID_OPE = O.ID_OPE AND D.NRO_DOC = :doc AND D.TIPO_DOC = T.COD_ITEM AND T.COD_GRUPO = 6 AND T.VIG_ITEM = 1 ; ";
+                WHERE O.CLI_OPE = C.ID_CLI AND D.FEC_VEN_DOC < CURDATE() AND D.ID_OPE = O.ID_OPE AND D.NRO_DOC = :doc AND D.TIPO_DOC = T.COD_ITEM AND T.COD_GRUPO = 6 AND T.VIG_ITEM = 1 ;";
             }
             
 

@@ -190,18 +190,18 @@ $(document).ready(function() {
 
 
 <h3>Usuarios Actuales&nbsp;&nbsp;<i class="fa fa-users" aria-hidden="true"></i></h3>
-
+<hr>
   <table id="dtBasicExample" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
       <tr>
-        <th class="th-sm">Nombre<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
-        <th class="th-sm">Rut<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
-        <th class="th-sm">Mail<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
-        <th class="th-sm">Perfil<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
-        <th class="th-sm">F. Creación<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
-        <th class="th-sm">Cargo<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
-        <th class="th-sm">Vigencia<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
-        <th class="th-sm">Editar<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+        <th class="">Nombre         <i class="" aria-hidden="true"></i></th>
+        <th class="">Rut            <i class="" aria-hidden="true"></i></th>
+        <th class="">Mail           <i class="" aria-hidden="true"></i></th>
+        <th class="">Perfil         <i class="" aria-hidden="true"></i></th>
+        <th class="">F. Creación    <i class="" aria-hidden="true"></i></th>
+        <th class="">Cargo          <i class="" aria-hidden="true"></i></th>
+        <th class="">Vigencia       <i class="" aria-hidden="true"></i></th>
+        <!--<th class="th-sm">Editar<i class="fa fa-sort float-right" aria-hidden="true"></i></th>-->
       </tr>
     </thead>
     <tbody>
@@ -222,7 +222,7 @@ $(document).ready(function() {
                   <td><?php echo $row['crea']?></td>
                   <td><?php echo $row['carg']?></td>
                   <td><?php echo $row['vig']?></td>
-                  <td>Modificar <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                 <!-- <td>Modificar <i class="fa fa-pencil-square" aria-hidden="true"></i>-->
 </td>
 
       </tr>
@@ -236,12 +236,12 @@ $(document).ready(function() {
       <tr>
         <th>Nombre</th>
         <th>Rut</th>
-        <th>Mail</th>
+        <th>Mail</th>4
         <th>Perfil</th>
         <th>F. Creación</th>
         <th>Cargo</th>
         <th>Vigencia</th>
-        <th>Editar</th>
+        <!--<th>Editar</th>-->
       </tr>
     </tfoot>
   </table>

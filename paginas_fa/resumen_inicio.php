@@ -108,7 +108,7 @@ $(document).ready(function () {
                   <td><?php echo $row['usuario']?></td>
                   <td><?php echo $row['tipo']?></td>
                   <td><?php echo $row['tasa']?></td>
-                  <td><?php echo $row['girado']?></td>
+                  <td><?php echo "<script>var string = numeral(". $row['girado'].").format('$000,000,000,000');document.write(string)</script>"?></td>
                   <td><?php echo $row['cliente']?></td>
                   <td><?php echo $row['rut']?></td>
                   <td><?php echo $row['estado']?></td>
@@ -146,8 +146,9 @@ $(document).ready(function () {
       </tr>
     </tfoot> 
   </table>
-
-
+<br>
+<hr>
+<br>
   <h5>Estado de Facturas Morosas&nbsp;<i class="fa fa-clock-o" aria-hidden="true"></i></i></h5>
     <br>
   <table id="dtBasicExample" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -156,13 +157,13 @@ $(document).ready(function () {
         <th class="th-sm">N°</th>
         <th class="th-sm">Deudor</th>
         <th class="th-sm">Rut</th>
-        <th class="th-sm">N° Documento</th>
-        <th class="th-sm">Monto Documento</th>
+        <th class="th-sm">N° Doc.</th>
+        <th class="th-sm">Monto Doc.</th>
         <th class="th-sm">Financiado</th>
         <th class="th-sm">Tasa</th>
         <th class="th-sm">Vencimiento</th>
         <th class="th-sm">Plazo</th>
-        <th class="th-sm">Dias en Mora</th>
+        <th class="th-sm">Mora</th>
         <th class="th-sm">Gestionar</th>
       </tr>
     </thead>
@@ -182,8 +183,8 @@ $(document).ready(function () {
                   <td><?php echo $row['nom_deu_doc']?></td>
                   <td><?php echo $row['rut_deu_doc']?></td>
                   <td><?php echo $row['nro_doc']?></td>
-                  <td><?php echo $row['monto_doc']?></td>
-                  <td><?php echo $row['monto_finan_doc']?></td>
+                  <td><?php echo "<script>var string = numeral(". $row['monto_doc'].").format('$000,000,000,000');document.write(string)</script>"?></td>
+                  <td><?php echo "<script>var string = numeral(".  $row['monto_finan_doc'].").format('$000,000,000,000');document.write(string)</script>"?></td>
                   <td><?php echo $row['tasa_ope']?></td>
                   <td><?php echo $row['vencimiento']?></td>
                   <td><?php echo $row['plazo_doc']?></td>
