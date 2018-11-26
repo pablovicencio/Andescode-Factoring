@@ -56,7 +56,7 @@ $TableData= json_decode($TableData,TRUE);
 
 		$cargo = $_SESSION['cargo_fac'];
 		
-		$dao_ope = new OperacionDAO('', $fec_ope,$id_usu, $tipo_ope,$obs_ope,$tasa_ope,$com_cob,$com_cur,$ape_ope,$dia_ope,$otros_desc_ope,' ',$monto_giro,$cli_ope,'','', $fec_reg, $est_ope,$iva_com_cob,$iva_comi_tot);
+		$dao_ope = new OperacionDAO('', $fec_ope,$id_usu, $tipo_ope,$obs_ope,$tasa_ope,$com_cob,$com_cur,$ape_ope,$dia_ope,$otros_desc_ope,' ',$monto_giro,$cli_ope,'','', $fec_reg, $est_ope,$iva_com_cob,$iva_comi_tot,'');
 
 
 
