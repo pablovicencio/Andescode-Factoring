@@ -138,7 +138,7 @@ class DocumentoDAO
     ///////////////////////////////////////
     ///Modificar Documento
     //////////////////////////////////////
-    public function mod_doc($num_doc,$fecha_pago,$dias_mora,$total_cobrar,$abono_capital,$intereses,$banco_abono,$fecha_depo,$tipo_abono,$obs_doc,$vbg,$vba,$vbc) {
+    public function mod_doc() {
 
         try{
            
@@ -146,40 +146,41 @@ class DocumentoDAO
 
             $sql_mod_doc = "UPDATE `documentos`
             SET
-            `FEC_PAGO_FINAL` = '$fecha_pago',
-            `DIAS_MORA` = $dias_mora,
-            `ABONO_CAPITAL` = $abono_capital,
-            `INTERESES` = $intereses,
-            `TOTAL_COBRAR_MORA` = $total_cobrar,
-            `BCO_DEPOSITO` = $banco_abono,
-            `FEC_DEPO_` = '$fecha_depo',
-            `TIPO_DEPO` = $tipo_abono,
-            `OBS_DOC` = '$obs_doc',
-            `VB_ADMIN` = $vba,
-            `VB_GENERAL` = $vbg,
-            `VB_COMERCIAL` =$vbc,
-            `EST_DOC` = 2
+            `FEC_PAGO_FINAL` = :fecha_pago,
+            `DIAS_MORA` = :dias_mora,
+            `ABONO_CAPITAL` = :abono_capital,
+            `INTERESES` = :intereses,
+            `TOTAL_COBRAR_MORA` = :total_cobrar,
+            `BCO_DEPOSITO` = :banco_abono,
+            `FEC_DEPO_` = :fecha_depo,
+            `TIPO_DEPO` = :tipo_abono,
+            `OBS_DOC` = :obs_doc,
+            `VB_ADMIN` = :vba,
+            `VB_GENERAL` = :vbg,
+            `VB_COMERCIAL` = :vbc,
+            `EST_DOC` = :est_doc
 
             
-            WHERE `NRO_DOC` = $num_doc";
+            WHERE `NRO_DOC` = :num_doc";
 
 
 
 
             $stmt = $pdo->prepare($sql_mod_doc);
-            $stmt->bindParam(":fec_pago_final", $this->fec_depo_, PDO::PARAM_STR);
-            $stmt->bindParam(":numdoc", $this->$num_doc, PDO::PARAM_INT);
-            $stmt->bindParam(":diasmora", $this->dias_mora, PDO::PARAM_INT);
+            $stmt->bindParam(":fecha_pago", $this->fec_pago_final, PDO::PARAM_STR);
+            $stmt->bindParam(":num_doc", $this->id, PDO::PARAM_INT);
+            $stmt->bindParam(":dias_mora", $this->dias_mora, PDO::PARAM_INT);
             $stmt->bindParam(":abono_capital", $this->abono_capital, PDO::PARAM_INT);
             $stmt->bindParam(":intereses", $this->intereses, PDO::PARAM_INT);
-            $stmt->bindParam(":total_cobrar_mora", $this->total_cobrar_mora, PDO::PARAM_INT);
-            $stmt->bindParam(":bco_deposito", $this->bco_deposito, PDO::PARAM_INT);
-            $stmt->bindParam(":fec_depo_", $this->fec_depo_, PDO::PARAM_STR);
-            $stmt->bindParam(":tipo_depo", $this->tipo_depo, PDO::PARAM_INT);
+            $stmt->bindParam(":total_cobrar", $this->total_cobrar_mora, PDO::PARAM_INT);
+            $stmt->bindParam(":banco_abono", $this->bco_deposito, PDO::PARAM_INT);
+            $stmt->bindParam(":fecha_depo", $this->fec_depo_, PDO::PARAM_STR);
+            $stmt->bindParam(":tipo_abono", $this->tipo_depo, PDO::PARAM_INT);
             $stmt->bindParam(":obs_doc", $this->obs_doc, PDO::PARAM_STR);
-            $stmt->bindParam(":vb_general", $this->vbg, PDO::PARAM_INT);
-            $stmt->bindParam(":vb_admin", $this->vba, PDO::PARAM_INT);
-            $stmt->bindParam(":vb_comercial", $this->vbc, PDO::PARAM_INT);
+            $stmt->bindParam(":vbg", $this->vbg, PDO::PARAM_INT);
+            $stmt->bindParam(":vba", $this->vba, PDO::PARAM_INT);
+            $stmt->bindParam(":vbc", $this->vbc, PDO::PARAM_INT);
+            $stmt->bindParam(":est_doc", $this->est_doc, PDO::PARAM_INT);
 
             $stmt->execute();
        

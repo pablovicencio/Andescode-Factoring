@@ -69,7 +69,7 @@ $TableData= json_decode($TableData,TRUE);
 			echo"2";    
 			} else {
 						$id_ope =($guardar_ope[0]['id_ope']);
-						$dao_doc = new DocumentoDAO(' ', $fec_reg,$id_usu, $est_doc,$TableData);
+						$dao_doc = new DocumentoDAO(' ', $fec_reg,$id_usu, $est_doc,$TableData,'','','','','','','','','','','','');
 						$guardar_doc = $dao_doc->ing_doc($id_ope);
 						if (count($guardar_doc)>0){
 								echo"2";    

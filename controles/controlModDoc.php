@@ -44,13 +44,15 @@ session_start();
 			$vbc = 0;
 		}
 
+        $est_doc = 2;
+
 
          
         //echo ("NRO DOC : ".$nro_doc."FECHA PAGO: ". $fecha_pago." DIAS MORA: ". $dias_mora." INTERESES: ". $intereses." TOTAL COBRAR: ". $total_cobrar." ABONO CAPITAL: ".$abono_capital." TIPO ABONO: ".$tipo_abono." FECHA DEPO: ". $fecha_depo);
         //echo ("BANCO ABONO: ".$banco_abono."OBS DOC : ". $obs_doc." VISTO BUENO GERENCIA : ". $vbg." VISTO BUENO ADMINISTRACION : ". $vba." VISTO BUENO COMERCIAL : ". $vbc);
         
-        $dao = new DocumentoDAO(); 		
-        $mod_doc = $dao->mod_doc($nro_doc,$fecha_pago,$dias_mora,$intereses,$abono_capital,$total_cobrar,$banco_abono,$fecha_depo,$tipo_abono,$obs_doc,$vbg,$vba,$vbc);
+        $dao = new DocumentoDAO($nro_doc,'','',$est_doc,'',$fecha_pago,$dias_mora,$intereses,$abono_capital,$total_cobrar,$banco_abono,$fecha_depo,$tipo_abono,$obs_doc,$vbg,$vba,$vbc); 		
+        $mod_doc = $dao->mod_doc();
         if (count($mod_doc)>0){
             echo "1";    
         } else {
