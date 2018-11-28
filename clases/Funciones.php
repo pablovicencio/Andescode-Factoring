@@ -6,6 +6,84 @@ require_once '../recursos/db/db.php';
 class Funciones 
 {
 
+
+
+    /*///////////////////////////////////////
+    Cargar cartera cursatura
+    //////////////////////////////////////*/
+        public function cargar_cartera($id_cli, $id) {
+
+            try{
+                
+                
+                $pdo = AccesoDB::getCon();
+
+                if ($id == 1) {
+                    $sql = "select 
+                            sum(a.monto_finan_doc) monto,
+                            case 
+                                when DATEDIFF(curdate(), a.fec_ven_doc) <= 15 then '15'
+                                when DATEDIFF(curdate(), a.fec_ven_doc) > 15 and DATEDIFF(curdate(), a.fec_ven_doc) <= 30 then '30'
+                                when DATEDIFF(curdate(), a.fec_ven_doc) > 30 and DATEDIFF(curdate(), a.fec_ven_doc) <= 60 then '60'
+                                when DATEDIFF(curdate(), a.fec_ven_doc) > 60 then '70'
+                            end rango,
+
+                            case 
+                                when DATEDIFF(curdate(), a.fec_ven_doc) <= 15 then '0 a 15 Días:'
+                                when DATEDIFF(curdate(), a.fec_ven_doc) > 15 and DATEDIFF(curdate(), a.fec_ven_doc) <= 30 then '15 a 30 Días:'
+                                when DATEDIFF(curdate(), a.fec_ven_doc) > 30 and DATEDIFF(curdate(), a.fec_ven_doc) <= 60 then '30 a 60 Días:'
+                                when DATEDIFF(curdate(), a.fec_ven_doc) > 60 then 'Más de 60 Días:'
+                            end desc_rango
+                             from documentos a where a.fec_ven_doc < curdate()
+                                  and a.id_ope in (select id_ope from operaciones where cli_ope = :cli)
+                             group by  a.fec_ven_doc order by 2";
+                }else if ($id = 2) {
+                    $sql = "select 
+                            sum(a.monto_finan_doc) monto,
+                            case 
+                                when DATEDIFF(curdate(), a.fec_ven_doc) <= 15 then '15'
+                                when DATEDIFF(curdate(), a.fec_ven_doc) > 15 and DATEDIFF(curdate(), a.fec_ven_doc) <= 30 then '30'
+                                when DATEDIFF(curdate(), a.fec_ven_doc) > 30 and DATEDIFF(curdate(), a.fec_ven_doc) <= 60 then '60'
+                                when DATEDIFF(curdate(), a.fec_ven_doc) > 60 and DATEDIFF(curdate(), a.fec_ven_doc) <= 90 then '90'
+                                when DATEDIFF(curdate(), a.fec_ven_doc) > 90 then '100'
+                            end rango,
+
+                            case 
+                                when DATEDIFF(curdate(), a.fec_ven_doc) <= 15 then '0 a 15 Días:'
+                                when DATEDIFF(curdate(), a.fec_ven_doc) > 15 and DATEDIFF(curdate(), a.fec_ven_doc) <= 30 then '15 a 30 Días:'
+                                when DATEDIFF(curdate(), a.fec_ven_doc) > 30 and DATEDIFF(curdate(), a.fec_ven_doc) <= 60 then '30 a 60 Días:'
+                                when DATEDIFF(curdate(), a.fec_ven_doc) > 60 and DATEDIFF(curdate(), a.fec_ven_doc) <= 90 then '61 a 90 Días:'
+                                when DATEDIFF(curdate(), a.fec_ven_doc) > 90 then 'Más de 90 Días:'
+                            end desc_rango
+                             from documentos a where a.fec_ven_doc > curdate()
+                                  and a.id_ope in (select id_ope from operaciones where cli_ope = :cli)
+                             group by  a.fec_ven_doc order by 2";
+                }
+
+                
+                    
+                
+
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(":cli", $id_cli, PDO::PARAM_INT);
+                $stmt->execute();
+
+                $response = $stmt->fetchAll();
+                return $response;
+
+            } catch (Exception $e) {
+                echo"<script type=\"text/javascript\">alert('Error, comuniquese con el administrador".  $e->getMessage()." '); window.location='../paginas_fa/datos_pers.php';</script>";
+            }
+        }
+
+
+
+
+
+
+
+
+
     /*///////////////////////////////////////
     Cargar monto giro cursatura
     //////////////////////////////////////*/
@@ -902,10 +980,10 @@ class Funciones
 
                     
             
-                $sql = "select 
+                $sql = "select a.id_cli,
                         a.nom_cli, b.fec_ope ,
                         a.linea_cred_cli, 
-                        (select sum(monto_giro_ope) from operaciones c where c.cli_ope = 1 and (c.est_ope = 3 or c.id_ope = b.id_ope)) ocupada,
+                        (select sum(monto_giro_ope) from operaciones c where (c.est_ope = 3 or c.cli_ope = a.id_cli)) ocupada,
                         a.linea_cred_cli, a.bco_cli,a.nro_cta_cli, a.mail_cli
                         from clientes a inner join  operaciones b on a.id_cli = b.cli_ope where id_ope = :ope";
     

@@ -95,6 +95,7 @@ $(document).ready(function() {
                     $re = $fun ->cargar_datos_cli_ope($idope);
                     foreach($re as $row)
                         {   
+                            $idcli = $row["id_cli"];
             ?>
                 <label for="nom">Nombre o Razón Social&nbsp;<i class="fa fa-user-circle-o" aria-hidden="true">&nbsp;</i>:</label> 
                 <input type="text" value="<?php echo $row["nom_cli"]?>" class="form-control" id="nom_cli" name="nom_cli"  maxlength="100" placeholder="Nombre o Razón Social" required readonly> 
@@ -145,18 +146,52 @@ $(document).ready(function() {
                         <h5>Condiciones Cartera Morosa</h5>
                         <br>
 
-                        <label for="ceroaquince">0 a 15 Días:</label>
-                        <input type="number" class="form-control" id="ceroaquince" name="ceroaquince"  maxlength="100" placeholder="$0" required>
+                        <?php
+  
+                                $re7 = $fun ->cargar_cartera($idcli,1);
+                                $i=1;
+                                $row7 = 0; 
 
-                        <label for="quinceatreinta">15 a 30 Días:</label>
-                        <input type="number" class="form-control" id="quinceatreinta" name="quinceatreinta"  maxlength="100" placeholder="$0" required>
 
-                        <label for="treintasesenta">30 a 60 Días:</label>
-                        <input type="number" class="form-control" id="treintasesenta" name="treintasesenta"  maxlength="100" placeholder="$0" required>
 
-                        <label for="masde60">Más de 60 Días:</label>
-                        <input type="number" class="form-control" id="masde60" name="masde60"  maxlength="100" placeholder="$0" required>
+                        
+                        
 
+                            
+                            foreach($re7 as $row7)
+                            {  
+                                if (!empty($re7)) {
+                                    echo '<label for="rango">'.$row7['desc_rango'].'</label>
+                        <input type="number" class="form-control"   maxlength="100" value="'.$row7["monto"].'" readonly>';
+                                    $i++;
+                                
+                                        }
+                            }
+                            while($i <= 4) {
+                                         if($i == 1 and $row7['rango'] <> 15){
+                                            
+                                            echo '<label for="15">0 a 15 Días:</label>
+                                                  <input type="number" class="form-control"  maxlength="100" value="0" readonly>';
+                                        }else if($i == 2 and $row7['rango'] <> 30){
+                                            
+                                            echo '<label for="30">15 a 30 Días:</label>
+                                                  <input type="number" class="form-control"  maxlength="100" value="0" readonly>';
+                                        }else if($i == 3 and  $row7['rango'] <> 60){
+                                            
+                                            echo '<label for="60">30 a 60 Días:</label>
+                                                  <input type="number" class="form-control"  maxlength="100" value="0" readonly>';
+                                        }else if($i == 4 and  $row7['rango'] <> 70){
+                                            
+                                            echo '<label for="70">Más de 60 Días:</label>
+                                                  <input type="number" class="form-control"  maxlength="100" value="0" readonly>';
+                                        }
+
+                                        $i++;
+                                
+                                
+                            }
+
+                        ?>
 
                         <label for="deudaemprelac">Deuda Emp. Relac.:</label>
                         <input type="number" class="form-control" id="deudaemprelac" name="deudaemprelac"  maxlength="100" placeholder="$0" required>
@@ -164,6 +199,7 @@ $(document).ready(function() {
                         <label for="deudatotalgrupo">Deuda Total Grupo:</label>
                         <input type="number" class="form-control" id="deudatotalgrupo" name="deudatotalgrupo"  maxlength="100" placeholder="$0" required>
                     <br>
+                     
                   
                     </div>
                 </div>
@@ -174,7 +210,63 @@ $(document).ready(function() {
                         <h5>Condiciones Cartera Vigente</h5>
                         <br>
 
-                        <label for="ceroauno">0 a 1 Día:</label>
+
+
+                        <?php
+  
+                                $re8 = $fun ->cargar_cartera($idcli,2);
+                                $i=1;
+                                $row8 = 0; 
+
+
+
+                        
+                        
+
+                            
+                            foreach($re8 as $row8)
+                            {  
+                                if (!empty($re8)) {
+                                    echo '<label for="rango">'.$row8['desc_rango'].'</label>
+                        <input type="number" class="form-control"   maxlength="100" value="'.$row8["monto"].'" readonly>';
+                                    $i++;
+                                
+                                        }
+                            }
+                            while($i <= 4) {
+                                         if($i == 1 and $row8['rango'] <> 15){
+                                            
+                                            echo '<label for="15">0 a 15 Días:</label>
+                                                  <input type="number" class="form-control"  maxlength="100" value="0" readonly>';
+                                        }else if($i == 2 and $row8['rango'] <> 30){
+                                            
+                                            echo '<label for="30">15 a 30 Días:</label>
+                                                  <input type="number" class="form-control"  maxlength="100" value="0" readonly>';
+                                        }else if($i == 3 and  $row8['rango'] <> 60){
+                                            
+                                            echo '<label for="60">30 a 60 Días:</label>
+                                                  <input type="number" class="form-control"  maxlength="100" value="0" readonly>';
+                                        }else if($i == 4 and  $row8['rango'] <> 90){
+                                            
+                                            echo '<label for="90">61 a 90 Días:</label>
+                                                  <input type="number" class="form-control"  maxlength="100" value="0" readonly>';
+                                        }else if($i == 5 and  $row8['rango'] <> 100){
+                                            
+                                            echo '<label for="100">Más de 90 Días:</label>
+                                                  <input type="number" class="form-control"  maxlength="100" value="0" readonly>';
+                                        }
+
+                                        $i++;
+                                
+                                
+                            }
+
+                        ?>
+
+
+
+
+                       <!--  <label for="ceroauno">0 a 1 Día:</label>
                         <input type="number" class="form-control" id="ceroauno" name="ceroauno"  maxlength="100" placeholder="$0" required>
                         
                         <label for="dosaquince">2 a 15 Días:</label>
@@ -191,7 +283,7 @@ $(document).ready(function() {
 
                         <label for="masdenoventa">Más de 90 Días:</label>
                         <input type="number" class="form-control" id="masdenoventa" name="masdenoventa"  maxlength="100" placeholder="$0" required>
-
+ -->
 
                     </div>
                 </div>   
@@ -471,7 +563,7 @@ $(document).ready(function() {
                             
                             foreach($re2 as $row2)
                             {  
-                                if ($row2['est_nue_ope']  and !empty($re2)) {
+                                if (!empty($re2)) {
                                     echo '<div class="input-group mb-2">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">'.$row2['desc_item'].'</span>
